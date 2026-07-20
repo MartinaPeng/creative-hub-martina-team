@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>Creative Hub · Dashboard 优化基线稿</title>
+<style>
+  :root{
+    --bg:#f2f4f9;
+    --surface:#ffffff;
+    --surface-2:#f8f9fc;
+    --ink:#161f2e;
+    --ink-soft:#647089;
+    --ink-faint:#94a0b8;
+    --line:#e3e7f0;
+    --accent:#1656c9;
+    --accent-soft:#e8eefc;
+    --purple:#6d5bd0;
+    --purple-soft:#eeecfb;
+    --amber:#d98a1f;
+    --amber-soft:#fbedd9;
+    --mint:#23976a;
+    --mint-soft:#dff3ea;
+    --good:#1f9254;
+    --bad:#d1403f;
+    --shadow:0 1px 2px rgba(23,33,46,.04), 0 10px 28px rgba(23,33,46,.07);
+    --radius:14px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1420;
+      --surface:#161d2c;
+      --surface-2:#1b2333;
+      --ink:#e8edf7;
+      --ink-soft:#94a1ba;
+      --ink-faint:#66738d;
+      --line:#28324600;
+      --line:#2a3346;
+      --accent:#5b8ef2;
+      --accent-soft:#1c2b4d;
+      --purple:#9a8ceb;
+      --purple-soft:#26234a;
+      --amber:#e6a63f;
+      --amber-soft:#3a2c14;
+      --mint:#4bc290;
+      --mint-soft:#153328;
+      --good:#3fbd77;
+      --bad:#e2635f;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1420; --surface:#161d2c; --surface-2:#1b2333;
+    --ink:#e8edf7; --ink-soft:#94a1ba; --ink-faint:#66738d; --line:#2a3346;
+    --accent:#5b8ef2; --accent-soft:#1c2b4d;
+    --purple:#9a8ceb; --purple-soft:#26234a;
+    --amber:#e6a63f; --amber-soft:#3a2c14;
+    --mint:#4bc290; --mint-soft:#153328;
+    --good:#3fbd77; --bad:#e2635f;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#f2f4f9; --surface:#ffffff; --surface-2:#f8f9fc;
+    --ink:#161f2e; --ink-soft:#647089; --ink-faint:#94a0b8; --line:#e3e7f0;
+    --accent:#1656c9; --accent-soft:#e8eefc;
+    --purple:#6d5bd0; --purple-soft:#eeecfb;
+    --amber:#d98a1f; --amber-soft:#fbedd9;
+    --mint:#23976a; --mint-soft:#dff3ea;
+    --good:#1f9254; --bad:#d1403f;
+    --shadow:0 1px 2px rgba(23,33,46,.04), 0 10px 28px rgba(23,33,46,.07);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink); font-family:var(--font);
+    font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:1400px;margin:0 auto;padding:0 0 56px;}
+
+  /* topbar */
+  .topbar{
+    background:linear-gradient(90deg,var(--accent),#0f3fa0);
+    color:#fff; display:flex; align-items:center; justify-content:space-between;
+    padding:10px 22px; font-size:.85rem;
+  }
+  :root[data-theme="dark"] .topbar, @media (prefers-color-scheme: dark){ .topbar{ background:linear-gradient(90deg,#16233f,#0b1626); } }
+  .topbar .left{display:flex;align-items:center;gap:10px;font-weight:700;}
+  .topbar .logo{width:22px;height:22px;border-radius:6px;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;}
+  .topbar .right{display:flex;align-items:center;gap:16px;color:#dbe6ff;font-weight:500;}
+
+  .pagehead{padding:20px 24px 0;}
+  .pagehead h1{font-size:1.5rem;margin:0 0 14px;letter-spacing:-0.01em;}
+  .tabs{display:flex;gap:22px;border-bottom:1px solid var(--line);font-size:.92rem;font-weight:600;color:var(--ink-soft);}
+  .tabs span{padding-bottom:10px;cursor:default;}
+  .tabs span.active{color:var(--ink);border-bottom:2px solid var(--accent);}
+  .tabs .badge{background:var(--purple-soft);color:var(--purple);font-size:.62rem;font-weight:800;border-radius:999px;padding:2px 6px;margin-left:4px;vertical-align:2px;}
+
+  .toolbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;gap:12px;flex-wrap:wrap;}
+  .seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:3px;font-size:.82rem;font-weight:600;}
+  .seg span{padding:6px 14px;border-radius:7px;color:var(--ink-soft);cursor:default;}
+  .seg span.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .fbox{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:7px 12px;font-size:.8rem;color:var(--ink-soft);}
+  .fbox b{color:var(--ink);font-weight:600;}
+
+  .grid{display:grid;gap:16px;padding:0 24px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g1{grid-template-columns:1fr;}
+  .widget-row .card{height:285px;overflow-y:auto;display:flex;flex-direction:column;padding:13px 16px;}
+  .g2.widget-row .card{height:571px;}
+  .g2.widget-row.short .card{height:500px;}
+  .g1.widget-row .card{height:360px;}
+  .g1.widget-row.tall .card{height:381px;}
+  .widget-row .card>.head,
+  .widget-row .card>h3,
+  .widget-row .card>.legend,
+  .widget-row .card>div>.legend{flex-shrink:0;}
+  .widget-row .card>.chart-wrap,
+  .widget-row .card>svg.chart,
+  .widget-row .card>.bars,
+  .widget-row .card>.rank-list,
+  .widget-row .card>.asset-grid,
+  .widget-row .card>.perf-asset-list,
+  .widget-row .card>.adtp-body,
+  .widget-row .card>.diag-table-wrap{max-height:330px;flex-shrink:0;}
+
+  .diag-table-wrap{overflow:auto;}
+  table.diag-table{width:100%;border-collapse:collapse;font-size:.72rem;}
+  table.diag-table th{text-align:left;font-size:.62rem;color:var(--ink-faint);font-weight:700;padding:6px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);white-space:nowrap;}
+  table.diag-table td{padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  table.diag-table td.diag-desc{white-space:normal;min-width:220px;max-width:260px;}
+  .diag-thumbs{display:flex;gap:4px;}
+  .diag-thumbs i{width:40px;height:40px;border-radius:8px;display:block;}
+  .diag-thumbs .diag-thumb-more{width:40px;height:40px;border-radius:8px;background:var(--surface-2,var(--line));color:var(--ink-soft);font-size:.66rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .diag-score{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;border-radius:6px;font-weight:800;font-size:.7rem;color:#fff;}
+  .diag-score.bad{background:var(--bad);}
+  .diag-score.amber{background:var(--amber);}
+  .diag-score.good{background:var(--mint);}
+  .tag-view>.bars-wrap{flex:1;min-height:0;}
+  .tag-view>.legend{flex-shrink:0;}
+
+  .adtp-body{display:flex;gap:16px;}
+  .adtp-chartcol{flex:1.6;min-width:0;display:flex;flex-direction:column;gap:8px;}
+  .adtp-charts{flex:1;min-height:0;display:flex;gap:12px;}
+  .adtp-charts>.adtp-col{flex:1;min-width:0;min-height:0;display:flex;}
+  .adtp-charts .bars{flex:1;}
+  .adtp-shared-legend{flex-shrink:0;}
+  .adtp-table-col{flex:1;min-width:0;min-height:0;}
+  .adtp-bar-chart .bval{font-size:.62rem;color:var(--ink-faint);font-weight:600;margin-top:2px;}
+  .adtp-bar-chart .bar-set i{width:13.5px;}
+  .bars-wrap{display:flex;gap:8px;}
+  .bars-wrap>.bars{flex:1;min-height:0;}
+  .baxis{display:flex;flex-direction:column;justify-content:space-between;font-size:.62rem;color:var(--ink-faint);flex-shrink:0;padding:2px 0;}
+  .baxis-left{align-items:flex-end;}
+  .baxis-right{align-items:flex-start;}
+
+  .perf-asset-list{display:flex;flex-direction:column;gap:10px;justify-content:space-between;}
+  .card-tabs{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:2px;font-size:.74rem;font-weight:700;}
+  .card-tabs span{padding:5px 10px;border-radius:6px;color:var(--ink-soft);cursor:pointer;}
+  .card-tabs span.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+
+  .group-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;flex-shrink:0;}
+
+  .metric-dropdown{position:relative;}
+  .metric-dd-btn{font-size:.72rem;font-weight:700;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .metric-dd-btn .dd-label{color:var(--ink);}
+  .metric-dd-panel{position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:8px;z-index:20;display:none;min-width:180px;}
+  .metric-dd-panel.open{display:block;}
+  .metric-dd-panel .hint{font-size:.62rem;color:var(--ink-faint);font-weight:700;padding:2px 4px 6px;border-bottom:1px solid var(--line);margin-bottom:4px;}
+  .metric-dd-panel label{display:flex;align-items:center;gap:8px;font-size:.76rem;font-weight:600;color:var(--ink);padding:5px 4px;border-radius:6px;cursor:pointer;}
+  .metric-dd-panel label:hover{background:var(--surface-2);}
+  .metric-dd-panel input{accent-color:var(--accent);}
+
+  .perf-asset-list>.group-grid{flex:1;min-height:0;}
+  .group-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:minmax(160px,1fr);gap:8px;}
+  .ai-cta-row{display:flex;gap:10px;margin-bottom:10px;flex-shrink:0;}
+  .ai-cta{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:8px 10px;}
+  .ai-cta-top{display:flex;align-items:flex-start;gap:8px;}
+  .ai-cta-icon{font-size:1rem;flex-shrink:0;}
+  .ai-cta-text{flex:1;font-size:.68rem;color:var(--ink-soft);line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .ai-cta-text b{color:var(--ink);}
+  .ai-cta-btn{flex-shrink:0;align-self:flex-end;background:var(--accent);color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .ai-cta-btn:hover{opacity:.9;}
+  .group-card{position:relative;display:flex;flex-direction:column;height:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .group-card .thumb{height:58%;min-height:56px;flex-shrink:0;position:relative;}
+  .group-card .gmeta{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:4px;min-height:0;overflow:hidden;}
+  .group-card .gname{display:none;}
+  .group-card .thumb .rank{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.35);color:#fff;font-size:.58rem;font-weight:800;padding:1px 5px;border-radius:5px;}
+  .group-card .thumb .count-num{position:absolute;bottom:4px;right:4px;width:15px;height:15px;border-radius:4px;background:var(--bad);color:#fff;font-size:.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;}
+  .group-card .gmeta{padding:6px 7px 7px;}
+  .group-card .gname{font-weight:800;font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .platform-row{display:flex;align-items:center;gap:2px;}
+  .platform-row .picon{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+  .platform-row .pcount{font-size:.56rem;color:var(--ink-soft);font-weight:700;margin-left:2px;white-space:nowrap;}
+  .group-card .gmetrics{display:flex;flex-direction:column;gap:2px;}
+  .metric-row{display:flex;justify-content:space-between;gap:4px;font-size:.62rem;color:var(--ink-soft);font-weight:600;}
+  .metric-row b{color:var(--ink);font-weight:800;}
+  .group-card .combo-list{display:none;}
+
+  .group-popover{position:fixed;z-index:1000;display:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:10px 12px;min-width:210px;max-width:280px;}
+  .group-popover .popover-title{font-size:.7rem;font-weight:800;color:var(--ink);margin-bottom:7px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+  .group-popover .combo-row{display:flex;flex-direction:column;gap:1px;font-size:.7rem;color:var(--ink-soft);margin-bottom:7px;}
+  .group-popover .combo-row:last-child{margin-bottom:0;}
+  .combo-row .combo-name{font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .combo-row .combo-metrics{font-weight:600;}
+  .combo-row .combo-metrics b{color:var(--ink);font-weight:800;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+  .card.perf::before{background:var(--purple);}
+  .card.eff::before{background:var(--amber);}
+  .card.aware::before{background:var(--mint);}
+  .widget-row .card::before{display:none;}
+
+  .card h3{margin:4px 0 12px;font-size:.98rem;font-weight:700;}
+  .card .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;min-height:34px;}
+  .g1.widget-row .card .head{margin-bottom:20px;}
+  .head-right{display:flex;align-items:center;gap:8px;}
+  .toggles{display:flex;gap:4px;font-size:.72rem;font-weight:700;border:1px solid var(--line);border-radius:7px;padding:2px;}
+  .toggles span{width:24px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--ink-faint);}
+  .toggles span.on{background:var(--accent-soft);color:var(--accent);}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stat .label{font-size:.72rem;color:var(--ink-soft);font-weight:600;margin-bottom:4px;}
+  .stat .value{font-size:1.28rem;font-weight:800;letter-spacing:-0.01em;}
+  .stat .delta{font-size:.72rem;font-weight:700;margin-top:3px;display:flex;align-items:center;gap:3px;}
+  .delta.up{color:var(--good);} .delta.down{color:var(--bad);}
+  .delta .base{color:var(--ink-faint);font-weight:600;margin-right:2px;}
+
+  .chart-wrap{margin-top:6px;display:flex;flex-direction:column;}
+  svg.chart{width:100%;height:100%;min-height:70px;display:block;overflow:visible;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px;font-size:.72rem;color:var(--ink-soft);font-weight:600;}
+  .legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;}
+
+  .bars{display:flex;align-items:flex-end;gap:22px;padding:0 4px;}
+  .bar-group{display:flex;flex-direction:column;align-items:center;flex:1;height:100%;justify-content:flex-end;gap:6px;}
+  .bar-set{display:flex;align-items:flex-end;gap:3px;height:100%;}
+  .bar-set i{width:9px;border-radius:3px 3px 0 0;display:block;}
+  .bar-group .glabel{font-size:.72rem;color:var(--ink-soft);font-weight:600;margin-top:4px;}
+
+  .rank-list{display:flex;flex-direction:column;gap:12px;justify-content:space-between;}
+
+  .widget-row .card>.tag-view{flex:1;min-height:0;}
+  .tag-view{display:flex;flex-direction:column;min-height:0;}
+  .tag-chart-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;}
+
+  .view-toggle{display:flex;gap:2px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:2px;}
+  .view-toggle button{width:26px;height:24px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;border-radius:6px;color:var(--ink-faint);cursor:pointer;padding:0;}
+  .view-toggle button svg{width:14px;height:14px;}
+  .view-toggle button.on{background:var(--surface);color:var(--accent);box-shadow:var(--shadow);}
+
+  .tag-trend-svg{flex:1;min-height:0;width:100%;}
+
+  .tag-table-wrap{flex:1;min-height:0;overflow-y:auto;}
+  table.tag-table{width:100%;border-collapse:collapse;font-size:.74rem;}
+  table.tag-table th{text-align:right;font-size:.66rem;color:var(--ink-faint);font-weight:700;padding:5px 8px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);}
+  table.tag-table th:first-child{text-align:left;width:220px;}
+  table.tag-table td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;}
+  table.tag-table td:first-child{text-align:left;}
+  table.tag-table tr.parent-row,
+  table.tag-table tr.mid-row{cursor:pointer;}
+  table.tag-table tr.parent-row td{font-weight:800;background:var(--surface-2);}
+  table.tag-table tr.parent-row:hover td,
+  table.tag-table tr.mid-row:hover td{background:var(--accent-soft);}
+  table.tag-table tr.mid-row td:first-child{padding-left:18px;font-weight:700;}
+  table.tag-table tr.child-row td:first-child{padding-left:34px;color:var(--ink-soft);font-weight:500;}
+  .tcaret{display:inline-block;width:14px;font-size:.62rem;color:var(--ink-faint);transition:transform .12s;}
+  table.tag-table tr.parent-row.collapsed .tcaret,
+  table.tag-table tr.mid-row.collapsed .tcaret{transform:rotate(-90deg);}
+  .brand-chart-area{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+  .brand-pie-row{display:flex;align-items:center;gap:28px;}
+  .brand-pie-wrap{position:relative;width:150px;height:150px;flex-shrink:0;align-items:center;justify-content:center;}
+  .brand-pie{width:100%;height:100%;border-radius:50%;}
+  .brand-pie-hole{position:absolute;top:22%;left:22%;width:56%;height:56%;border-radius:50%;background:var(--surface);}
+  .brand-legend{flex-direction:column;align-items:flex-start;gap:10px;}
+  .brand-legend span{display:flex;align-items:center;gap:6px;font-size:.78rem;}
+  .brand-legend .bval2{color:var(--ink);font-weight:800;margin-left:2px;}
+  .brand-legend .bpct{color:var(--ink-faint);font-weight:600;}
+  .brand-bar-wrap{flex:1;width:100%;min-height:0;}
+  .brand-bar-wrap .bar-group .bval{font-size:.68rem;font-weight:800;color:var(--ink);margin-top:2px;}
+  .tag-chart{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:8px 8px 6px;display:flex;flex-direction:column;min-height:0;}
+  .tag-chart-title{font-size:.72rem;font-weight:800;color:var(--ink);margin-bottom:4px;flex-shrink:0;}
+  .tag-bars{flex:1;display:flex;align-items:flex-end;gap:5px;min-height:0;padding-top:16px;}
+  .tbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
+  .tbar-fill{width:100%;max-width:18px;background:var(--accent);border-radius:3px 3px 0 0;position:relative;transition:height .15s;}
+  .tbar.other .tbar-fill{background:var(--ink-faint);}
+  .tbar-fill .tbar-val{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:.54rem;font-weight:800;color:var(--ink);white-space:nowrap;}
+  .tbar-label{font-size:.54rem;color:var(--ink-soft);font-weight:600;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;}
+  .rank-row{display:flex;align-items:center;gap:10px;}
+  .rank-row .name{width:64px;font-size:.8rem;font-weight:700;flex-shrink:0;}
+  .rank-row .track{flex:1;background:var(--surface-2);border-radius:6px;height:10px;overflow:hidden;}
+  .rank-row .track i{display:block;height:100%;border-radius:6px;background:var(--accent);}
+  .rank-row .val{width:88px;text-align:right;font-size:.78rem;color:var(--ink-soft);font-weight:700;flex-shrink:0;}
+  .rank-row .val b{color:var(--ink);font-weight:800;}
+
+  .select-mini{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font-size:.76rem;color:var(--ink-soft);font-weight:600;}
+  .tag-page-link{font-size:.72rem;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap;margin-left:2px;}
+  .tag-page-link:hover{text-decoration:underline;}
+  .widget-row .card>.holiday-grid{flex:1;min-height:0;}
+  .holiday-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(150px,1fr);gap:8px;}
+  .holiday-card{position:relative;display:flex;flex-direction:column;height:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .holiday-card .h-thumb{height:60%;min-height:40px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+  .holiday-card .h-days{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.35);color:#fff;font-size:.56rem;font-weight:800;padding:1px 5px;border-radius:5px;}
+  .holiday-card .h-count{position:absolute;bottom:4px;right:4px;min-width:15px;height:15px;padding:0 3px;border-radius:4px;color:#fff;font-size:.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;}
+  .holiday-card .h-count.has{background:var(--mint);}
+  .holiday-card .h-count.none{background:var(--bad);}
+  .holiday-card .h-meta{flex:1;display:flex;flex-direction:column;gap:2px;padding:5px 7px 6px;min-height:0;}
+  .holiday-card .h-name{font-weight:800;font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .holiday-card .h-date{font-size:.58rem;color:var(--ink-faint);}
+  .holiday-card .h-status{font-size:.58rem;color:var(--ink-soft);}
+  .holiday-card .h-btn{margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:4px 6px;font-size:.6rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .holiday-card .h-btn:hover{opacity:.9;}
+  .holiday-card .h-btn.muted{background:var(--line);color:var(--ink-soft);}
+
+  @media (max-width:1100px){
+    .g3{grid-template-columns:1fr;}
+    .widget-row .card{height:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="left"><span class="logo">P</span> Pacvue HQ</div>
+    <div class="right">postmarketplace-services@ovative.com</div>
+  </div>
+
+  <div class="pagehead">
+    <h1>Creative Hub</h1>
+    <div class="tabs">
+      <span class="active">Dashboard</span>
+      <span>Creative</span>
+      <span>Asset</span>
+      <span>Tag</span>
+      <span>AI Optimizer <span class="badge">Alpha</span></span>
+      <span>Log</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg"><span class="active">Image</span><span>Video</span></div>
+    <div class="filters">
+      <div class="fbox">Profile <b>Select All</b></div>
+      <div class="fbox">Campaign Tag <b>Select All</b></div>
+      <div class="fbox">Asset Tag <b>Select All</b></div>
+      <div class="fbox">06/18/2026 – 07/17/2026</div>
+    </div>
+  </div>
+
+  <!-- Row A: KPI groups -->
+  <div class="grid g3">
+    <div class="card perf">
+      <h3>Performance</h3>
+      <div class="stats">
+        <div class="stat"><div class="label">Sales</div><div class="value">$2.1M</div><div class="delta up">$2.0M +7.67% ▲</div></div>
+        <div class="stat"><div class="label">Spend</div><div class="value">$306.9K</div><div class="delta up">$277.4K +10.66% ▲</div></div>
+        <div class="stat"><div class="label">ROAS</div><div class="value">6.93</div><div class="delta down">7.12 -2.67% ▼</div></div>
+      </div>
+    </div>
+    <div class="card eff">
+      <h3>Efficiency</h3>
+      <div class="stats">
+        <div class="stat"><div class="label">CPC</div><div class="value">$1.37</div><div class="delta up">$1.36 +0.74% ▲</div></div>
+        <div class="stat"><div class="label">CPM</div><div class="value">$3.13</div><div class="delta up">$2.86 +9.44% ▲</div></div>
+        <div class="stat"><div class="label">CVR</div><div class="value">63.57%</div><div class="delta down">68.90% -7.74% ▼</div></div>
+      </div>
+    </div>
+    <div class="card aware">
+      <h3>Awareness</h3>
+      <div class="stats">
+        <div class="stat"><div class="label">Impressions</div><div class="value">98.0M</div><div class="delta up">96.9M +1.22% ▲</div></div>
+        <div class="stat"><div class="label">Clicks</div><div class="value">224.2K</div><div class="delta up">203.2K +10.31% ▲</div></div>
+        <div class="stat"><div class="label">CTR</div><div class="value">0.23%</div><div class="delta up">0.21% +9.52% ▲</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Performance Assets / Top Tag Performance — side by side, directly under the KPI row -->
+  <div class="grid g2 widget-row short" style="margin-top:16px;">
+    <div class="card">
+      <div class="head">
+        <h3 style="margin:0;">Top Assets Perf.</h3>
+        <div class="head-right">
+          <div class="card-tabs">
+            <span class="on" onclick="pacvueTab(this,'tpa-group')">Asset Group</span>
+            <span onclick="pacvueTab(this,'tpa-asset')">Asset</span>
+          </div>
+          <div class="metric-dropdown">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metrics: <span class="dd-label">3 metrics</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select up to 3 metrics</div>
+              <label><input type="checkbox" value="impressions" onchange="pacvueMetricChange(this)"> Impressions</label>
+              <label><input type="checkbox" value="clicks" onchange="pacvueMetricChange(this)"> Clicks</label>
+              <label><input type="checkbox" value="ctr" onchange="pacvueMetricChange(this)"> CTR</label>
+              <label><input type="checkbox" value="spend" checked onchange="pacvueMetricChange(this)"> Spend</label>
+              <label><input type="checkbox" value="sales" onchange="pacvueMetricChange(this)"> Sales</label>
+              <label><input type="checkbox" value="roas" checked onchange="pacvueMetricChange(this)"> ROAS</label>
+              <label><input type="checkbox" value="cpc" onchange="pacvueMetricChange(this)"> CPC</label>
+              <label><input type="checkbox" value="cpm" onchange="pacvueMetricChange(this)"> CPM</label>
+              <label><input type="checkbox" value="cvrclick" onchange="pacvueMetricChange(this)"> CVR(Click)</label>
+              <label><input type="checkbox" value="cvr" checked onchange="pacvueMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+          <span class="select-mini">Sort by ROAS ▾</span>
+        </div>
+      </div>
+
+      <div class="perf-asset-list" data-panel="tpa-group" style="display:flex;">
+        <div class="ai-cta-row">
+          <div class="ai-cta">
+            <div class="ai-cta-top">
+              <span class="ai-cta-icon">🚀</span>
+              <span class="ai-cta-text"><b>Scale your winners</b> — AI-generate more variants for top-performing asset groups to expand reach &amp; conversions.</span>
+            </div>
+            <button type="button" class="ai-cta-btn">Generate Variants</button>
+          </div>
+          <div class="ai-cta">
+            <div class="ai-cta-top">
+              <span class="ai-cta-icon">📍</span>
+              <span class="ai-cta-text"><b>Close platform gaps</b> — AI-create ad type variants for asset groups not yet running on every platform.</span>
+            </div>
+            <button type="button" class="ai-cta-btn">Expand Coverage</button>
+          </div>
+        </div>
+        <div class="group-grid">
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"><span class="rank">#1</span><span class="count-num">3</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group A</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">3 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$118.2K","roas":"9.86","cvr":"9.40%","ctr":"0.24%","cpm":"$2.10","sales":"$1.16M"}'>
+                <div class="metric-row"><span>Spend</span><b>$118.2K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>9.86</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>9.40%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB Product Collection</span><span class="combo-metrics" data-metrics='{"spend":"$62.1K","roas":"12.40","cvr":"11.20%","ctr":"0.31%","cpm":"$1.85","sales":"$770K"}'>Spend <b>$62.1K</b> · ROAS <b>12.40</b> · CVR(Impr.) <b>11.20%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$22.1K","roas":"9.20","cvr":"8.10%","ctr":"0.22%","cpm":"$2.40","sales":"$203K"}'>Spend <b>$22.1K</b> · ROAS <b>9.20</b> · CVR(Impr.) <b>8.10%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$34.0K","roas":"6.80","cvr":"6.50%","ctr":"0.18%","cpm":"$2.60","sales":"$231K"}'>Spend <b>$34.0K</b> · ROAS <b>6.80</b> · CVR(Impr.) <b>6.50%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><span class="rank">#2</span><span class="count-num">2</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group B</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$31.6K","roas":"7.20","cvr":"7.80%","ctr":"0.23%","cpm":"$2.05","sales":"$227K"}'>
+                <div class="metric-row"><span>Spend</span><b>$31.6K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>7.20</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>7.80%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$20.4K","roas":"8.10","cvr":"9.00%","ctr":"0.27%","cpm":"$1.90","sales":"$165K"}'>Spend <b>$20.4K</b> · ROAS <b>8.10</b> · CVR(Impr.) <b>9.00%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Standard Display</span><span class="combo-metrics" data-metrics='{"spend":"$11.2K","roas":"5.90","cvr":"6.20%","ctr":"0.19%","cpm":"$2.30","sales":"$66K"}'>Spend <b>$11.2K</b> · ROAS <b>5.90</b> · CVR(Impr.) <b>6.20%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#d1403f,#992622);"><span class="rank">#3</span><span class="count-num">4</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group C</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="pcount">4 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$22.3K","roas":"4.60","cvr":"5.10%","ctr":"0.15%","cpm":"$2.70","sales":"$103K"}'>
+                <div class="metric-row"><span>Spend</span><b>$22.3K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.60</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>5.10%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$9.8K","roas":"5.40","cvr":"5.80%","ctr":"0.20%","cpm":"$2.55","sales":"$53K"}'>Spend <b>$9.8K</b> · ROAS <b>5.40</b> · CVR(Impr.) <b>5.80%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$2.2K","roas":"4.60","cvr":"5.00%","ctr":"0.14%","cpm":"$2.90","sales":"$10.1K"}'>Spend <b>$2.2K</b> · ROAS <b>4.60</b> · CVR(Impr.) <b>5.00%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$6.2K","roas":"4.10","cvr":"4.60%","ctr":"0.15%","cpm":"$2.80","sales":"$25.4K"}'>Spend <b>$6.2K</b> · ROAS <b>4.10</b> · CVR(Impr.) <b>4.60%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Instacart · Display Banner</span><span class="combo-metrics" data-metrics='{"spend":"$4.1K","roas":"3.90","cvr":"4.30%","ctr":"0.12%","cpm":"$3.00","sales":"$16.0K"}'>Spend <b>$4.1K</b> · ROAS <b>3.90</b> · CVR(Impr.) <b>4.30%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);"><span class="rank">#4</span><span class="count-num">2</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group D</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$18.0K","roas":"4.31","cvr":"4.90%","ctr":"0.19%","cpm":"$2.65","sales":"$77.6K"}'>
+                <div class="metric-row"><span>Spend</span><b>$18.0K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.31</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>4.90%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB Product Collection</span><span class="combo-metrics" data-metrics='{"spend":"$11.0K","roas":"4.80","cvr":"5.20%","ctr":"0.21%","cpm":"$2.50","sales":"$52.8K"}'>Spend <b>$11.0K</b> · ROAS <b>4.80</b> · CVR(Impr.) <b>5.20%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$7.0K","roas":"3.90","cvr":"4.50%","ctr":"0.16%","cpm":"$2.85","sales":"$27.3K"}'>Spend <b>$7.0K</b> · ROAS <b>3.90</b> · CVR(Impr.) <b>4.50%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><span class="rank">#5</span><span class="count-num">3</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group E</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="pcount">3 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$12.5K","roas":"4.10","cvr":"4.40%","ctr":"0.16%","cpm":"$2.95","sales":"$51.3K"}'>
+                <div class="metric-row"><span>Spend</span><b>$12.5K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.10</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>4.40%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$6.0K","roas":"4.50","cvr":"4.80%","ctr":"0.19%","cpm":"$2.75","sales":"$27.0K"}'>Spend <b>$6.0K</b> · ROAS <b>4.50</b> · CVR(Impr.) <b>4.80%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$4.0K","roas":"4.00","cvr":"4.30%","ctr":"0.15%","cpm":"$3.05","sales":"$16.0K"}'>Spend <b>$4.0K</b> · ROAS <b>4.00</b> · CVR(Impr.) <b>4.30%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$2.5K","roas":"3.60","cvr":"3.90%","ctr":"0.13%","cpm":"$3.20","sales":"$9.0K"}'>Spend <b>$2.5K</b> · ROAS <b>3.60</b> · CVR(Impr.) <b>3.90%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#3a5cd8,#22337a);"><span class="rank">#6</span><span class="count-num">2</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group F</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$10.0K","roas":"3.50","cvr":"3.70%","ctr":"0.14%","cpm":"$3.10","sales":"$35.0K"}'>
+                <div class="metric-row"><span>Spend</span><b>$10.0K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>3.50</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>3.70%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$6.0K","roas":"3.80","cvr":"4.00%","ctr":"0.15%","cpm":"$3.00","sales":"$22.8K"}'>Spend <b>$6.0K</b> · ROAS <b>3.80</b> · CVR(Impr.) <b>4.00%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$4.0K","roas":"3.10","cvr":"3.30%","ctr":"0.12%","cpm":"$3.25","sales":"$12.4K"}'>Spend <b>$4.0K</b> · ROAS <b>3.10</b> · CVR(Impr.) <b>3.30%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#1f8a4c,#125c33);"><span class="rank">#7</span><span class="count-num">3</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group G</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="pcount">3 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$8.5K","roas":"3.20","cvr":"3.40%","ctr":"0.13%","cpm":"$3.30","sales":"$27.2K"}'>
+                <div class="metric-row"><span>Spend</span><b>$8.5K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>3.20</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>3.40%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$3.5K","roas":"3.40","cvr":"3.60%","ctr":"0.14%","cpm":"$3.15","sales":"$11.9K"}'>Spend <b>$3.5K</b> · ROAS <b>3.40</b> · CVR(Impr.) <b>3.60%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$3.0K","roas":"3.10","cvr":"3.30%","ctr":"0.12%","cpm":"$3.35","sales":"$9.3K"}'>Spend <b>$3.0K</b> · ROAS <b>3.10</b> · CVR(Impr.) <b>3.30%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$2.0K","roas":"2.90","cvr":"3.00%","ctr":"0.11%","cpm":"$3.45","sales":"$5.8K"}'>Spend <b>$2.0K</b> · ROAS <b>2.90</b> · CVR(Impr.) <b>3.00%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#a5342f,#6e1f1b);"><span class="rank">#8</span><span class="count-num">2</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group H</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$7.0K","roas":"3.00","cvr":"3.20%","ctr":"0.12%","cpm":"$3.40","sales":"$21.0K"}'>
+                <div class="metric-row"><span>Spend</span><b>$7.0K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>3.00</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>3.20%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$4.2K","roas":"3.20","cvr":"3.40%","ctr":"0.13%","cpm":"$3.30","sales":"$13.4K"}'>Spend <b>$4.2K</b> · ROAS <b>3.20</b> · CVR(Impr.) <b>3.40%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Standard Display</span><span class="combo-metrics" data-metrics='{"spend":"$2.8K","roas":"2.70","cvr":"2.90%","ctr":"0.10%","cpm":"$3.55","sales":"$7.6K"}'>Spend <b>$2.8K</b> · ROAS <b>2.70</b> · CVR(Impr.) <b>2.90%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#b8791a,#7a4f10);"><span class="rank">#9</span><span class="count-num">1</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group I</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="pcount">1 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$6.0K","roas":"2.80","cvr":"3.00%","ctr":"0.11%","cpm":"$3.60","sales":"$16.8K"}'>
+                <div class="metric-row"><span>Spend</span><b>$6.0K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>2.80</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>3.00%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB Product Collection</span><span class="combo-metrics" data-metrics='{"spend":"$6.0K","roas":"2.80","cvr":"3.00%","ctr":"0.11%","cpm":"$3.60","sales":"$16.8K"}'>Spend <b>$6.0K</b> · ROAS <b>2.80</b> · CVR(Impr.) <b>3.00%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#5a4bb0,#332a70);"><span class="rank">#10</span><span class="count-num">2</span></div>
+            <div class="gmeta">
+              <div class="gname">Asset Group J</div>
+              <div class="platform-row">
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$5.0K","roas":"2.50","cvr":"2.80%","ctr":"0.10%","cpm":"$3.70","sales":"$12.5K"}'>
+                <div class="metric-row"><span>Spend</span><b>$5.0K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>2.50</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>2.80%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Instacart · Display Banner</span><span class="combo-metrics" data-metrics='{"spend":"$3.0K","roas":"2.60","cvr":"2.90%","ctr":"0.10%","cpm":"$3.65","sales":"$7.8K"}'>Spend <b>$3.0K</b> · ROAS <b>2.60</b> · CVR(Impr.) <b>2.90%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$2.0K","roas":"2.30","cvr":"2.60%","ctr":"0.09%","cpm":"$3.80","sales":"$4.7K"}'>Spend <b>$2.0K</b> · ROAS <b>2.30</b> · CVR(Impr.) <b>2.60%</b></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="perf-asset-list" data-panel="tpa-asset" style="display:none;">
+        <div class="group-grid">
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"><span class="rank">#1</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">3 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$103.3K","roas":"11.73","cvr":"14.20%","ctr":"0.28%","cpm":"$1.60","sales":"$1.21M"}'>
+                <div class="metric-row"><span>Spend</span><b>$103.3K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>11.73</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>14.20%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB Product Collection</span><span class="combo-metrics" data-metrics='{"spend":"$58.0K","roas":"13.50","cvr":"15.80%","ctr":"0.33%","cpm":"$1.45","sales":"$783K"}'>Spend <b>$58.0K</b> · ROAS <b>13.50</b> · CVR(Impr.) <b>15.80%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$30.3K","roas":"10.20","cvr":"12.60%","ctr":"0.26%","cpm":"$1.70","sales":"$309K"}'>Spend <b>$30.3K</b> · ROAS <b>10.20</b> · CVR(Impr.) <b>12.60%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$15.0K","roas":"8.90","cvr":"11.00%","ctr":"0.21%","cpm":"$1.85","sales":"$134K"}'>Spend <b>$15.0K</b> · ROAS <b>8.90</b> · CVR(Impr.) <b>11.00%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><span class="rank">#2</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$23.1K","roas":"8.51","cvr":"10.30%","ctr":"0.24%","cpm":"$1.95","sales":"$197K"}'>
+                <div class="metric-row"><span>Spend</span><b>$23.1K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>8.51</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>10.30%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$14.0K","roas":"9.40","cvr":"11.20%","ctr":"0.27%","cpm":"$1.80","sales":"$132K"}'>Spend <b>$14.0K</b> · ROAS <b>9.40</b> · CVR(Impr.) <b>11.20%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$9.1K","roas":"7.10","cvr":"8.90%","ctr":"0.20%","cpm":"$2.15","sales":"$65K"}'>Spend <b>$9.1K</b> · ROAS <b>7.10</b> · CVR(Impr.) <b>8.90%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#d1403f,#992622);"><span class="rank">#3</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$14.9K","roas":"4.42","cvr":"5.20%","ctr":"0.18%","cpm":"$2.40","sales":"$65.9K"}'>
+                <div class="metric-row"><span>Spend</span><b>$14.9K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.42</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>5.20%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$9.0K","roas":"4.80","cvr":"5.60%","ctr":"0.20%","cpm":"$2.30","sales":"$43.2K"}'>Spend <b>$9.0K</b> · ROAS <b>4.80</b> · CVR(Impr.) <b>5.60%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$5.9K","roas":"3.80","cvr":"4.60%","ctr":"0.15%","cpm":"$2.55","sales":"$22.4K"}'>Spend <b>$5.9K</b> · ROAS <b>3.80</b> · CVR(Impr.) <b>4.60%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);"><span class="rank">#4</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$14.9K","roas":"4.42","cvr":"5.20%","ctr":"0.18%","cpm":"$2.40","sales":"$65.9K"}'>
+                <div class="metric-row"><span>Spend</span><b>$14.9K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.42</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>5.20%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$9.0K","roas":"4.80","cvr":"5.60%","ctr":"0.20%","cpm":"$2.30","sales":"$43.2K"}'>Spend <b>$9.0K</b> · ROAS <b>4.80</b> · CVR(Impr.) <b>5.60%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$5.9K","roas":"3.80","cvr":"4.60%","ctr":"0.15%","cpm":"$2.55","sales":"$22.4K"}'>Spend <b>$5.9K</b> · ROAS <b>3.80</b> · CVR(Impr.) <b>4.60%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><span class="rank">#5</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="pcount">3 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$24.6K","roas":"4.39","cvr":"5.10%","ctr":"0.17%","cpm":"$2.45","sales":"$108K"}'>
+                <div class="metric-row"><span>Spend</span><b>$24.6K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.39</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>5.10%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$10.0K","roas":"5.20","cvr":"6.00%","ctr":"0.22%","cpm":"$2.10","sales":"$52.0K"}'>Spend <b>$10.0K</b> · ROAS <b>5.20</b> · CVR(Impr.) <b>6.00%</b></span></div>
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$8.6K","roas":"4.10","cvr":"4.90%","ctr":"0.16%","cpm":"$2.50","sales":"$35.3K"}'>Spend <b>$8.6K</b> · ROAS <b>4.10</b> · CVR(Impr.) <b>4.90%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$6.0K","roas":"3.30","cvr":"3.80%","ctr":"0.13%","cpm":"$2.65","sales":"$19.8K"}'>Spend <b>$6.0K</b> · ROAS <b>3.30</b> · CVR(Impr.) <b>3.80%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#3a5cd8,#22337a);"><span class="rank">#6</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">1 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$9,674","roas":"4.35","cvr":"5.00%","ctr":"0.16%","cpm":"$2.50","sales":"$42.1K"}'>
+                <div class="metric-row"><span>Spend</span><b>$9,674</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.35</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>5.00%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$9,674","roas":"4.35","cvr":"5.00%","ctr":"0.16%","cpm":"$2.50","sales":"$42.1K"}'>Spend <b>$9,674</b> · ROAS <b>4.35</b> · CVR(Impr.) <b>5.00%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#1f8a4c,#125c33);"><span class="rank">#7</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$13.6K","roas":"4.08","cvr":"4.80%","ctr":"0.15%","cpm":"$2.60","sales":"$55.5K"}'>
+                <div class="metric-row"><span>Spend</span><b>$13.6K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>4.08</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>4.80%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">ADSP · Standard Display</span><span class="combo-metrics" data-metrics='{"spend":"$8.0K","roas":"4.50","cvr":"5.30%","ctr":"0.17%","cpm":"$2.45","sales":"$36.0K"}'>Spend <b>$8.0K</b> · ROAS <b>4.50</b> · CVR(Impr.) <b>5.30%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Instacart · Display Banner</span><span class="combo-metrics" data-metrics='{"spend":"$5.6K","roas":"3.50","cvr":"4.10%","ctr":"0.13%","cpm":"$2.80","sales":"$19.6K"}'>Spend <b>$5.6K</b> · ROAS <b>3.50</b> · CVR(Impr.) <b>4.10%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#a5342f,#6e1f1b);"><span class="rank">#8</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--amber);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$8,759","roas":"2.38","cvr":"3.00%","ctr":"0.11%","cpm":"$3.00","sales":"$20.8K"}'>
+                <div class="metric-row"><span>Spend</span><b>$8,759</b></div>
+                <div class="metric-row"><span>ROAS</span><b>2.38</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>3.00%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Amazon · SB</span><span class="combo-metrics" data-metrics='{"spend":"$5,000","roas":"2.60","cvr":"3.30%","ctr":"0.12%","cpm":"$2.90","sales":"$13.0K"}'>Spend <b>$5,000</b> · ROAS <b>2.60</b> · CVR(Impr.) <b>3.30%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$3,759","roas":"2.10","cvr":"2.60%","ctr":"0.09%","cpm":"$3.15","sales":"$7.9K"}'>Spend <b>$3,759</b> · ROAS <b>2.10</b> · CVR(Impr.) <b>2.60%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#b8791a,#7a4f10);"><span class="rank">#9</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--purple);"></span>
+                <span class="pcount">1 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$20.4K","roas":"1.93","cvr":"2.60%","ctr":"0.10%","cpm":"$3.20","sales":"$39.4K"}'>
+                <div class="metric-row"><span>Spend</span><b>$20.4K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>1.93</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>2.60%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">ADSP · Display</span><span class="combo-metrics" data-metrics='{"spend":"$20.4K","roas":"1.93","cvr":"2.60%","ctr":"0.10%","cpm":"$3.20","sales":"$39.4K"}'>Spend <b>$20.4K</b> · ROAS <b>1.93</b> · CVR(Impr.) <b>2.60%</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="group-card" onmouseenter="pacvueShowCombo(this)" onmouseleave="pacvueHideCombo()">
+            <div class="thumb" style="background:linear-gradient(135deg,#5a4bb0,#332a70);"><span class="rank">#10</span></div>
+            <div class="gmeta">
+              <div class="platform-row">
+                <span class="picon" style="background:var(--mint);"></span>
+                <span class="picon" style="background:var(--accent);"></span>
+                <span class="pcount">2 camp.</span>
+              </div>
+              <div class="gmetrics" data-metrics='{"spend":"$14.8K","roas":"1.40","cvr":"2.10%","ctr":"0.08%","cpm":"$3.40","sales":"$20.7K"}'>
+                <div class="metric-row"><span>Spend</span><b>$14.8K</b></div>
+                <div class="metric-row"><span>ROAS</span><b>1.40</b></div>
+                <div class="metric-row"><span>CVR(Impr.)</span><b>2.10%</b></div>
+              </div>
+              <div class="combo-list">
+                <div class="combo-row"><span class="combo-name">Instacart · Shoppable Display</span><span class="combo-metrics" data-metrics='{"spend":"$8.0K","roas":"1.60","cvr":"2.40%","ctr":"0.09%","cpm":"$3.30","sales":"$12.8K"}'>Spend <b>$8.0K</b> · ROAS <b>1.60</b> · CVR(Impr.) <b>2.40%</b></span></div>
+                <div class="combo-row"><span class="combo-name">Walmart · SB</span><span class="combo-metrics" data-metrics='{"spend":"$6.8K","roas":"1.15","cvr":"1.75%","ctr":"0.07%","cpm":"$3.55","sales":"$7.8K"}'>Spend <b>$6.8K</b> · ROAS <b>1.15</b> · CVR(Impr.) <b>1.75%</b></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="head"><h3 style="margin:0;">Creative AI Diagnostics</h3></div>
+      <div class="ai-cta-row">
+        <div class="ai-cta">
+          <div class="ai-cta-top">
+            <span class="ai-cta-icon">✨</span>
+            <span class="ai-cta-text"><b>5 sample creatives shown below</b> — run a full AI scan across your library to catch more low-scoring assets like these.</span>
+          </div>
+          <button type="button" class="ai-cta-btn">Scan Full Library</button>
+        </div>
+      </div>
+      <div class="diag-table-wrap">
+        <table class="diag-table">
+          <thead>
+            <tr>
+              <th>Asset</th><th>Score</th><th>Diagnosis</th><th>Ad / Creative</th><th>Campaign</th><th>Ad Group</th><th>Ad Type</th><th>Platform</th><th>Spend</th><th>ROAS</th><th>CVR(Impr.)</th><th>CTR</th><th>CPC</th><th>CPM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="diag-thumbs"><i style="background:var(--accent);"></i><i style="background:var(--amber);"></i></div></td>
+              <td><span class="diag-score bad">42</span></td>
+              <td class="diag-desc">Headline exceeds platform character limit; Asset 2 has low resolution (&lt;600px)</td>
+              <td>CR-10234</td><td>Nutrish Summer Push</td><td>AG-Dog-Wet</td><td>SB Product Collection</td><td>Amazon</td>
+              <td>$4.2K</td><td>3.10</td><td>3.80%</td><td>0.12%</td><td>$1.75</td><td>$2.90</td>
+            </tr>
+            <tr>
+              <td><div class="diag-thumbs"><i style="background:var(--purple);"></i><i style="background:var(--mint);"></i><i style="background:var(--bad);"></i></div></td>
+              <td><span class="diag-score amber">58</span></td>
+              <td class="diag-desc">Headline missing required brand disclosure text</td>
+              <td>CR-10241</td><td>Nutrish Always Fresh</td><td>AG-Cat-Dry</td><td>Display</td><td>ADSP</td>
+              <td>$6.8K</td><td>8.40</td><td>9.60%</td><td>0.20%</td><td>$0.95</td><td>$2.10</td>
+            </tr>
+            <tr>
+              <td><div class="diag-thumbs"><i style="background:#3a5cd8;"></i></div></td>
+              <td><span class="diag-score bad">31</span></td>
+              <td class="diag-desc">Primary image contains a comparative claim overlay requiring substantiation</td>
+              <td>CR-10255</td><td>Instacart Fresh Launch</td><td>AG-Dog-Treats</td><td>Shoppable Display</td><td>Instacart</td>
+              <td>$3.1K</td><td>4.90</td><td>5.80%</td><td>0.29%</td><td>$0.72</td><td>$2.55</td>
+            </tr>
+            <tr>
+              <td><div class="diag-thumbs"><i style="background:var(--amber);"></i><i style="background:var(--accent);"></i><i style="background:var(--purple);"></i><span class="diag-thumb-more">+1</span></div></td>
+              <td><span class="diag-score good">76</span></td>
+              <td class="diag-desc">Headline slightly truncated on mobile viewport</td>
+              <td>CR-10262</td><td>Walmart Retail Media</td><td>AG-Dog-Wet</td><td>SB</td><td>Walmart</td>
+              <td>$2.4K</td><td>3.40</td><td>4.10%</td><td>0.16%</td><td>$1.94</td><td>$3.10</td>
+            </tr>
+            <tr>
+              <td><div class="diag-thumbs"><i style="background:#1f9e8a;"></i><i style="background:#9e6b1f;"></i></div></td>
+              <td><span class="diag-score amber">64</span></td>
+              <td class="diag-desc">Background clutter in Asset 1 may reduce clarity at small placements</td>
+              <td>CR-10270</td><td>Nutrish Summer Push</td><td>AG-Cat-Wet</td><td>Standard Display</td><td>ADSP</td>
+              <td>$2.9K</td><td>5.80</td><td>6.90%</td><td>0.13%</td><td>$2.12</td><td>$2.75</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2 widget-row short" style="margin-top:16px;">
+    <div class="card">
+      <div class="head">
+        <h3 style="margin:0;">Asset Tag Perf.</h3>
+        <div class="head-right">
+          <div class="metric-dropdown tag-only-bar">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metric: <span class="dd-label">Spend</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select 1 metric</div>
+              <label><input type="radio" name="tagMetric" value="impressions" onchange="pacvueTagMetricChange(this)"> Impressions</label>
+              <label><input type="radio" name="tagMetric" value="clicks" onchange="pacvueTagMetricChange(this)"> Clicks</label>
+              <label><input type="radio" name="tagMetric" value="ctr" onchange="pacvueTagMetricChange(this)"> CTR</label>
+              <label><input type="radio" name="tagMetric" value="spend" checked onchange="pacvueTagMetricChange(this)"> Spend</label>
+              <label><input type="radio" name="tagMetric" value="sales" onchange="pacvueTagMetricChange(this)"> Sales</label>
+              <label><input type="radio" name="tagMetric" value="roas" onchange="pacvueTagMetricChange(this)"> ROAS</label>
+              <label><input type="radio" name="tagMetric" value="cpc" onchange="pacvueTagMetricChange(this)"> CPC</label>
+              <label><input type="radio" name="tagMetric" value="cpm" onchange="pacvueTagMetricChange(this)"> CPM</label>
+              <label><input type="radio" name="tagMetric" value="cvrclick" onchange="pacvueTagMetricChange(this)"> CVR(Click)</label>
+              <label><input type="radio" name="tagMetric" value="cvr" onchange="pacvueTagMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+          <div class="metric-dropdown tag-only-trend" style="display:none;">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Asset Tag: <span class="dd-label">Scene</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select 1 parent tag</div>
+              <label><input type="radio" name="tagParent" value="Scene" checked onchange="pacvueTagParentChange(this)"> Scene</label>
+              <label><input type="radio" name="tagParent" value="Content" onchange="pacvueTagParentChange(this)"> Content</label>
+              <label><input type="radio" name="tagParent" value="Category" onchange="pacvueTagParentChange(this)"> Category</label>
+              <label><input type="radio" name="tagParent" value="Object" onchange="pacvueTagParentChange(this)"> Object</label>
+              <label><input type="radio" name="tagParent" value="Style" onchange="pacvueTagParentChange(this)"> Style</label>
+              <label><input type="radio" name="tagParent" value="Mood" onchange="pacvueTagParentChange(this)"> Mood</label>
+            </div>
+          </div>
+          <div class="metric-dropdown tag-only-trend" style="display:none;">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metric: <span class="dd-label">Spend</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select 1 metric</div>
+              <label><input type="radio" name="tagTrendMetric" value="impressions" onchange="pacvueTagTrendMetricChange(this)"> Impressions</label>
+              <label><input type="radio" name="tagTrendMetric" value="clicks" onchange="pacvueTagTrendMetricChange(this)"> Clicks</label>
+              <label><input type="radio" name="tagTrendMetric" value="ctr" onchange="pacvueTagTrendMetricChange(this)"> CTR</label>
+              <label><input type="radio" name="tagTrendMetric" value="spend" checked onchange="pacvueTagTrendMetricChange(this)"> Spend</label>
+              <label><input type="radio" name="tagTrendMetric" value="sales" onchange="pacvueTagTrendMetricChange(this)"> Sales</label>
+              <label><input type="radio" name="tagTrendMetric" value="roas" onchange="pacvueTagTrendMetricChange(this)"> ROAS</label>
+              <label><input type="radio" name="tagTrendMetric" value="cpc" onchange="pacvueTagTrendMetricChange(this)"> CPC</label>
+              <label><input type="radio" name="tagTrendMetric" value="cpm" onchange="pacvueTagTrendMetricChange(this)"> CPM</label>
+              <label><input type="radio" name="tagTrendMetric" value="cvrclick" onchange="pacvueTagTrendMetricChange(this)"> CVR(Click)</label>
+              <label><input type="radio" name="tagTrendMetric" value="cvr" onchange="pacvueTagTrendMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+          <div class="toggles tag-only-trend" style="display:none;">
+            <span class="on" onclick="pacvueTagGran(this,'D')">D</span><span onclick="pacvueTagGran(this,'W')">W</span><span onclick="pacvueTagGran(this,'M')">M</span>
+          </div>
+          <div class="view-toggle">
+            <button type="button" class="on" onclick="pacvueTagView(this,'bar')" title="Bar chart"><svg viewBox="0 0 16 16"><rect x="2" y="7" width="3" height="7" fill="currentColor"/><rect x="6.5" y="3" width="3" height="11" fill="currentColor"/><rect x="11" y="9" width="3" height="5" fill="currentColor"/></svg></button>
+            <button type="button" onclick="pacvueTagView(this,'trend')" title="Trend"><svg viewBox="0 0 16 16"><polyline points="1,12 5,6 9,9 15,2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+            <button type="button" onclick="pacvueTagView(this,'table')" title="Table"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="6" x2="15" y2="6" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="11" x2="15" y2="11" stroke="currentColor" stroke-width="1.2"/><line x1="6" y1="1" x2="6" y2="15" stroke="currentColor" stroke-width="1.2"/></svg></button>
+          </div>
+          <a href="#" class="tag-page-link" title="Open the Tag page for full tag data">View More →</a>
+        </div>
+      </div>
+
+      <div class="tag-view" data-view="bar" style="display:flex;">
+      <div class="tag-chart-grid">
+        <div class="tag-chart">
+          <div class="tag-chart-title">Scene</div>
+          <div class="tag-bars">
+            <div class="tbar" data-metrics='{"spend":95000,"roas":9.2,"cvr":10.5,"ctr":0.30,"cpm":1.80,"sales":874000}'><div class="tbar-fill" style="height:100%;"><span class="tbar-val">$95.0K</span></div><div class="tbar-label" title="Kitchen">Kitchen</div></div>
+            <div class="tbar" data-metrics='{"spend":68000,"roas":7.1,"cvr":8.4,"ctr":0.26,"cpm":2.10,"sales":482800}'><div class="tbar-fill" style="height:71.6%;"><span class="tbar-val">$68.0K</span></div><div class="tbar-label" title="Outdoor">Outdoor</div></div>
+            <div class="tbar" data-metrics='{"spend":52000,"roas":5.4,"cvr":6.6,"ctr":0.22,"cpm":2.40,"sales":280800}'><div class="tbar-fill" style="height:54.7%;"><span class="tbar-val">$52.0K</span></div><div class="tbar-label" title="Living Room">Living Room</div></div>
+            <div class="tbar" data-metrics='{"spend":34000,"roas":4.2,"cvr":5.1,"ctr":0.18,"cpm":2.70,"sales":142800}'><div class="tbar-fill" style="height:35.8%;"><span class="tbar-val">$34.0K</span></div><div class="tbar-label" title="Backyard">Backyard</div></div>
+            <div class="tbar" data-metrics='{"spend":21000,"roas":3.1,"cvr":3.9,"ctr":0.14,"cpm":3.00,"sales":65100}'><div class="tbar-fill" style="height:22.1%;"><span class="tbar-val">$21.0K</span></div><div class="tbar-label" title="Pantry">Pantry</div></div>
+            <div class="tbar other" data-metrics='{"spend":37000,"roas":2.2,"cvr":2.8,"ctr":0.10,"cpm":3.30,"sales":81400}'><div class="tbar-fill" style="height:38.9%;"><span class="tbar-val">$37.0K</span></div><div class="tbar-label" title="Other">Other</div></div>
+          </div>
+        </div>
+        <div class="tag-chart">
+          <div class="tag-chart-title">Content</div>
+          <div class="tag-bars">
+            <div class="tbar" data-metrics='{"spend":110000,"roas":9.2,"cvr":10.5,"ctr":0.30,"cpm":1.80,"sales":1012000}'><div class="tbar-fill" style="height:100%;"><span class="tbar-val">$110.0K</span></div><div class="tbar-label" title="Lifestyle">Lifestyle</div></div>
+            <div class="tbar" data-metrics='{"spend":84000,"roas":7.1,"cvr":8.4,"ctr":0.26,"cpm":2.10,"sales":596400}'><div class="tbar-fill" style="height:76.4%;"><span class="tbar-val">$84.0K</span></div><div class="tbar-label" title="Product Shot">Product Shot</div></div>
+            <div class="tbar" data-metrics='{"spend":46000,"roas":5.4,"cvr":6.6,"ctr":0.22,"cpm":2.40,"sales":248400}'><div class="tbar-fill" style="height:41.8%;"><span class="tbar-val">$46.0K</span></div><div class="tbar-label" title="UGC">UGC</div></div>
+            <div class="tbar" data-metrics='{"spend":28000,"roas":4.2,"cvr":5.1,"ctr":0.18,"cpm":2.70,"sales":117600}'><div class="tbar-fill" style="height:25.5%;"><span class="tbar-val">$28.0K</span></div><div class="tbar-label" title="Testimonial">Testimonial</div></div>
+            <div class="tbar" data-metrics='{"spend":19000,"roas":3.1,"cvr":3.9,"ctr":0.14,"cpm":3.00,"sales":58900}'><div class="tbar-fill" style="height:17.3%;"><span class="tbar-val">$19.0K</span></div><div class="tbar-label" title="Recipe">Recipe</div></div>
+            <div class="tbar other" data-metrics='{"spend":20000,"roas":2.2,"cvr":2.8,"ctr":0.10,"cpm":3.30,"sales":44000}'><div class="tbar-fill" style="height:18.2%;"><span class="tbar-val">$20.0K</span></div><div class="tbar-label" title="Other">Other</div></div>
+          </div>
+        </div>
+        <div class="tag-chart">
+          <div class="tag-chart-title">Category</div>
+          <div class="tag-bars">
+            <div class="tbar" data-metrics='{"spend":142000,"roas":9.2,"cvr":10.5,"ctr":0.30,"cpm":1.80,"sales":1306400}'><div class="tbar-fill" style="height:100%;"><span class="tbar-val">$142.0K</span></div><div class="tbar-label" title="Dog Food">Dog Food</div></div>
+            <div class="tbar" data-metrics='{"spend":71000,"roas":7.1,"cvr":8.4,"ctr":0.26,"cpm":2.10,"sales":504100}'><div class="tbar-fill" style="height:50.0%;"><span class="tbar-val">$71.0K</span></div><div class="tbar-label" title="Cat Food">Cat Food</div></div>
+            <div class="tbar" data-metrics='{"spend":48000,"roas":5.4,"cvr":6.6,"ctr":0.22,"cpm":2.40,"sales":259200}'><div class="tbar-fill" style="height:33.8%;"><span class="tbar-val">$48.0K</span></div><div class="tbar-label" title="Treats">Treats</div></div>
+            <div class="tbar" data-metrics='{"spend":25000,"roas":4.2,"cvr":5.1,"ctr":0.18,"cpm":2.70,"sales":105000}'><div class="tbar-fill" style="height:17.6%;"><span class="tbar-val">$25.0K</span></div><div class="tbar-label" title="Supplements">Supplements</div></div>
+            <div class="tbar" data-metrics='{"spend":12000,"roas":3.1,"cvr":3.9,"ctr":0.14,"cpm":3.00,"sales":37200}'><div class="tbar-fill" style="height:8.5%;"><span class="tbar-val">$12.0K</span></div><div class="tbar-label" title="Toys">Toys</div></div>
+            <div class="tbar other" data-metrics='{"spend":9000,"roas":2.2,"cvr":2.8,"ctr":0.10,"cpm":3.30,"sales":19800}'><div class="tbar-fill" style="height:6.3%;"><span class="tbar-val">$9.0K</span></div><div class="tbar-label" title="Other">Other</div></div>
+          </div>
+        </div>
+        <div class="tag-chart">
+          <div class="tag-chart-title">Object</div>
+          <div class="tag-bars">
+            <div class="tbar" data-metrics='{"spend":118000,"roas":9.2,"cvr":10.5,"ctr":0.30,"cpm":1.80,"sales":1085600}'><div class="tbar-fill" style="height:100%;"><span class="tbar-val">$118.0K</span></div><div class="tbar-label" title="Dog">Dog</div></div>
+            <div class="tbar" data-metrics='{"spend":76000,"roas":7.1,"cvr":8.4,"ctr":0.26,"cpm":2.10,"sales":539600}'><div class="tbar-fill" style="height:64.4%;"><span class="tbar-val">$76.0K</span></div><div class="tbar-label" title="Package">Package</div></div>
+            <div class="tbar" data-metrics='{"spend":54000,"roas":5.4,"cvr":6.6,"ctr":0.22,"cpm":2.40,"sales":291600}'><div class="tbar-fill" style="height:45.8%;"><span class="tbar-val">$54.0K</span></div><div class="tbar-label" title="Bowl">Bowl</div></div>
+            <div class="tbar" data-metrics='{"spend":38000,"roas":4.2,"cvr":5.1,"ctr":0.18,"cpm":2.70,"sales":159600}'><div class="tbar-fill" style="height:32.2%;"><span class="tbar-val">$38.0K</span></div><div class="tbar-label" title="Person">Person</div></div>
+            <div class="tbar" data-metrics='{"spend":14000,"roas":3.1,"cvr":3.9,"ctr":0.14,"cpm":3.00,"sales":43400}'><div class="tbar-fill" style="height:11.9%;"><span class="tbar-val">$14.0K</span></div><div class="tbar-label" title="Ingredients">Ingredients</div></div>
+            <div class="tbar other" data-metrics='{"spend":7000,"roas":2.2,"cvr":2.8,"ctr":0.10,"cpm":3.30,"sales":15400}'><div class="tbar-fill" style="height:5.9%;"><span class="tbar-val">$7.0K</span></div><div class="tbar-label" title="Other">Other</div></div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="tag-view" data-view="trend" style="display:none;">
+        <svg class="chart tag-trend-svg" viewBox="0 0 640 460" preserveAspectRatio="none"></svg>
+        <div class="legend tag-trend-legend"></div>
+      </div>
+
+      <div class="tag-view" data-view="table" style="display:none;">
+        <div class="tag-table-wrap">
+          <table class="tag-table">
+            <thead><tr><th>Asset tag name</th><th>Spend</th><th>ROAS</th><th>CVR(Impr.)</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead>
+            <tbody>
+              <tr class="parent-row" data-tag="Scene" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Scene</td><td>$307.0K</td><td>6.30</td><td>7.40%</td><td>0.24%</td><td>$0.85</td><td>$2.05</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Kitchen</td><td>$95.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Outdoor</td><td>$68.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Living Room</td><td>$52.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Backyard</td><td>$34.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Pantry</td><td>$21.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Garden</td><td>$17.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Bedroom</td><td>$13.0K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Scene"><td>Garage</td><td>$7.0K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+
+              <tr class="parent-row" data-tag="Content" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Content</td><td>$307.0K</td><td>6.90</td><td>8.00%</td><td>0.25%</td><td>$0.80</td><td>$2.00</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Lifestyle</td><td>$110.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Product Shot</td><td>$84.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Content"><td>UGC</td><td>$46.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Testimonial</td><td>$28.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Recipe</td><td>$19.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Behind the Scenes</td><td>$9.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Unboxing</td><td>$7.0K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Content"><td>Comparison</td><td>$4.0K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+
+              <tr class="parent-row" data-tag="Category" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Category</td><td>$307.0K</td><td>7.20</td><td>8.50%</td><td>0.26%</td><td>$0.75</td><td>$1.95</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Dog Food</td><td>$142.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Cat Food</td><td>$71.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Treats</td><td>$48.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Supplements</td><td>$25.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Toys</td><td>$12.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Small Pet</td><td>$4.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Bird</td><td>$3.0K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Category"><td>Fish</td><td>$2.0K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+
+              <tr class="parent-row" data-tag="Object" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Object</td><td>$307.0K</td><td>7.00</td><td>8.20%</td><td>0.25%</td><td>$0.80</td><td>$2.00</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Dog</td><td>$118.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Package</td><td>$76.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Bowl</td><td>$54.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Person</td><td>$38.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Ingredients</td><td>$14.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Leash</td><td>$3.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Toy</td><td>$2.5K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Object"><td>Collar</td><td>$1.5K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+
+              <tr class="parent-row" data-tag="Style" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Style</td><td>$252.0K</td><td>6.60</td><td>7.70%</td><td>0.23%</td><td>$0.91</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Minimalist</td><td>$88.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Bold</td><td>$62.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Playful</td><td>$41.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Elegant</td><td>$27.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Rustic</td><td>$16.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Vintage</td><td>$8.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Industrial</td><td>$6.0K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Style"><td>Coastal</td><td>$4.0K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+
+              <tr class="parent-row" data-tag="Mood" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Mood</td><td>$211.0K</td><td>6.50</td><td>7.60%</td><td>0.23%</td><td>$0.92</td><td>$2.12</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Cozy</td><td>$76.0K</td><td>9.20</td><td>10.50%</td><td>0.30%</td><td>$0.60</td><td>$1.80</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Energetic</td><td>$54.0K</td><td>7.10</td><td>8.40%</td><td>0.26%</td><td>$0.81</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Calm</td><td>$35.0K</td><td>5.40</td><td>6.60%</td><td>0.22%</td><td>$1.09</td><td>$2.40</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Nostalgic</td><td>$22.0K</td><td>4.20</td><td>5.10%</td><td>0.18%</td><td>$1.50</td><td>$2.70</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Adventurous</td><td>$13.0K</td><td>3.10</td><td>3.90%</td><td>0.14%</td><td>$2.14</td><td>$3.00</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Playful</td><td>$5.0K</td><td>2.20</td><td>2.80%</td><td>0.10%</td><td>$3.30</td><td>$3.30</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Serene</td><td>$4.0K</td><td>1.80</td><td>2.30%</td><td>0.08%</td><td>$4.44</td><td>$3.55</td></tr>
+              <tr class="child-row" data-parent="Mood"><td>Bold</td><td>$2.0K</td><td>1.50</td><td>1.90%</td><td>0.06%</td><td>$6.33</td><td>$3.80</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="head"><h3 style="margin:0;">Holiday Prep</h3></div>
+      <div class="ai-cta-row">
+        <div class="ai-cta">
+          <div class="ai-cta-top">
+            <span class="ai-cta-icon">🎉</span>
+            <span class="ai-cta-text"><b>4 of 6 upcoming holidays</b> already have matching assets in your library — AI-generate holiday variants from existing creative in one click.</span>
+          </div>
+          <button type="button" class="ai-cta-btn">Create Variants</button>
+        </div>
+      </div>
+      <div class="holiday-grid">
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);">🎒<span class="h-days">in 27 days</span><span class="h-count has">4</span></div>
+          <div class="h-meta">
+            <div class="h-name">Back to School</div>
+            <div class="h-date">Aug 15, 2026</div>
+            <div class="h-status">4 matching assets found</div>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);">🏷️<span class="h-days">in 50 days</span><span class="h-count has">2</span></div>
+          <div class="h-meta">
+            <div class="h-name">Labor Day</div>
+            <div class="h-date">Sep 7, 2026</div>
+            <div class="h-status">2 matching assets found</div>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);">🎃<span class="h-days">in 104 days</span><span class="h-count none">0</span></div>
+          <div class="h-meta">
+            <div class="h-name">Halloween</div>
+            <div class="h-date">Oct 31, 2026</div>
+            <div class="h-status">No matching assets found</div>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#2b2b2b,#000);">🛍️<span class="h-days">in 131 days</span><span class="h-count has">6</span></div>
+          <div class="h-meta">
+            <div class="h-name">Black Friday / Cyber Monday</div>
+            <div class="h-date">Nov 27–30, 2026</div>
+            <div class="h-status">6 matching assets found</div>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#1f8a4c,#125c33);">🎄<span class="h-days">in 159 days</span><span class="h-count has">3</span></div>
+          <div class="h-meta">
+            <div class="h-name">Christmas</div>
+            <div class="h-date">Dec 25, 2026</div>
+            <div class="h-status">3 matching assets found</div>
+          </div>
+        </div>
+        <div class="holiday-card">
+          <div class="h-thumb" style="background:linear-gradient(135deg,#d1403f,#992622);">🎆<span class="h-days">in 166 days</span><span class="h-count none">0</span></div>
+          <div class="h-meta">
+            <div class="h-name">New Year</div>
+            <div class="h-date">Jan 1, 2027</div>
+            <div class="h-status">No matching assets found</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g1 widget-row" style="margin-top:16px;">
+    <div class="card">
+      <div class="head">
+        <h3 style="margin:0;">Ad Type Performance</h3>
+        <div class="head-right">
+          <div class="metric-dropdown adtype-checklist">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Ad Type: <span class="dd-label">6 selected</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select ad types to show (shared by trend &amp; bar)</div>
+              <label><input type="checkbox" value="Amazon · SB Product Collection" data-color="var(--amber)" data-metrics='{"spend":45000,"roas":5.2,"cvr":6.1,"ctr":0.14,"cpm":2.60,"sales":234000}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Amazon · SB Product Collection</label>
+              <label><input type="checkbox" value="ADSP · Display" data-color="var(--purple)" data-metrics='{"spend":56000,"roas":11.2,"cvr":12.8,"ctr":0.22,"cpm":1.95,"sales":627200}' checked onchange="pacvueAdTypeCheckboxChange(this)"> ADSP · Display</label>
+              <label><input type="checkbox" value="ADSP · Standard Display" data-color="var(--accent)" data-metrics='{"spend":22000,"roas":5.8,"cvr":6.9,"ctr":0.13,"cpm":2.75,"sales":127600}' checked onchange="pacvueAdTypeCheckboxChange(this)"> ADSP · Standard Display</label>
+              <label><input type="checkbox" value="Instacart · Display Banner" data-color="#3a5cd8" data-metrics='{"spend":14000,"roas":2.9,"cvr":3.4,"ctr":0.18,"cpm":3.40,"sales":40600}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Instacart · Display Banner</label>
+              <label><input type="checkbox" value="Instacart · Shoppable Display" data-color="var(--mint)" data-metrics='{"spend":24000,"roas":5.6,"cvr":6.5,"ctr":0.32,"cpm":2.60,"sales":134400}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Instacart · Shoppable Display</label>
+              <label><input type="checkbox" value="Walmart · SB" data-color="var(--bad)" data-metrics='{"spend":17000,"roas":3.4,"cvr":4.1,"ctr":0.16,"cpm":3.10,"sales":57800}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Walmart · SB</label>
+              <label><input type="checkbox" value="Amazon · SD" data-color="#1f9e8a" data-metrics='{"spend":9000,"roas":2.4,"cvr":2.9,"ctr":0.10,"cpm":3.60,"sales":21600}' onchange="pacvueAdTypeCheckboxChange(this)"> Amazon · SD</label>
+              <label><input type="checkbox" value="Amazon · SP" data-color="#9e6b1f" data-metrics='{"spend":6000,"roas":2.0,"cvr":2.5,"ctr":0.09,"cpm":3.90,"sales":12000}' onchange="pacvueAdTypeCheckboxChange(this)"> Amazon · SP</label>
+            </div>
+          </div>
+          <div class="metric-dropdown">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metric: <span class="dd-label">Spend</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select 1 metric</div>
+              <label><input type="radio" name="adTypeMetric" value="impressions" onchange="pacvueAdTypeMetricChange(this)"> Impressions</label>
+              <label><input type="radio" name="adTypeMetric" value="clicks" onchange="pacvueAdTypeMetricChange(this)"> Clicks</label>
+              <label><input type="radio" name="adTypeMetric" value="ctr" onchange="pacvueAdTypeMetricChange(this)"> CTR</label>
+              <label><input type="radio" name="adTypeMetric" value="spend" checked onchange="pacvueAdTypeMetricChange(this)"> Spend</label>
+              <label><input type="radio" name="adTypeMetric" value="sales" onchange="pacvueAdTypeMetricChange(this)"> Sales</label>
+              <label><input type="radio" name="adTypeMetric" value="roas" onchange="pacvueAdTypeMetricChange(this)"> ROAS</label>
+              <label><input type="radio" name="adTypeMetric" value="cpc" onchange="pacvueAdTypeMetricChange(this)"> CPC</label>
+              <label><input type="radio" name="adTypeMetric" value="cpm" onchange="pacvueAdTypeMetricChange(this)"> CPM</label>
+              <label><input type="radio" name="adTypeMetric" value="cvrclick" onchange="pacvueAdTypeMetricChange(this)"> CVR(Click)</label>
+              <label><input type="radio" name="adTypeMetric" value="cvr" onchange="pacvueAdTypeMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+          <div class="toggles"><span class="on" onclick="pacvueAdTypeGran(this,'D')">D</span><span onclick="pacvueAdTypeGran(this,'W')">W</span><span onclick="pacvueAdTypeGran(this,'M')">M</span></div>
+        </div>
+      </div>
+
+      <div class="adtp-body">
+        <div class="adtp-chartcol">
+          <div class="adtp-charts">
+            <div class="adtp-col">
+              <svg class="chart adtp-trend-svg" viewBox="-48 -8 396 200" preserveAspectRatio="none"></svg>
+            </div>
+            <div class="adtp-col">
+              <div class="bars adtp-bar-chart"></div>
+            </div>
+          </div>
+          <div class="legend adtp-shared-legend"></div>
+        </div>
+        <div class="adtp-col adtp-table-col">
+          <div class="tag-table-wrap">
+            <table class="tag-table">
+              <thead><tr><th>Platform / Ad type</th><th>Spend</th><th>ROAS</th><th>CVR(Impr.)</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead>
+              <tbody>
+                <tr class="parent-row" data-tag="atpAmazon" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Amazon</td><td>$45.0K</td><td>5.20</td><td>6.10%</td><td>0.14%</td><td>$1.86</td><td>$2.60</td></tr>
+                <tr class="child-row" data-parent="atpAmazon"><td>SB Product Collection</td><td>$45.0K</td><td>5.20</td><td>6.10%</td><td>0.14%</td><td>$1.86</td><td>$2.60</td></tr>
+
+                <tr class="parent-row" data-tag="atpADSP" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>ADSP</td><td>$78.0K</td><td>9.80</td><td>11.20%</td><td>0.19%</td><td>$1.16</td><td>$2.20</td></tr>
+                <tr class="child-row" data-parent="atpADSP"><td>Display</td><td>$56.0K</td><td>11.20</td><td>12.80%</td><td>0.22%</td><td>$0.89</td><td>$1.95</td></tr>
+                <tr class="child-row" data-parent="atpADSP"><td>Standard Display</td><td>$22.0K</td><td>5.80</td><td>6.90%</td><td>0.13%</td><td>$2.12</td><td>$2.75</td></tr>
+
+                <tr class="parent-row" data-tag="atpInstacart" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Instacart</td><td>$38.0K</td><td>4.60</td><td>5.40%</td><td>0.27%</td><td>$1.07</td><td>$2.90</td></tr>
+                <tr class="child-row" data-parent="atpInstacart"><td>Shoppable Display</td><td>$24.0K</td><td>5.60</td><td>6.50%</td><td>0.32%</td><td>$0.81</td><td>$2.60</td></tr>
+                <tr class="child-row" data-parent="atpInstacart"><td>Display Banner</td><td>$14.0K</td><td>2.90</td><td>3.40%</td><td>0.18%</td><td>$1.89</td><td>$3.40</td></tr>
+
+                <tr class="parent-row" data-tag="atpWalmart" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Walmart</td><td>$17.0K</td><td>3.40</td><td>4.10%</td><td>0.16%</td><td>$1.94</td><td>$3.10</td></tr>
+                <tr class="child-row" data-parent="atpWalmart"><td>SB</td><td>$17.0K</td><td>3.40</td><td>4.10%</td><td>0.16%</td><td>$1.94</td><td>$3.10</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Widgets: trend charts, platform/ad type/tag rankings, asset trend & top asset perf — uniform 3-per-row, equal size -->
+  <div class="grid g3 widget-row" style="margin-top:16px;">
+    <div class="card perf">
+      <div class="head"><h3 style="margin:0;">Performance</h3><div class="toggles"><span>D</span><span class="on">W</span><span>M</span></div></div>
+      <div class="chart-wrap">
+        <svg class="chart" viewBox="-38 -6 376 150" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="300" y2="0" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="30" x2="300" y2="30" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="60" x2="300" y2="60" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="90" x2="300" y2="90" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="300" y2="120" stroke="var(--line)" stroke-width="1"/>
+          <path d="M0,80 L30,60 L60,42 L90,44 L120,58 L150,60 L180,62 L210,60 L240,64 L270,66 L300,110 L300,120 L0,120 Z" fill="var(--purple)" opacity="0.12"/>
+          <polyline points="0,80 30,60 60,42 90,44 120,58 150,60 180,62 210,60 240,64 270,66 300,110" fill="none" stroke="var(--purple)" stroke-width="1.6"/>
+          <polyline points="0,95 30,88 60,72 90,74 120,80 150,82 180,80 210,78 240,80 270,82 300,105" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+          <polyline points="0,88 30,70 60,50 90,52 120,64 150,66 180,68 210,66 240,70 270,72 300,60" fill="none" stroke="var(--amber)" stroke-width="1.3"/>
+          <text x="-6" y="3" text-anchor="end" font-size="8" fill="var(--ink-faint)">$160.0K</text>
+          <text x="-6" y="33" text-anchor="end" font-size="8" fill="var(--ink-faint)">$120.0K</text>
+          <text x="-6" y="63" text-anchor="end" font-size="8" fill="var(--ink-faint)">$80.0K</text>
+          <text x="-6" y="93" text-anchor="end" font-size="8" fill="var(--ink-faint)">$40.0K</text>
+          <text x="-6" y="123" text-anchor="end" font-size="8" fill="var(--ink-faint)">$0.00</text>
+          <text x="306" y="3" text-anchor="start" font-size="8" fill="var(--ink-faint)">$16.0K</text>
+          <text x="306" y="33" text-anchor="start" font-size="8" fill="var(--ink-faint)">$12.0K</text>
+          <text x="306" y="63" text-anchor="start" font-size="8" fill="var(--ink-faint)">$8,000.0</text>
+          <text x="306" y="93" text-anchor="start" font-size="8" fill="var(--ink-faint)">$4,000.0</text>
+          <text x="306" y="123" text-anchor="start" font-size="8" fill="var(--ink-faint)">$0.0</text>
+          <text x="0" y="136" text-anchor="start" font-size="8" fill="var(--ink-faint)">Thu,06/25/2026</text>
+          <text x="100" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Wed,07/01/2026</text>
+          <text x="200" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Tue,07/07/2026</text>
+          <text x="300" y="136" text-anchor="end" font-size="8" fill="var(--ink-faint)">Mon,07/13/2026</text>
+        </svg>
+      </div>
+      <div class="legend"><span><i class="dot" style="background:var(--amber);"></i>Sales</span><span><i class="dot" style="background:var(--accent);"></i>Spend</span><span><i class="dot" style="background:var(--purple);"></i>ROAS</span></div>
+    </div>
+    <div class="card eff">
+      <div class="head"><h3 style="margin:0;">Efficiency</h3><div class="toggles"><span>D</span><span class="on">W</span><span>M</span></div></div>
+      <div class="chart-wrap">
+        <svg class="chart" viewBox="-38 -6 376 150" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="300" y2="0" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="30" x2="300" y2="30" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="60" x2="300" y2="60" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="90" x2="300" y2="90" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="300" y2="120" stroke="var(--line)" stroke-width="1"/>
+          <path d="M0,50 L30,55 L60,48 L90,52 L120,50 L150,48 L180,52 L210,50 L240,48 L270,50 L300,46 L300,120 L0,120 Z" fill="var(--amber)" opacity="0.10"/>
+          <polyline points="0,50 30,55 60,48 90,52 120,50 150,48 180,52 210,50 240,48 270,50 300,46" fill="none" stroke="var(--amber)" stroke-width="1.6"/>
+          <polyline points="0,95 30,92 60,96 90,94 120,98 150,96 180,94 210,96 240,98 270,94 300,108" fill="none" stroke="var(--purple)" stroke-width="1.3"/>
+          <polyline points="0,70 30,68 60,72 90,70 120,74 150,72 180,70 210,72 240,70 270,68 300,64" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+          <text x="-6" y="3" text-anchor="end" font-size="8" fill="var(--ink-faint)">$4.00</text>
+          <text x="-6" y="33" text-anchor="end" font-size="8" fill="var(--ink-faint)">$3.00</text>
+          <text x="-6" y="63" text-anchor="end" font-size="8" fill="var(--ink-faint)">$2.00</text>
+          <text x="-6" y="93" text-anchor="end" font-size="8" fill="var(--ink-faint)">$1.00</text>
+          <text x="-6" y="123" text-anchor="end" font-size="8" fill="var(--ink-faint)">$0.00</text>
+          <text x="306" y="3" text-anchor="start" font-size="8" fill="var(--ink-faint)">80%</text>
+          <text x="306" y="33" text-anchor="start" font-size="8" fill="var(--ink-faint)">60%</text>
+          <text x="306" y="63" text-anchor="start" font-size="8" fill="var(--ink-faint)">40%</text>
+          <text x="306" y="93" text-anchor="start" font-size="8" fill="var(--ink-faint)">20%</text>
+          <text x="306" y="123" text-anchor="start" font-size="8" fill="var(--ink-faint)">0%</text>
+          <text x="0" y="136" text-anchor="start" font-size="8" fill="var(--ink-faint)">Thu,06/25/2026</text>
+          <text x="100" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Wed,07/01/2026</text>
+          <text x="200" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Tue,07/07/2026</text>
+          <text x="300" y="136" text-anchor="end" font-size="8" fill="var(--ink-faint)">Mon,07/13/2026</text>
+        </svg>
+      </div>
+      <div class="legend"><span><i class="dot" style="background:var(--amber);"></i>CPC</span><span><i class="dot" style="background:var(--accent);"></i>CPM</span><span><i class="dot" style="background:var(--purple);"></i>CVR</span></div>
+    </div>
+    <div class="card aware">
+      <div class="head"><h3 style="margin:0;">Awareness</h3><div class="toggles"><span>D</span><span class="on">W</span><span>M</span></div></div>
+      <div class="chart-wrap">
+        <svg class="chart" viewBox="-38 -6 376 150" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="300" y2="0" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="30" x2="300" y2="30" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="60" x2="300" y2="60" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="90" x2="300" y2="90" stroke="var(--line)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="300" y2="120" stroke="var(--line)" stroke-width="1"/>
+          <path d="M0,45 L30,40 L60,35 L90,38 L120,42 L150,44 L180,40 L210,42 L240,44 L270,46 L300,20 L300,120 L0,120 Z" fill="var(--mint)" opacity="0.12"/>
+          <polyline points="0,45 30,40 60,35 90,38 120,42 150,44 180,40 210,42 240,44 270,46 300,20" fill="none" stroke="var(--amber)" stroke-width="1.6"/>
+          <polyline points="0,90 30,86 60,80 90,82 120,84 150,86 180,84 210,86 240,88 270,86 300,98" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+          <polyline points="0,100 30,98 60,94 90,96 120,92 150,94 180,90 210,92 240,88 270,86 300,70" fill="none" stroke="var(--purple)" stroke-width="1.3"/>
+          <text x="-6" y="3" text-anchor="end" font-size="8" fill="var(--ink-faint)">40M</text>
+          <text x="-6" y="33" text-anchor="end" font-size="8" fill="var(--ink-faint)">30M</text>
+          <text x="-6" y="63" text-anchor="end" font-size="8" fill="var(--ink-faint)">20M</text>
+          <text x="-6" y="93" text-anchor="end" font-size="8" fill="var(--ink-faint)">10M</text>
+          <text x="-6" y="123" text-anchor="end" font-size="8" fill="var(--ink-faint)">0</text>
+          <text x="306" y="3" text-anchor="start" font-size="8" fill="var(--ink-faint)">100K</text>
+          <text x="306" y="33" text-anchor="start" font-size="8" fill="var(--ink-faint)">75K</text>
+          <text x="306" y="63" text-anchor="start" font-size="8" fill="var(--ink-faint)">50K</text>
+          <text x="306" y="93" text-anchor="start" font-size="8" fill="var(--ink-faint)">25K</text>
+          <text x="306" y="123" text-anchor="start" font-size="8" fill="var(--ink-faint)">0</text>
+          <text x="0" y="136" text-anchor="start" font-size="8" fill="var(--ink-faint)">Thu,06/25/2026</text>
+          <text x="100" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Wed,07/01/2026</text>
+          <text x="200" y="136" text-anchor="middle" font-size="8" fill="var(--ink-faint)">Tue,07/07/2026</text>
+          <text x="300" y="136" text-anchor="end" font-size="8" fill="var(--ink-faint)">Mon,07/13/2026</text>
+        </svg>
+      </div>
+      <div class="legend"><span><i class="dot" style="background:var(--amber);"></i>Impressions</span><span><i class="dot" style="background:var(--accent);"></i>Clicks</span><span><i class="dot" style="background:var(--purple);"></i>CTR</span></div>
+    </div>
+  </div>
+
+  <div class="grid g3 widget-row" style="margin-top:16px;">
+    <div class="card">
+      <div class="head">
+        <h3 style="margin:0;">Platform Performance</h3>
+        <div class="head-right">
+          <div class="metric-dropdown tag-only-bar">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metrics: <span class="dd-label">3 metrics</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select up to 3 metrics</div>
+              <label><input type="checkbox" value="impressions" onchange="pacvuePlatformMetricChange(this)"> Impressions</label>
+              <label><input type="checkbox" value="clicks" onchange="pacvuePlatformMetricChange(this)"> Clicks</label>
+              <label><input type="checkbox" value="ctr" onchange="pacvuePlatformMetricChange(this)"> CTR</label>
+              <label><input type="checkbox" value="spend" checked onchange="pacvuePlatformMetricChange(this)"> Spend</label>
+              <label><input type="checkbox" value="sales" onchange="pacvuePlatformMetricChange(this)"> Sales</label>
+              <label><input type="checkbox" value="roas" checked onchange="pacvuePlatformMetricChange(this)"> ROAS</label>
+              <label><input type="checkbox" value="cpc" onchange="pacvuePlatformMetricChange(this)"> CPC</label>
+              <label><input type="checkbox" value="cpm" onchange="pacvuePlatformMetricChange(this)"> CPM</label>
+              <label><input type="checkbox" value="cvrclick" onchange="pacvuePlatformMetricChange(this)"> CVR(Click)</label>
+              <label><input type="checkbox" value="cvr" checked onchange="pacvuePlatformMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tag-view" data-view="bar" style="display:flex;">
+      <div class="bars-wrap">
+      <div class="baxis baxis-left">
+        <span>$80.0K</span><span>$60.0K</span><span>$40.0K</span><span>$20.0K</span><span>$0.0</span>
+      </div>
+      <div class="bars">
+        <div class="bar-group" data-metrics='{"spend":45000,"roas":5.2,"cvr":6.1,"ctr":0.14,"cpm":2.60,"sales":234000}'>
+          <div class="bar-set">
+            <i style="height:57.7%;background:var(--amber);"></i>
+            <i style="height:53.1%;background:var(--accent);"></i>
+            <i style="height:54.5%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">Amazon</div>
+        </div>
+        <div class="bar-group" data-metrics='{"spend":78000,"roas":9.8,"cvr":11.2,"ctr":0.19,"cpm":2.20,"sales":764000}'>
+          <div class="bar-set">
+            <i style="height:100%;background:var(--amber);"></i>
+            <i style="height:100%;background:var(--accent);"></i>
+            <i style="height:100%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">ADSP</div>
+        </div>
+        <div class="bar-group" data-metrics='{"spend":38000,"roas":4.6,"cvr":5.4,"ctr":0.27,"cpm":2.90,"sales":175000}'>
+          <div class="bar-set">
+            <i style="height:48.7%;background:var(--amber);"></i>
+            <i style="height:46.9%;background:var(--accent);"></i>
+            <i style="height:48.2%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">Instacart</div>
+        </div>
+        <div class="bar-group" data-metrics='{"spend":17000,"roas":3.4,"cvr":4.1,"ctr":0.16,"cpm":3.10,"sales":58000}'>
+          <div class="bar-set">
+            <i style="height:21.8%;background:var(--amber);"></i>
+            <i style="height:34.7%;background:var(--accent);"></i>
+            <i style="height:36.6%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">Walmart</div>
+        </div>
+      </div>
+      <div class="baxis baxis-right">
+        <span>12%</span><span>9%</span><span>6%</span><span>3%</span><span>0%</span>
+      </div>
+      </div>
+      <div class="legend platform-legend"><span><i class="dot" style="background:var(--amber);"></i>Spend</span><span><i class="dot" style="background:var(--accent);"></i>ROAS</span><span><i class="dot" style="background:var(--purple);"></i>CVR(Impr.)</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <h3 style="margin:0;">Brand Performance</h3>
+        <div class="head-right">
+          <div class="metric-dropdown">
+            <button type="button" class="metric-dd-btn" onclick="event.stopPropagation();pacvueMetricDD(this)">Metric: <span class="dd-label">Spend</span> <span style="opacity:.6;">▾</span></button>
+            <div class="metric-dd-panel">
+              <div class="hint">Select 1 metric</div>
+              <label><input type="radio" name="brandMetric" value="impressions" onchange="pacvueBrandMetricChange(this)"> Impressions</label>
+              <label><input type="radio" name="brandMetric" value="clicks" onchange="pacvueBrandMetricChange(this)"> Clicks</label>
+              <label><input type="radio" name="brandMetric" value="ctr" onchange="pacvueBrandMetricChange(this)"> CTR</label>
+              <label><input type="radio" name="brandMetric" value="spend" checked onchange="pacvueBrandMetricChange(this)"> Spend</label>
+              <label><input type="radio" name="brandMetric" value="sales" onchange="pacvueBrandMetricChange(this)"> Sales</label>
+              <label><input type="radio" name="brandMetric" value="roas" onchange="pacvueBrandMetricChange(this)"> ROAS</label>
+              <label><input type="radio" name="brandMetric" value="cpc" onchange="pacvueBrandMetricChange(this)"> CPC</label>
+              <label><input type="radio" name="brandMetric" value="cpm" onchange="pacvueBrandMetricChange(this)"> CPM</label>
+              <label><input type="radio" name="brandMetric" value="cvrclick" onchange="pacvueBrandMetricChange(this)"> CVR(Click)</label>
+              <label><input type="radio" name="brandMetric" value="cvr" onchange="pacvueBrandMetricChange(this)"> CVR(Impr.)</label>
+            </div>
+          </div>
+          <div class="view-toggle">
+            <button type="button" class="on" onclick="pacvueTagView(this,'bar')" title="Chart"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8,1.5 A6.5,6.5 0 0 1 14,10.5 L8,8 Z" fill="currentColor"/></svg></button>
+            <button type="button" onclick="pacvueTagView(this,'table')" title="Table"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="6" x2="15" y2="6" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="11" x2="15" y2="11" stroke="currentColor" stroke-width="1.2"/><line x1="6" y1="1" x2="6" y2="15" stroke="currentColor" stroke-width="1.2"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tag-view" data-view="bar" style="display:flex;">
+        <div class="brand-chart-area">
+          <div class="brand-pie-row">
+            <div class="brand-pie-wrap" style="display:flex;">
+              <div class="brand-pie" style="background:conic-gradient(var(--amber) 0% 35.8%, var(--accent) 35.8% 58.6%, var(--purple) 58.6% 71.7%, var(--mint) 71.7% 79.8%, var(--bad) 79.8% 85.7%, #1f9e8a 85.7% 89.6%, var(--ink-faint) 89.6% 100%);">
+                <div class="brand-pie-hole"></div>
+              </div>
+            </div>
+            <div class="legend brand-legend">
+              <span><i class="dot" style="background:var(--amber);"></i>Brand A <b class="bval2">$110.0K</b><span class="bpct">35.8%</span></span>
+              <span><i class="dot" style="background:var(--accent);"></i>Brand B <b class="bval2">$70.0K</b><span class="bpct">22.8%</span></span>
+              <span><i class="dot" style="background:var(--purple);"></i>Brand C <b class="bval2">$40.0K</b><span class="bpct">13.0%</span></span>
+              <span><i class="dot" style="background:var(--mint);"></i>Brand D <b class="bval2">$25.0K</b><span class="bpct">8.1%</span></span>
+              <span><i class="dot" style="background:var(--bad);"></i>Brand E <b class="bval2">$18.0K</b><span class="bpct">5.9%</span></span>
+              <span><i class="dot" style="background:#1f9e8a;"></i>Brand F <b class="bval2">$12.0K</b><span class="bpct">3.9%</span></span>
+              <span><i class="dot" style="background:var(--ink-faint);"></i>Others <b class="bval2">$32.0K</b><span class="bpct">10.4%</span></span>
+            </div>
+          </div>
+          <div class="brand-bar-wrap bars" style="display:none;">
+            <div class="bar-group"><div class="bar-set"><i style="height:100%;background:var(--amber);"></i></div><span class="bval"></span><div class="glabel">Brand A</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:63.6%;background:var(--accent);"></i></div><span class="bval"></span><div class="glabel">Brand B</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:36.4%;background:var(--purple);"></i></div><span class="bval"></span><div class="glabel">Brand C</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:22.7%;background:var(--mint);"></i></div><span class="bval"></span><div class="glabel">Brand D</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:16.4%;background:var(--bad);"></i></div><span class="bval"></span><div class="glabel">Brand E</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:10.9%;background:#1f9e8a;"></i></div><span class="bval"></span><div class="glabel">Brand F</div></div>
+            <div class="bar-group"><div class="bar-set"><i style="height:29.1%;background:var(--ink-faint);"></i></div><span class="bval"></span><div class="glabel">Others</div></div>
+          </div>
+          <div class="brand-data" style="display:none;">
+            <div class="brand-item" data-name="Brand A" data-metrics='{"spend":110000,"roas":9.37,"cvr":10.89,"ctr":0.25,"cpm":2.11,"sales":1030700}'></div>
+            <div class="brand-item" data-name="Brand B" data-metrics='{"spend":70000,"roas":5.73,"cvr":6.81,"ctr":0.21,"cpm":2.57,"sales":401100}'></div>
+            <div class="brand-item" data-name="Brand C" data-metrics='{"spend":40000,"roas":6.12,"cvr":7.22,"ctr":0.21,"cpm":2.29,"sales":244800}'></div>
+            <div class="brand-item" data-name="Brand D" data-metrics='{"spend":25000,"roas":3.38,"cvr":4.08,"ctr":0.13,"cpm":3.31,"sales":84500}'></div>
+            <div class="brand-item" data-name="Brand E" data-metrics='{"spend":18000,"roas":2.80,"cvr":3.40,"ctr":0.11,"cpm":3.60,"sales":50400}'></div>
+            <div class="brand-item" data-name="Brand F" data-metrics='{"spend":12000,"roas":2.30,"cvr":2.90,"ctr":0.09,"cpm":3.85,"sales":27600}'></div>
+            <div class="brand-item" data-name="Others" data-metrics='{"spend":32000,"roas":1.90,"cvr":2.40,"ctr":0.08,"cpm":4.10,"sales":60800}'></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tag-view" data-view="table" style="display:none;">
+        <div class="tag-table-wrap">
+          <table class="tag-table">
+            <thead><tr><th>Brand / Platform / Ad type</th><th>Spend</th><th>ROAS</th><th>CVR(Impr.)</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead>
+            <tbody>
+              <tr class="parent-row" data-tag="BrandA" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Brand A</td><td>$140.0K</td><td>9.37</td><td>10.89%</td><td>0.25%</td><td>$0.92</td><td>$2.11</td></tr>
+              <tr class="mid-row" data-tag="BrandA-Amazon" data-parent="BrandA" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Amazon</td><td>$62.0K</td><td>11.50</td><td>13.20%</td><td>0.29%</td><td>$0.64</td><td>$1.85</td></tr>
+              <tr class="child-row" data-parent="BrandA-Amazon"><td>SB Product Collection</td><td>$62.0K</td><td>11.50</td><td>13.20%</td><td>0.29%</td><td>$0.64</td><td>$1.85</td></tr>
+              <tr class="mid-row" data-tag="BrandA-ADSP" data-parent="BrandA" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>ADSP</td><td>$78.0K</td><td>7.68</td><td>9.06%</td><td>0.21%</td><td>$1.14</td><td>$2.32</td></tr>
+              <tr class="child-row" data-parent="BrandA-ADSP"><td>Display</td><td>$48.0K</td><td>8.60</td><td>10.10%</td><td>0.24%</td><td>$0.90</td><td>$2.15</td></tr>
+              <tr class="child-row" data-parent="BrandA-ADSP"><td>Standard Display</td><td>$30.0K</td><td>6.20</td><td>7.40%</td><td>0.17%</td><td>$1.53</td><td>$2.60</td></tr>
+
+              <tr class="parent-row" data-tag="BrandB" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Brand B</td><td>$90.0K</td><td>5.73</td><td>6.81%</td><td>0.21%</td><td>$1.43</td><td>$2.57</td></tr>
+              <tr class="mid-row" data-tag="BrandB-Walmart" data-parent="BrandB" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Walmart</td><td>$50.0K</td><td>4.80</td><td>5.70%</td><td>0.15%</td><td>$1.97</td><td>$2.95</td></tr>
+              <tr class="child-row" data-parent="BrandB-Walmart"><td>SB</td><td>$50.0K</td><td>4.80</td><td>5.70%</td><td>0.15%</td><td>$1.97</td><td>$2.95</td></tr>
+              <tr class="mid-row" data-tag="BrandB-Instacart" data-parent="BrandB" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Instacart</td><td>$40.0K</td><td>6.90</td><td>8.20%</td><td>0.28%</td><td>$0.75</td><td>$2.10</td></tr>
+              <tr class="child-row" data-parent="BrandB-Instacart"><td>Shoppable Display</td><td>$40.0K</td><td>6.90</td><td>8.20%</td><td>0.28%</td><td>$0.75</td><td>$2.10</td></tr>
+
+              <tr class="parent-row" data-tag="BrandC" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Brand C</td><td>$50.0K</td><td>6.12</td><td>7.22%</td><td>0.21%</td><td>$1.09</td><td>$2.29</td></tr>
+              <tr class="mid-row" data-tag="BrandC-ADSP" data-parent="BrandC" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>ADSP</td><td>$30.0K</td><td>5.40</td><td>6.30%</td><td>0.20%</td><td>$1.23</td><td>$2.45</td></tr>
+              <tr class="child-row" data-parent="BrandC-ADSP"><td>Display</td><td>$30.0K</td><td>5.40</td><td>6.30%</td><td>0.20%</td><td>$1.23</td><td>$2.45</td></tr>
+              <tr class="mid-row" data-tag="BrandC-Amazon" data-parent="BrandC" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Amazon</td><td>$20.0K</td><td>7.20</td><td>8.60%</td><td>0.23%</td><td>$0.89</td><td>$2.05</td></tr>
+              <tr class="child-row" data-parent="BrandC-Amazon"><td>SB Product Collection</td><td>$20.0K</td><td>7.20</td><td>8.60%</td><td>0.23%</td><td>$0.89</td><td>$2.05</td></tr>
+
+              <tr class="parent-row" data-tag="BrandD" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Brand D</td><td>$27.0K</td><td>3.38</td><td>4.08%</td><td>0.13%</td><td>$2.55</td><td>$3.31</td></tr>
+              <tr class="mid-row" data-tag="BrandD-Instacart" data-parent="BrandD" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Instacart</td><td>$15.0K</td><td>3.60</td><td>4.30%</td><td>0.14%</td><td>$2.29</td><td>$3.20</td></tr>
+              <tr class="child-row" data-parent="BrandD-Instacart"><td>Display Banner</td><td>$15.0K</td><td>3.60</td><td>4.30%</td><td>0.14%</td><td>$2.29</td><td>$3.20</td></tr>
+              <tr class="mid-row" data-tag="BrandD-Walmart" data-parent="BrandD" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Walmart</td><td>$12.0K</td><td>3.10</td><td>3.80%</td><td>0.12%</td><td>$2.88</td><td>$3.45</td></tr>
+              <tr class="child-row" data-parent="BrandD-Walmart"><td>SB</td><td>$12.0K</td><td>3.10</td><td>3.80%</td><td>0.12%</td><td>$2.88</td><td>$3.45</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div id="pacvuePopover" class="group-popover"></div>
+<script>
+  function pacvueTab(el, panelId){
+    var card = el.closest('.card');
+    if(!card) return;
+    card.querySelectorAll('[data-panel]').forEach(function(p){
+      p.style.display = (p.dataset.panel === panelId) ? 'flex' : 'none';
+    });
+    card.querySelectorAll('.card-tabs span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+  }
+
+  var pacvueMetricLabels = {impressions:'Impressions', clicks:'Clicks', ctr:'CTR', spend:'Spend', sales:'Sales', roas:'ROAS', cpc:'CPC', cpm:'CPM', cvrclick:'CVR(Click)', cvr:'CVR(Impr.)'};
+
+  function pacvueDerivedMetric(data, key){
+    if(key in data) return data[key];
+    var impressions = data.spend / data.cpm * 1000;
+    if(key === 'impressions') return impressions;
+    var clicks = impressions * data.ctr / 100;
+    if(key === 'clicks') return clicks;
+    if(key === 'cpc') return data.spend / clicks;
+    if(key === 'cvrclick') return data.cvr * 100 / data.ctr;
+    return 0;
+  }
+
+  function pacvueParseFormattedNum(str){
+    var s = String(str).replace(/[$,%]/g, '');
+    var mult = 1;
+    if(/K$/i.test(s)){ mult = 1000; s = s.replace(/K$/i, ''); }
+    else if(/M$/i.test(s)){ mult = 1000000; s = s.replace(/M$/i, ''); }
+    return parseFloat(s) * mult;
+  }
+
+  function pacvueGetMetricDisplay(data, key){
+    if(key in data) return data[key];
+    var spend = pacvueParseFormattedNum(data.spend);
+    var cpm = pacvueParseFormattedNum(data.cpm);
+    var ctr = pacvueParseFormattedNum(data.ctr);
+    var cvr = pacvueParseFormattedNum(data.cvr);
+    var impressions = spend / cpm * 1000;
+    var clicks = impressions * ctr / 100;
+    if(key === 'impressions') return pacvueFormatMetric('impressions', impressions);
+    if(key === 'clicks') return pacvueFormatMetric('clicks', clicks);
+    if(key === 'cpc') return pacvueFormatMetric('cpc', spend / clicks);
+    if(key === 'cvrclick') return pacvueFormatMetric('cvrclick', cvr * 100 / ctr);
+    return '';
+  }
+
+  function pacvueMetricDD(btn){
+    var panel = btn.nextElementSibling;
+    document.querySelectorAll('.metric-dd-panel.open').forEach(function(p){
+      if(p !== panel) p.classList.remove('open');
+    });
+    panel.classList.toggle('open');
+  }
+
+  document.addEventListener('click', function(e){
+    document.querySelectorAll('.metric-dropdown').forEach(function(dd){
+      if(!dd.contains(e.target)) dd.querySelector('.metric-dd-panel').classList.remove('open');
+    });
+  });
+
+  function pacvueMetricChange(cb){
+    var panel = cb.closest('.metric-dd-panel');
+    var boxes = Array.from(panel.querySelectorAll('input[type=checkbox]'));
+    var checked = boxes.filter(function(b){ return b.checked; });
+    if(checked.length > 3){ cb.checked = false; return; }
+    var selected = checked.map(function(b){ return b.value; });
+    var dd = panel.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = selected.length
+      ? selected.length + (selected.length === 1 ? ' metric' : ' metrics')
+      : 'None selected';
+    var card = panel.closest('.card');
+    card.querySelectorAll('[data-metrics]').forEach(function(el){
+      var data = JSON.parse(el.getAttribute('data-metrics'));
+      if(el.classList.contains('gmetrics')){
+        el.innerHTML = selected.map(function(k){
+          return '<div class="metric-row"><span>' + pacvueMetricLabels[k] + '</span><b>' + pacvueGetMetricDisplay(data, k) + '</b></div>';
+        }).join('') || '<div class="metric-row" style="opacity:.5;">No metric selected</div>';
+      } else {
+        el.innerHTML = selected.map(function(k){
+          return pacvueMetricLabels[k] + ' <b>' + pacvueGetMetricDisplay(data, k) + '</b>';
+        }).join(' · ') || '<span style="opacity:.5;">No metric selected</span>';
+      }
+    });
+  }
+
+  function pacvueShowCombo(card){
+    var combos = card.querySelector('.combo-list');
+    if(!combos) return;
+    var pop = document.getElementById('pacvuePopover');
+    var name = card.querySelector('.gname');
+    pop.innerHTML = '<div class="popover-title">' + (name ? name.textContent : 'Group') + ' — platform · ad type breakdown</div>' + combos.innerHTML;
+    pop.style.display = 'block';
+    var rect = card.getBoundingClientRect();
+    var top = rect.bottom + 6;
+    var left = rect.left;
+    var maxLeft = window.innerWidth - pop.offsetWidth - 8;
+    if(left > maxLeft) left = Math.max(8, maxLeft);
+    if(top + pop.offsetHeight > window.innerHeight - 8){
+      top = rect.top - pop.offsetHeight - 6;
+    }
+    pop.style.top = top + 'px';
+    pop.style.left = left + 'px';
+  }
+
+  function pacvueHideCombo(){
+    document.getElementById('pacvuePopover').style.display = 'none';
+  }
+
+  function pacvueFormatMetric(metric, val){
+    if(metric === 'roas') return val.toFixed(2);
+    if(metric === 'cvr' || metric === 'ctr' || metric === 'cvrclick') return val.toFixed(2) + '%';
+    if(metric === 'impressions' || metric === 'clicks'){
+      if(val >= 1000000) return (val / 1000000).toFixed(1) + 'M';
+      if(val >= 1000) return (val / 1000).toFixed(1) + 'K';
+      return Math.round(val).toString();
+    }
+    if(val >= 1000000) return '$' + (val / 1000000).toFixed(2) + 'M';
+    if(val >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
+    return '$' + val.toFixed(2);
+  }
+
+  function pacvueTagMetricChange(radio){
+    var panel = radio.closest('.metric-dd-panel');
+    var dd = panel.closest('.metric-dropdown');
+    var metric = radio.value;
+    dd.querySelector('.dd-label').textContent = pacvueMetricLabels[metric];
+    var card = dd.closest('.card');
+    card.querySelectorAll('.tag-bars').forEach(function(group){
+      var bars = Array.from(group.querySelectorAll('.tbar'));
+      var vals = bars.map(function(b){ return pacvueDerivedMetric(JSON.parse(b.getAttribute('data-metrics')), metric); });
+      var max = Math.max.apply(null, vals);
+      bars.forEach(function(b, i){
+        var v = vals[i];
+        var pct = max > 0 ? (v / max * 100) : 0;
+        var fill = b.querySelector('.tbar-fill');
+        fill.style.height = pct + '%';
+        fill.querySelector('.tbar-val').textContent = pacvueFormatMetric(metric, v);
+      });
+    });
+  }
+
+  function pacvuePlatformMetricChange(cb){
+    var panel = cb.closest('.metric-dd-panel');
+    var boxes = Array.from(panel.querySelectorAll('input[type=checkbox]'));
+    var checked = boxes.filter(function(b){ return b.checked; });
+    if(checked.length > 3){ cb.checked = false; return; }
+    var selected = checked.map(function(b){ return b.value; });
+    var dd = panel.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = selected.length
+      ? selected.length + (selected.length === 1 ? ' metric' : ' metrics')
+      : 'None selected';
+    var card = dd.closest('.card');
+    var groups = Array.from(card.querySelectorAll('.bar-group'));
+    var data = groups.map(function(g){ return JSON.parse(g.getAttribute('data-metrics')); });
+    var maxes = {};
+    selected.forEach(function(k){
+      maxes[k] = Math.max.apply(null, data.map(function(d){ return pacvueDerivedMetric(d, k); })) || 1;
+    });
+    var colors = ['var(--amber)', 'var(--accent)', 'var(--purple)'];
+    groups.forEach(function(g, gi){
+      var barSet = g.querySelector('.bar-set');
+      barSet.innerHTML = selected.map(function(k, ki){
+        var val = pacvueDerivedMetric(data[gi], k);
+        var pct = (val / maxes[k] * 100).toFixed(1);
+        return '<i style="height:' + pct + '%;background:' + colors[ki] + ';"></i>';
+      }).join('');
+    });
+    var legend = card.querySelector('.platform-legend');
+    legend.innerHTML = selected.map(function(k, ki){
+      return '<span><i class="dot" style="background:' + colors[ki] + ';"></i>' + pacvueMetricLabels[k] + '</span>';
+    }).join('') || '<span style="opacity:.5;">No metric selected</span>';
+
+    var levels = [1, 0.75, 0.5, 0.25, 0];
+    var leftKey = selected[0], rightKey = selected[2];
+    var leftAxis = card.querySelector('.baxis-left');
+    var rightAxis = card.querySelector('.baxis-right');
+    if(leftKey){
+      leftAxis.style.display = 'flex';
+      leftAxis.innerHTML = levels.map(function(f){
+        return '<span>' + pacvueFormatMetric(leftKey, maxes[leftKey] * f) + '</span>';
+      }).join('');
+    } else {
+      leftAxis.style.display = 'none';
+    }
+    if(rightKey){
+      rightAxis.style.display = 'flex';
+      rightAxis.innerHTML = levels.map(function(f){
+        return '<span>' + pacvueFormatMetric(rightKey, maxes[rightKey] * f) + '</span>';
+      }).join('');
+    } else {
+      rightAxis.style.display = 'none';
+    }
+  }
+
+  var pacvueBrandRateMetrics = ['roas', 'cvr', 'ctr', 'cpc', 'cpm', 'cvrclick'];
+
+  function pacvueBrandMetricChange(radio){
+    var dd = radio.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = pacvueMetricLabels[radio.value];
+    pacvueRenderBrandChart(dd.closest('.card'), radio.value);
+  }
+
+  function pacvueRenderBrandChart(card, metric){
+    var area = card.querySelector('.brand-chart-area');
+    var items = Array.from(area.querySelectorAll('.brand-item'));
+    var names = items.map(function(el){ return el.getAttribute('data-name'); });
+    var data = items.map(function(el){ return JSON.parse(el.getAttribute('data-metrics')); });
+    var vals = data.map(function(d){ return pacvueDerivedMetric(d, metric); });
+    var colors = ['var(--amber)', 'var(--accent)', 'var(--purple)', 'var(--mint)', 'var(--bad)', '#1f9e8a', 'var(--ink-faint)'];
+    var pieWrap = area.querySelector('.brand-pie-wrap');
+    var barWrap = area.querySelector('.brand-bar-wrap');
+    var legend = area.querySelector('.brand-legend');
+
+    if(pacvueBrandRateMetrics.indexOf(metric) !== -1){
+      pieWrap.style.display = 'none';
+      barWrap.style.display = 'flex';
+      var max = Math.max.apply(null, vals) || 1;
+      var groups = barWrap.querySelectorAll('.bar-group');
+      groups.forEach(function(g, i){
+        var pct = (vals[i] / max * 100).toFixed(1);
+        g.querySelector('.bar-set i').style.height = pct + '%';
+        g.querySelector('.bar-set i').style.background = colors[i];
+        g.querySelector('.bval').textContent = pacvueFormatMetric(metric, vals[i]);
+      });
+      legend.innerHTML = '<span>' + pacvueMetricLabels[metric] + ' by brand (not summable to a share, shown as a comparison)</span>';
+    } else {
+      barWrap.style.display = 'none';
+      pieWrap.style.display = 'flex';
+      var total = vals.reduce(function(a, b){ return a + b; }, 0) || 1;
+      var acc = 0;
+      var stops = vals.map(function(v, i){
+        var start = acc / total * 100;
+        acc += v;
+        var end = acc / total * 100;
+        return colors[i] + ' ' + start.toFixed(2) + '% ' + end.toFixed(2) + '%';
+      }).join(', ');
+      pieWrap.querySelector('.brand-pie').style.background = 'conic-gradient(' + stops + ')';
+      legend.innerHTML = names.map(function(n, i){
+        var pct = (vals[i] / total * 100).toFixed(1);
+        var valStr = pacvueFormatMetric(metric, vals[i]);
+        return '<span><i class="dot" style="background:' + colors[i] + ';"></i>' + n + ' <b class="bval2">' + valStr + '</b><span class="bpct">' + pct + '%</span></span>';
+      }).join('');
+    }
+  }
+
+  var pacvueTagTrendState = { parent: 'Scene', gran: 'D', metric: 'spend' };
+
+  function pacvueTagView(btn, view){
+    var card = btn.closest('.card');
+    card.querySelectorAll('.tag-view').forEach(function(v){
+      v.style.display = (v.dataset.view === view) ? 'flex' : 'none';
+    });
+    card.querySelectorAll('.view-toggle button').forEach(function(b){ b.classList.remove('on'); });
+    btn.classList.add('on');
+    card.querySelectorAll('.tag-only-bar').forEach(function(el){
+      el.style.display = (view === 'bar') ? '' : 'none';
+    });
+    card.querySelectorAll('.tag-only-trend').forEach(function(el){
+      el.style.display = (view === 'trend') ? '' : 'none';
+    });
+    if(view === 'trend') pacvueRenderTagTrend(card);
+  }
+
+  function pacvueTagParentChange(radio){
+    var dd = radio.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = radio.value;
+    pacvueTagTrendState.parent = radio.value;
+    pacvueRenderTagTrend(radio.closest('.card'));
+  }
+
+  function pacvueTagGran(el, gran){
+    el.parentElement.querySelectorAll('span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    pacvueTagTrendState.gran = gran;
+    pacvueRenderTagTrend(el.closest('.card'));
+  }
+
+  function pacvueTagTrendMetricChange(radio){
+    var dd = radio.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = pacvueMetricLabels[radio.value];
+    pacvueTagTrendState.metric = radio.value;
+    pacvueRenderTagTrend(radio.closest('.card'));
+  }
+
+  function pacvueTagPeriodLabel(gran, i, pointsCount){
+    var d = new Date(2026, 6, 17);
+    var stepsAgo = pointsCount - 1 - i;
+    if(gran === 'D'){ d.setDate(d.getDate() - stepsAgo); }
+    else if(gran === 'W'){ d.setDate(d.getDate() - stepsAgo * 7); }
+    else { d.setMonth(d.getMonth() - stepsAgo); }
+    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var mm = String(d.getMonth() + 1);
+    if(mm.length < 2) mm = '0' + mm;
+    var dd = String(d.getDate());
+    if(dd.length < 2) dd = '0' + dd;
+    return days[d.getDay()] + ',' + mm + '/' + dd + '/' + d.getFullYear();
+  }
+
+  function pacvueRenderTagTrend(card){
+    var parentName = pacvueTagTrendState.parent;
+    var gran = pacvueTagTrendState.gran;
+    var pointsCount = gran === 'D' ? 10 : (gran === 'W' ? 8 : 6);
+    var chart = Array.from(card.querySelectorAll('.tag-chart')).find(function(c){
+      return c.querySelector('.tag-chart-title').textContent === parentName;
+    });
+    if(!chart) return;
+    var metric = pacvueTagTrendState.metric;
+    var bars = Array.from(chart.querySelectorAll('.tbar'));
+    var colors = ['var(--amber)','var(--accent)','var(--purple)','var(--mint)','var(--bad)','var(--ink-faint)'];
+    var series = bars.map(function(b, idx){
+      var label = b.querySelector('.tbar-label').getAttribute('title');
+      var base = pacvueDerivedMetric(JSON.parse(b.getAttribute('data-metrics')), metric);
+      var pts = [];
+      for(var i = 0; i < pointsCount; i++){
+        var wave = 0.82 + 0.36 * (0.5 + 0.5 * Math.sin(i * 0.85 + idx * 1.3));
+        pts.push(base * wave);
+      }
+      return { label: label, color: colors[idx % colors.length], pts: pts };
+    });
+    var allVals = series.reduce(function(acc, s){ return acc.concat(s.pts); }, []);
+    var max = Math.max.apply(null, allVals) || 1;
+    var w = 640, h = 460, padLeft = 56, padRight = 8, padTop = 14, padBottom = 34;
+    var chartW = w - padLeft - padRight, chartH = h - padTop - padBottom;
+    var stepX = chartW / (pointsCount - 1);
+
+    var levels = [0, 0.25, 0.5, 0.75, 1];
+    var gridLines = levels.map(function(f){
+      var y = padTop + f * chartH;
+      return '<line x1="' + padLeft + '" y1="' + y + '" x2="' + w + '" y2="' + y + '" stroke="var(--line)" stroke-width="1"/>';
+    }).join('');
+
+    var yLabels = levels.map(function(f){
+      var y = padTop + f * chartH;
+      var val = max * (1 - f);
+      return '<text x="' + (padLeft - 8) + '" y="' + (y + 3) + '" text-anchor="end" font-size="8" fill="var(--ink-faint)">' + pacvueFormatMetric(metric, val) + '</text>';
+    }).join('');
+
+    var numLabels = Math.min(5, pointsCount);
+    var chosenIdx = [];
+    for(var k = 0; k < numLabels; k++){
+      var idx = Math.round(k * (pointsCount - 1) / (numLabels - 1));
+      if(chosenIdx.indexOf(idx) === -1) chosenIdx.push(idx);
+    }
+    var xLabels = chosenIdx.map(function(i){
+      var x = padLeft + i * stepX;
+      var lbl = pacvueTagPeriodLabel(gran, i, pointsCount);
+      var anchor = (i === 0) ? 'start' : (i === pointsCount - 1) ? 'end' : 'middle';
+      return '<text x="' + x + '" y="' + (h - 10) + '" text-anchor="' + anchor + '" font-size="8" fill="var(--ink-faint)">' + lbl + '</text>';
+    }).join('');
+
+    var lines = series.map(function(s){
+      var pts = s.pts.map(function(v, i){
+        var x = padLeft + i * stepX;
+        var y = padTop + (1 - v / max) * chartH;
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      }).join(' ');
+      return '<polyline points="' + pts + '" fill="none" stroke="' + s.color + '" stroke-width="1.3"/>';
+    }).join('');
+
+    var svg = card.querySelector('.tag-trend-svg');
+    svg.innerHTML = gridLines + yLabels + xLabels + lines;
+    var legend = card.querySelector('.tag-trend-legend');
+    legend.innerHTML = series.map(function(s){
+      return '<span><i class="dot" style="background:' + s.color + ';"></i>' + s.label + '</span>';
+    }).join('');
+  }
+
+  function pacvueTagRowToggle(tr){
+    var collapsed = tr.classList.toggle('collapsed');
+    var name = tr.dataset.tag;
+    var table = tr.closest('table');
+    table.querySelectorAll('tr[data-parent="' + name + '"]').forEach(function(r){
+      r.style.display = collapsed ? 'none' : '';
+      if(r.classList.contains('mid-row') && collapsed) r.classList.remove('collapsed');
+      if(r.classList.contains('mid-row')){
+        table.querySelectorAll('tr[data-parent="' + r.dataset.tag + '"]').forEach(function(gc){
+          gc.style.display = collapsed ? 'none' : '';
+        });
+      }
+    });
+  }
+
+  var pacvueAdTypeState = { gran: 'D', metric: 'spend' };
+
+  function pacvueAdTypeCheckedList(card){
+    return Array.from(card.querySelectorAll('.adtype-checklist input[type=checkbox]:checked'));
+  }
+
+  function pacvueAdTypeMetricChange(radio){
+    var dd = radio.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = pacvueMetricLabels[radio.value];
+    pacvueAdTypeState.metric = radio.value;
+    var card = dd.closest('.card');
+    pacvueRenderAdTypeTrend(card);
+    pacvueRenderAdTypeBar(card);
+    pacvueSortAdTypeTable(card, radio.value);
+  }
+
+  function pacvueSortAdTypeTable(card, metric){
+    var tbody = card.querySelector('.tag-table tbody');
+    if(!tbody) return;
+    var parentRows = Array.from(tbody.querySelectorAll('tr.parent-row'));
+    var blocks = parentRows.map(function(pr){
+      var tag = pr.dataset.tag;
+      var rows = [pr];
+      var next = pr.nextElementSibling;
+      while(next && next.dataset.parent === tag){
+        rows.push(next);
+        next = next.nextElementSibling;
+      }
+      var cells = pr.querySelectorAll('td');
+      var data = {
+        spend: pacvueParseFormattedNum(cells[1].textContent),
+        roas: parseFloat(cells[2].textContent),
+        cvr: parseFloat(cells[3].textContent),
+        ctr: parseFloat(cells[4].textContent),
+        cpm: pacvueParseFormattedNum(cells[6].textContent)
+      };
+      return { rows: rows, val: pacvueDerivedMetric(data, metric) };
+    });
+    blocks.sort(function(a, b){ return b.val - a.val; });
+    blocks.forEach(function(b){
+      b.rows.forEach(function(r){ tbody.appendChild(r); });
+    });
+  }
+
+  function pacvueAdTypeCheckboxChange(cb){
+    var panel = cb.closest('.metric-dd-panel');
+    var checked = panel.querySelectorAll('input[type=checkbox]:checked').length;
+    var dd = cb.closest('.metric-dropdown');
+    dd.querySelector('.dd-label').textContent = checked + ' selected';
+    var card = dd.closest('.card');
+    pacvueRenderAdTypeTrend(card);
+    pacvueRenderAdTypeBar(card);
+    pacvueRenderAdTypeLegend(card);
+  }
+
+  function pacvueAdTypeGran(el, gran){
+    el.parentElement.querySelectorAll('span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    pacvueAdTypeState.gran = gran;
+    pacvueRenderAdTypeTrend(el.closest('.card'));
+  }
+
+  function pacvueRenderAdTypeLegend(card){
+    var checkboxes = pacvueAdTypeCheckedList(card);
+    var legend = card.querySelector('.adtp-shared-legend');
+    legend.innerHTML = checkboxes.map(function(cb){
+      return '<span><i class="dot" style="background:' + cb.getAttribute('data-color') + ';"></i>' + cb.value + '</span>';
+    }).join('') || '<span style="opacity:.5;">No ad type selected</span>';
+  }
+
+  function pacvueRenderAdTypeTrend(card){
+    var gran = pacvueAdTypeState.gran;
+    var metric = pacvueAdTypeState.metric;
+    var pointsCount = gran === 'D' ? 10 : (gran === 'W' ? 8 : 6);
+    var checkboxes = pacvueAdTypeCheckedList(card);
+    var series = checkboxes.map(function(cb, idx){
+      var data = JSON.parse(cb.getAttribute('data-metrics'));
+      var base = pacvueDerivedMetric(data, metric);
+      var pts = [];
+      for(var i = 0; i < pointsCount; i++){
+        var wave = 0.82 + 0.36 * (0.5 + 0.5 * Math.sin(i * 0.85 + idx * 1.3));
+        pts.push(base * wave);
+      }
+      return { color: cb.getAttribute('data-color'), pts: pts };
+    });
+    var allVals = series.reduce(function(acc, s){ return acc.concat(s.pts); }, []);
+    var max = Math.max.apply(null, allVals) || 1;
+    var w = 340, h = 170, padLeft = 48, padRight = 8, padTop = 8, padBottom = 22;
+    var stepX = w / (pointsCount - 1);
+
+    var levels = [0, 0.25, 0.5, 0.75, 1];
+    var gridLines = levels.map(function(f){
+      var y = padTop + f * h;
+      return '<line x1="0" y1="' + y + '" x2="' + w + '" y2="' + y + '" stroke="var(--line)" stroke-width="1"/>';
+    }).join('');
+
+    var yLabels = levels.map(function(f){
+      var y = padTop + f * h;
+      var val = max * (1 - f);
+      return '<text x="-6" y="' + (y + 3) + '" text-anchor="end" font-size="8" fill="var(--ink-faint)">' + pacvueFormatMetric(metric, val) + '</text>';
+    }).join('');
+
+    var numLabels = Math.min(4, pointsCount);
+    var chosenIdx = [];
+    for(var k = 0; k < numLabels; k++){
+      var idx = Math.round(k * (pointsCount - 1) / (numLabels - 1));
+      if(chosenIdx.indexOf(idx) === -1) chosenIdx.push(idx);
+    }
+    var xLabels = chosenIdx.map(function(i){
+      var x = i * stepX;
+      var lbl = pacvueTagPeriodLabel(gran, i, pointsCount);
+      var anchor = (i === 0) ? 'start' : (i === pointsCount - 1) ? 'end' : 'middle';
+      return '<text x="' + x + '" y="' + (padTop + h + padBottom - 6) + '" text-anchor="' + anchor + '" font-size="8" fill="var(--ink-faint)">' + lbl + '</text>';
+    }).join('');
+
+    var lines = series.map(function(s, si){
+      var pts = s.pts.map(function(v, i){
+        var x = i * stepX;
+        var y = padTop + (1 - v / max) * h;
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      }).join(' ');
+      var width = si === 0 ? '1.6' : '1.3';
+      return '<polyline points="' + pts + '" fill="none" stroke="' + s.color + '" stroke-width="' + width + '"/>';
+    }).join('');
+
+    var svg = card.querySelector('.adtp-trend-svg');
+    svg.innerHTML = gridLines + yLabels + xLabels + lines;
+    pacvueRenderAdTypeLegend(card);
+  }
+
+  function pacvueRenderAdTypeBar(card){
+    var metric = pacvueAdTypeState.metric;
+    var checkboxes = pacvueAdTypeCheckedList(card);
+    var vals = checkboxes.map(function(cb){ return pacvueDerivedMetric(JSON.parse(cb.getAttribute('data-metrics')), metric); });
+    var max = Math.max.apply(null, vals) || 1;
+    var wrap = card.querySelector('.adtp-bar-chart');
+    wrap.innerHTML = checkboxes.map(function(cb, i){
+      var pct = (vals[i] / max * 100).toFixed(1);
+      var color = cb.getAttribute('data-color');
+      var valStr = pacvueFormatMetric(metric, vals[i]);
+      return '<div class="bar-group"><div class="bar-set"><i style="height:' + pct + '%;background:' + color + ';"></i></div><span class="bval">' + valStr + '</span></div>';
+    }).join('') || '<span style="opacity:.5;">No ad type selected</span>';
+  }
+
+  (function(){
+    var card = document.querySelector('.adtp-trend-svg').closest('.card');
+    pacvueRenderAdTypeTrend(card);
+    pacvueRenderAdTypeBar(card);
+    pacvueSortAdTypeTable(card, pacvueAdTypeState.metric);
+  })();
+</script>
+</body>
+</html>

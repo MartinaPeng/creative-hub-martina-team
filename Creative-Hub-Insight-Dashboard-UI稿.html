@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Creative Hub · Insight Dashboard UI 稿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #eef1ec;
+      --bg-elev: #f7f8f5;
+      --surface: #ffffff;
+      --ink: #14201a;
+      --ink-soft: #4a5a52;
+      --line: #d5ddd6;
+      --teal: #0f6b5c;
+      --teal-soft: #d8efe9;
+      --amber: #c47a12;
+      --amber-soft: #f7e8d0;
+      --rose: #b4233a;
+      --rose-soft: #f8e0e4;
+      --mint: #1f8a4c;
+      --mint-soft: #d9f0e3;
+      --blue: #1f5a8a;
+      --blue-soft: #dceaf5;
+      --shadow: 0 1px 0 rgba(20, 32, 26, 0.04), 0 12px 32px rgba(20, 32, 26, 0.06);
+      --radius: 14px;
+      --font: "Manrope", system-ui, sans-serif;
+      --display: "Syne", "Manrope", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #d9ebe4 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #efe6d4 0%, transparent 45%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    .app { max-width: 1320px; margin: 0 auto; padding: 20px 24px 48px; }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .brand h1 {
+      font-family: var(--display);
+      font-size: 1.55rem; font-weight: 800; margin: 0; letter-spacing: -0.03em;
+    }
+    .brand .sub { font-size: 0.8rem; color: var(--ink-soft); font-weight: 500; }
+    .badge-ui {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--teal);
+      background: var(--teal-soft); border-radius: 999px; padding: 4px 10px;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    select.filter {
+      appearance: none; border: 1px solid var(--line); background: var(--surface);
+      border-radius: 10px; padding: 8px 12px; font: inherit; font-size: 0.85rem;
+      color: var(--ink); cursor: pointer;
+    }
+
+    .flow-hint {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      margin-bottom: 14px; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600;
+    }
+    .flow-hint .step {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 8px; padding: 5px 10px;
+    }
+    .flow-hint .arrow { opacity: 0.45; }
+
+    .scenes {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+    }
+    .scene {
+      border: 1px solid var(--line); background: var(--surface);
+      border-radius: 999px; padding: 7px 12px; font-size: 0.78rem; font-weight: 600;
+      color: var(--ink-soft); cursor: pointer;
+    }
+    .scene:hover { border-color: var(--teal); color: var(--teal); }
+    .scene.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .scene .n {
+      display: inline-block; min-width: 1.1em; margin-right: 4px;
+      opacity: 0.7; font-weight: 800;
+    }
+
+    .scene-banner {
+      display: none; margin-bottom: 14px; background: var(--ink); color: #e8f2ee;
+      border-radius: var(--radius); padding: 14px 18px;
+    }
+    .scene-banner.show { display: block; }
+    .scene-banner strong { color: #fff; }
+    .scene-banner .path {
+      margin-top: 6px; font-size: 0.78rem; color: #9cb5ab; line-height: 1.45;
+    }
+    .exit {
+      display: inline-block; margin-top: 8px; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.02em; border-radius: 6px; padding: 3px 8px;
+    }
+    .exit.update { background: var(--teal-soft); color: var(--teal); }
+    .exit.campaign { background: var(--blue-soft); color: var(--blue); }
+    .exit.verify { background: var(--amber-soft); color: #8a5608; }
+
+    .kpis {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    .kpi {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 14px 16px; box-shadow: var(--shadow);
+      border: 1px solid rgba(213, 221, 214, 0.8);
+    }
+    .kpi .label { font-size: 0.72rem; color: var(--ink-soft); font-weight: 600; }
+    .kpi .value {
+      font-family: var(--display); font-size: 1.5rem; font-weight: 700;
+      margin-top: 4px; letter-spacing: -0.03em;
+    }
+    .kpi .delta { font-size: 0.72rem; margin-top: 4px; color: var(--ink-soft); font-weight: 600; }
+
+    .grid {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 14px; align-items: start;
+    }
+    @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+    .stack { display: flex; flex-direction: column; gap: 14px; }
+
+    .panel {
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid rgba(213, 221, 214, 0.85); box-shadow: var(--shadow); overflow: hidden;
+    }
+    .panel-hd {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; padding: 16px 18px 12px; border-bottom: 1px solid var(--line);
+    }
+    .panel-hd h2 {
+      font-family: var(--display); font-size: 1.05rem; margin: 0; letter-spacing: -0.02em;
+    }
+    .panel-hd p { margin: 4px 0 0; font-size: 0.76rem; color: var(--ink-soft); line-height: 1.4; }
+    .panel-bd { padding: 14px 18px 18px; }
+    .tag-scene {
+      font-size: 0.68rem; font-weight: 700; border-radius: 6px; padding: 3px 7px;
+      white-space: nowrap; background: var(--teal-soft); color: var(--teal);
+    }
+
+    .rec {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+      margin-bottom: 10px; background: var(--bg-elev);
+    }
+    .rec:last-child { margin-bottom: 0; }
+    .rec:hover { border-color: #b7cfc5; background: #fff; }
+    .rec-top { display: flex; gap: 12px; align-items: flex-start; }
+    .thumb {
+      width: 54px; height: 54px; border-radius: 10px; flex-shrink: 0;
+      display: grid; place-items: center; color: #fff; text-align: center;
+      font-size: 0.62rem; font-weight: 800; line-height: 1.15;
+      background: linear-gradient(145deg, #2a4a3f, #7aa896);
+    }
+    .thumb.q { background: linear-gradient(145deg, #5c1a28, #c46a7a); }
+    .thumb.g { background: linear-gradient(145deg, #1a3a5c, #6a9bc2); }
+    .thumb.v { background: linear-gradient(145deg, #1a4a2e, #5cb88a); }
+    .thumb.h { background: linear-gradient(145deg, #5c3a1a, #c49a5a); }
+    .thumb.f { background: linear-gradient(145deg, #4a2a5c, #9a7ab8); }
+    .rec h3 { margin: 0; font-size: 0.9rem; font-weight: 700; line-height: 1.35; }
+    .rec .signal { margin: 4px 0 0; font-size: 0.76rem; color: var(--ink-soft); line-height: 1.45; }
+    .pipeline {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      margin-top: 8px; font-size: 0.7rem; font-weight: 700; color: var(--ink-soft);
+    }
+    .pipeline span {
+      background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 2px 7px;
+    }
+    .pipeline .out-update { border-color: #9dceb5; color: var(--teal); background: var(--mint-soft); }
+    .pipeline .out-camp { border-color: #9db8ce; color: var(--blue); background: var(--blue-soft); }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .pill {
+      font-size: 0.68rem; font-weight: 700; border-radius: 6px; padding: 3px 7px;
+    }
+    .pill.warn { background: var(--amber-soft); color: #8a5608; }
+    .pill.danger { background: var(--rose-soft); color: var(--rose); }
+    .pill.ok { background: var(--mint-soft); color: var(--mint); }
+    .pill.blue { background: var(--blue-soft); color: var(--blue); }
+    .pill.neutral { background: #e8ece9; color: var(--ink-soft); }
+    .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .btn {
+      border: none; border-radius: 9px; padding: 7px 11px;
+      font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    }
+    .btn.primary { background: var(--teal); color: #fff; }
+    .btn.camp { background: var(--blue); color: #fff; }
+    .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+
+    .matrix {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    }
+    @media (max-width: 700px) { .matrix { grid-template-columns: 1fr; } }
+    .cell {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px;
+      background: #fff;
+    }
+    .cell .t { font-weight: 800; font-size: 0.82rem; }
+    .cell .d { font-size: 0.72rem; color: var(--ink-soft); margin-top: 4px; line-height: 1.4; }
+    .coverage {
+      margin-top: 10px; display: grid; gap: 6px;
+    }
+    .cov-line {
+      display: grid; grid-template-columns: 90px 1fr 56px; gap: 8px;
+      align-items: center; font-size: 0.72rem; font-weight: 600; color: var(--ink-soft);
+    }
+    .track { height: 8px; background: #e4ebe6; border-radius: 99px; overflow: hidden; }
+    .fill { height: 100%; border-radius: 99px; background: var(--teal); }
+    .fill.miss { background: var(--rose); }
+    .fill.warn { background: var(--amber); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    th {
+      text-align: left; font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--ink-soft); padding: 0 8px 8px 0;
+      border-bottom: 1px solid var(--line); font-weight: 700;
+    }
+    td { padding: 10px 8px 10px 0; border-bottom: 1px solid #e9eeea; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    .name { font-weight: 700; }
+    .muted { color: var(--ink-soft); }
+
+    .variants {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px;
+    }
+    @media (max-width: 700px) { .variants { grid-template-columns: repeat(2, 1fr); } }
+    .var {
+      aspect-ratio: 1; border-radius: 10px; border: 1px dashed #b7c5bc;
+      background: linear-gradient(160deg, #eef5f1, #d7e8df);
+      display: grid; place-items: center; font-size: 0.7rem; font-weight: 800; color: var(--teal);
+    }
+    .var.alt1 { background: linear-gradient(160deg, #f5f0ee, #e8d7d0); color: #8a5608; }
+    .var.alt2 { background: linear-gradient(160deg, #eef1f5, #d0dae8); color: var(--blue); }
+    .var.alt3 { background: linear-gradient(160deg, #f5f3ee, #e8e0c8); color: #6a5a20; }
+
+    .promo {
+      display: flex; gap: 14px; align-items: stretch; flex-wrap: wrap;
+    }
+    .promo-left { flex: 1 1 200px; }
+    .countdown {
+      font-family: var(--display); font-size: 1.8rem; font-weight: 800;
+      letter-spacing: -0.03em; color: var(--amber);
+    }
+    .promo-right {
+      flex: 2 1 280px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .sample {
+      border-radius: 10px; border: 1px solid var(--line); padding: 10px;
+      background: #fff; min-height: 88px;
+    }
+    .sample .l { font-size: 0.68rem; font-weight: 800; color: var(--ink-soft); }
+    .sample .b {
+      margin-top: 8px; height: 48px; border-radius: 8px;
+      background: linear-gradient(135deg, #c49a5a, #ead7b5);
+    }
+    .sample:nth-child(2) .b { background: linear-gradient(135deg, #5a8ac4, #b5d0ea); }
+    .sample:nth-child(3) .b { background: linear-gradient(135deg, #5ac48a, #b5ead0); }
+
+    .uplift {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    @media (max-width: 700px) { .uplift { grid-template-columns: 1fr; } }
+    .up-card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: #fff;
+    }
+    .up-card .t { font-size: 0.75rem; font-weight: 700; color: var(--ink-soft); }
+    .up-card .v {
+      font-family: var(--display); font-size: 1.35rem; font-weight: 800; margin-top: 4px;
+    }
+    .up-card .v.pos { color: var(--mint); }
+    .up-card .s { font-size: 0.72rem; color: var(--ink-soft); margin-top: 4px; }
+
+    .footnote {
+      margin-top: 22px; font-size: 0.75rem; color: var(--ink-soft);
+      line-height: 1.5; max-width: 80ch;
+    }
+    .footnote code {
+      font-size: 0.72rem; background: #e4ebe6; padding: 1px 5px; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Creative Hub</h1>
+        <span class="sub">Insight → AI → Creative / Campaign · UI 稿</span>
+        <span class="badge-ui">Mock v2</span>
+      </div>
+      <div class="filters">
+        <select class="filter"><option selected>近 14 天</option><option>近 7 天</option><option>近 30 天</option></select>
+        <select class="filter"><option selected>全部平台</option><option>Amazon</option><option>Walmart</option><option>ADSP</option></select>
+        <select class="filter"><option selected>全部 Brand</option><option>Brand A</option><option>Brand B</option></select>
+      </div>
+    </header>
+
+    <div class="flow-hint">
+      <span class="step">1 分析洞察</span><span class="arrow">→</span>
+      <span class="step">2 AI 生成 / 优化</span><span class="arrow">→</span>
+      <span class="step">3 更新 Creative 或创建 Campaign</span><span class="arrow">→</span>
+      <span class="step">4 验证 uplift</span>
+    </div>
+
+    <nav class="scenes" aria-label="闭环场景">
+      <button class="scene active" data-scene="all"><span class="n">*</span>全部场景</button>
+      <button class="scene" data-scene="1"><span class="n">1</span>质量检测</button>
+      <button class="scene" data-scene="2"><span class="n">2</span>跨平台应用</button>
+      <button class="scene" data-scene="3"><span class="n">3</span>多变体生成</button>
+      <button class="scene" data-scene="4"><span class="n">4</span>节日促销预热</button>
+      <button class="scene" data-scene="5"><span class="n">5</span>疲劳刷新</button>
+      <button class="scene" data-scene="7"><span class="n">7</span>败者止损</button>
+      <button class="scene" data-scene="12"><span class="n">12</span>验证回写</button>
+    </nav>
+
+    <div class="scene-banner" id="sceneBanner"></div>
+
+    <section class="kpis">
+      <div class="kpi"><div class="label">质量问题 Creative</div><div class="value">9</div><div class="delta">场景 1 · 待 AI 优化后更新</div></div>
+      <div class="kpi"><div class="label">跨平台未覆盖</div><div class="value">27</div><div class="delta">场景 2 · 高潜力缺口</div></div>
+      <div class="kpi"><div class="label">可多变体扩量</div><div class="value">14</div><div class="delta">场景 3 · Top 素材</div></div>
+      <div class="kpi"><div class="label">大促预热窗口</div><div class="value">18 天</div><div class="delta">场景 4 · 距 Prime 类节点</div></div>
+      <div class="kpi"><div class="label">近 14 天已验证 uplift</div><div class="value">+22%</div><div class="delta">场景 12 · Replace 后 ROAS</div></div>
+    </section>
+
+    <div class="grid">
+      <div class="stack">
+        <!-- Suggestion queue -->
+        <section class="panel" data-show="all 1 2 3 4 5 7">
+          <div class="panel-hd">
+            <div>
+              <h2>闭环建议队列</h2>
+              <p>每条建议带清晰出口：更新 Creative / 创建 Campaign</p>
+            </div>
+            <span class="tag-scene">主场景 1–4 + 补充</span>
+          </div>
+          <div class="panel-bd">
+
+            <!-- Scene 1 -->
+            <article class="rec" data-show="all 1">
+              <div class="rec-top">
+                <div class="thumb q">质检<br/>#01</div>
+                <div>
+                  <h3>质量检测：文案过小 + 安全区遮挡</h3>
+                  <p class="signal">Creative「Summer Hero v3」检出文字对比度不足、右下角安全区被促销角标遮挡。需先修问题，再更新在投 Creative。</p>
+                  <div class="pipeline">
+                    <span>检出问题</span>→<span>AI 优化</span>→<span class="out-update">更新 Creative</span>
+                  </div>
+                  <div class="meta">
+                    <span class="pill danger">场景 1 · 质量检测</span>
+                    <span class="pill warn">置信度 高</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn primary">AI 优化并更新 Creative</button>
+                    <button class="btn ghost">查看检测报告</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Scene 2 -->
+            <article class="rec" data-show="all 2">
+              <div class="rec-top">
+                <div class="thumb g">缺口<br/>#128</div>
+                <div>
+                  <h3>跨平台应用：Amazon 赢家尚未用于 Walmart SB</h3>
+                  <p class="signal">Asset Group #128 在 Amazon ROAS 4.2，Walmart / SB 未覆盖。建议 AI 生成符合 Walmart 规格的 Creative，并用其创建 Campaign。</p>
+                  <div class="pipeline">
+                    <span>高潜力缺口</span>→<span>AI 生成适配稿</span>→<span class="out-camp">创建 Campaign</span>
+                  </div>
+                  <div class="meta">
+                    <span class="pill blue">场景 2 · 跨平台应用</span>
+                    <span class="pill neutral">同族 · Ad Type 缺口</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn camp">AI 生成 → 创建 Campaign</button>
+                    <button class="btn ghost">查看覆盖矩阵</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Scene 3 -->
+            <article class="rec" data-show="all 3">
+              <div class="rec-top">
+                <div class="thumb v">变体<br/>×4</div>
+                <div>
+                  <h3>多变体生成：基于 Top 素材扩测试</h3>
+                  <p class="signal">「Kitchen Lifestyle A」近 14 天 ROAS 5.8。建议生成 4 个构图/文案变体，创建测试 Campaign 验证是否可规模化。</p>
+                  <div class="pipeline">
+                    <span>锁定赢家</span>→<span>多变体 AI 生成</span>→<span class="out-camp">创建 Campaign</span>
+                  </div>
+                  <div class="variants">
+                    <div class="var">原图</div>
+                    <div class="var alt1">构图 B</div>
+                    <div class="var alt2">文案 C</div>
+                    <div class="var alt3">场景 D</div>
+                  </div>
+                  <div class="meta" style="margin-top:10px">
+                    <span class="pill ok">场景 3 · 多变体</span>
+                    <span class="pill blue">出口 · 创建 Campaign</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn camp">生成变体并创建 Campaign</button>
+                    <button class="btn ghost">调整变体数量</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Scene 4 -->
+            <article class="rec" data-show="all 4">
+              <div class="rec-top">
+                <div class="thumb h">大促<br/>D-18</div>
+                <div>
+                  <h3>节日预热：Prime 类节点前 2–3 周样例</h3>
+                  <p class="signal">距离大促约 18 天。已基于历史赢家生成 3 组促销风格样例，建议提前确认并创建新 Campaign，避免临时仓促上线。</p>
+                  <div class="pipeline">
+                    <span>日历触发</span>→<span>AI 样例</span>→<span class="out-camp">提前创建 Campaign</span>
+                  </div>
+                  <div class="meta">
+                    <span class="pill warn">场景 4 · 节日促销</span>
+                    <span class="pill neutral">建议窗口：2–3 周前</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn camp">用样例创建 Campaign</button>
+                    <button class="btn ghost">换一批样例</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Scene 5 -->
+            <article class="rec" data-show="all 5">
+              <div class="rec-top">
+                <div class="thumb f">疲劳<br/>↓</div>
+                <div>
+                  <h3>疲劳刷新：高花费 CTR 连续下滑</h3>
+                  <p class="signal">「Promo Badge Heavy」Spend $6.1k，近 7 天 CTR ↓28%。质量合格但效果衰减，建议 AI 刷新变体后 Replace 在投 Creative。</p>
+                  <div class="pipeline">
+                    <span>疲劳标记</span>→<span>AI 刷新变体</span>→<span class="out-update">Replace Creative</span>
+                  </div>
+                  <div class="meta">
+                    <span class="pill warn">场景 5 · 疲劳刷新</span>
+                    <span class="pill danger">高花费</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn primary">AI 刷新并 Replace</button>
+                    <button class="btn ghost">暂缓加投</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Scene 7 -->
+            <article class="rec" data-show="all 7">
+              <div class="rec-top">
+                <div class="thumb q">止损<br/>$</div>
+                <div>
+                  <h3>败者止损：用同 Group 赢家替换</h3>
+                  <p class="signal">「UGC Flat Lay」高 Spend 低 ROAS。同 Asset Group 内 Lifestyle 主图表现更好，建议用赢家或 AI 变体 Replace。</p>
+                  <div class="pipeline">
+                    <span>投入失衡</span>→<span>赢家 / AI 变体</span>→<span class="out-update">Replace Creative</span>
+                  </div>
+                  <div class="meta">
+                    <span class="pill danger">场景 7 · 败者止损</span>
+                    <span class="pill ok">可对比 uplift</span>
+                  </div>
+                  <div class="actions">
+                    <button class="btn primary">用赢家 Replace</button>
+                    <button class="btn ghost">AI 生成后替换</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- Scene 2 coverage -->
+        <section class="panel" data-show="all 2">
+          <div class="panel-hd">
+            <div>
+              <h2>Asset Group 覆盖矩阵</h2>
+              <p>高潜力素材 × 平台 / Ad Type · 缺口即场景 2 触发点</p>
+            </div>
+            <span class="tag-scene">场景 2</span>
+          </div>
+          <div class="panel-bd">
+            <div class="matrix">
+              <div class="cell">
+                <div class="t">Group #128 · Summer Bowl</div>
+                <div class="d">Amazon 强 · Walmart / Display 缺口</div>
+                <div class="coverage">
+                  <div class="cov-line"><span>Amazon SB</span><div class="track"><div class="fill" style="width:88%"></div></div><span>已覆盖</span></div>
+                  <div class="cov-line"><span>Walmart SB</span><div class="track"><div class="fill miss" style="width:8%"></div></div><span>缺口</span></div>
+                  <div class="cov-line"><span>ADSP Display</span><div class="track"><div class="fill warn" style="width:22%"></div></div><span>弱覆盖</span></div>
+                </div>
+              </div>
+              <div class="cell">
+                <div class="t">Group #094 · Serum</div>
+                <div class="d">Amazon / Walmart 强 · SD 未建</div>
+                <div class="coverage">
+                  <div class="cov-line"><span>Amazon SB</span><div class="track"><div class="fill" style="width:80%"></div></div><span>已覆盖</span></div>
+                  <div class="cov-line"><span>Amazon SD</span><div class="track"><div class="fill miss" style="width:5%"></div></div><span>缺口</span></div>
+                  <div class="cov-line"><span>Walmart SB</span><div class="track"><div class="fill" style="width:74%"></div></div><span>已覆盖</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Scene 4 promo -->
+        <section class="panel" data-show="all 4">
+          <div class="panel-hd">
+            <div>
+              <h2>节日 / 促销预热台</h2>
+              <p>大促前 2–3 周给 AI 样例，引导提前创建 Campaign</p>
+            </div>
+            <span class="tag-scene">场景 4</span>
+          </div>
+          <div class="panel-bd">
+            <div class="promo">
+              <div class="promo-left">
+                <div class="muted" style="font-size:0.75rem;font-weight:700">距离下一大促节点</div>
+                <div class="countdown">18 天</div>
+                <p class="signal" style="margin-top:8px">建议本周确认样例风格，下周完成 Campaign 创建与素材审核。</p>
+                <div class="actions">
+                  <button class="btn camp">一键创建促销 Campaign</button>
+                </div>
+              </div>
+              <div class="promo-right">
+                <div class="sample"><div class="l">样例 A · 满减角标</div><div class="b"></div></div>
+                <div class="sample"><div class="l">样例 B · 生活方式</div><div class="b"></div>
+                <div class="sample"><div class="l">样例 C · 礼盒场景</div><div class="b"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <!-- Scene 3 variants board -->
+        <section class="panel" data-show="all 3">
+          <div class="panel-hd">
+            <div>
+              <h2>多变体草稿板</h2>
+              <p>基于高潜力素材生成 · 勾选后创建 Campaign</p>
+            </div>
+            <span class="tag-scene">场景 3</span>
+          </div>
+          <div class="panel-bd">
+            <table>
+              <thead><tr><th>源素材</th><th>计划变体</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="name">Kitchen Lifestyle A</div><div class="muted">ROAS 5.8</div></td>
+                  <td>4</td>
+                  <td><span class="pill blue">待生成</span></td>
+                </tr>
+                <tr>
+                  <td><div class="name">Serum Soft Light</div><div class="muted">ROAS 4.9</div></td>
+                  <td>3</td>
+                  <td><span class="pill ok">已生成</span></td>
+                </tr>
+                <tr>
+                  <td><div class="name">Bowl Set Detail</div><div class="muted">ROAS 4.2</div></td>
+                  <td>4</td>
+                  <td><span class="pill warn">生成中</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="actions" style="margin-top:12px">
+              <button class="btn camp">用已选变体创建 Campaign</button>
+              <button class="btn ghost">基于胜出 Tag 批量生成</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quality list -->
+        <section class="panel" data-show="all 1">
+          <div class="panel-hd">
+            <div>
+              <h2>质量问题清单</h2>
+              <p>先检测问题，再建议 AI 优化并更新 Creative</p>
+            </div>
+            <span class="tag-scene">场景 1</span>
+          </div>
+          <div class="panel-bd">
+            <table>
+              <thead><tr><th>Creative</th><th>问题</th><th>下一步</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="name">Summer Hero v3</td>
+                  <td class="muted">文案对比度 / 安全区</td>
+                  <td><span class="pill danger">AI 优化 → 更新</span></td>
+                </tr>
+                <tr>
+                  <td class="name">bowl_set_v2</td>
+                  <td class="muted">像素不符 Walmart SB</td>
+                  <td><span class="pill warn">Pixel → 更新</span></td>
+                </tr>
+                <tr>
+                  <td class="name">serum_hero_raw</td>
+                  <td class="muted">疑似拒审风险文案</td>
+                  <td><span class="pill warn">合规修复 → 更新</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Exit summary -->
+        <section class="panel" data-show="all 1 2 3 4 5 7 12">
+          <div class="panel-hd">
+            <div>
+              <h2>闭环出口一览</h2>
+              <p>更新 Creative vs 创建 Campaign</p>
+            </div>
+            <span class="tag-scene">分工</span>
+          </div>
+          <div class="panel-bd">
+            <div class="matrix">
+              <div class="cell">
+                <div class="t">更新 / Replace Creative</div>
+                <div class="d">场景 1 质量 · 5 疲劳 · 7 止损 · 10 合规<br/>原广告位继续投，换素材即可</div>
+              </div>
+              <div class="cell">
+                <div class="t">用 Creative 创建 Campaign</div>
+                <div class="d">场景 2 跨平台 · 3 多变体 · 4 大促 · 8 Tag 扩量<br/>新覆盖或新测试意图</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Scene 12 validation -->
+        <section class="panel" data-show="all 12 5 7 1">
+          <div class="panel-hd">
+            <div>
+              <h2>优化后验证回写</h2>
+              <p>公共尾部 · Replace / 新建后自动对比 7/14 天</p>
+            </div>
+            <span class="tag-scene">场景 12</span>
+          </div>
+          <div class="panel-bd">
+            <div class="uplift">
+              <div class="up-card">
+                <div class="t">Replace · Summer Hero</div>
+                <div class="v pos">+31% CTR</div>
+                <div class="s">换后 7 天 vs 换前 7 天</div>
+              </div>
+              <div class="up-card">
+                <div class="t">新 Campaign · Walmart</div>
+                <div class="v pos">ROAS 2.8</div>
+                <div class="s">由 Group #128 生成上线</div>
+              </div>
+              <div class="up-card">
+                <div class="t">多变体测试组</div>
+                <div class="v pos">1/4 胜出</div>
+                <div class="s">变体 B 建议扩量</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <p class="footnote">
+      UI 稿 v2 对齐文档 <code>Creative-Hub-报表与Insight能力梳理.md</code> 第 5.6 节：主场景 1–4 + 补充疲劳/止损/验证回写。
+      顶部可按场景过滤；每条建议标明 <code>更新 Creative</code> 或 <code>创建 Campaign</code>。
+      文件：<code>Creative-Hub-Insight-Dashboard-UI稿.html</code>
+    </p>
+  </div>
+
+  <script>
+    const banners = {
+      all: null,
+      1: {
+        title: "场景 1 · 质量检测",
+        path: "检出 Creative 问题 → 建议 AI 优化 → 更新 Creative",
+        exit: "update"
+      },
+      2: {
+        title: "场景 2 · Asset Group 跨平台应用",
+        path: "高潜力素材未覆盖平台 / Ad Type → AI 生成对应 Creative → 用 Creative 创建 Campaign",
+        exit: "campaign"
+      },
+      3: {
+        title: "场景 3 · 多变体 Creative 生成",
+        path: "锁定高潜力素材 → 多变体 AI 生成 → 用 Creative 创建 Campaign",
+        exit: "campaign"
+      },
+      4: {
+        title: "场景 4 · 节日 / 促销预热",
+        path: "大促前 2–3 周 → 提供 AI 样例 → 提前创建新 Campaign",
+        exit: "campaign"
+      },
+      5: {
+        title: "场景 5 · 疲劳刷新（补充）",
+        path: "效果衰减（非质量差）→ AI 刷新变体 → Replace 在投 Creative",
+        exit: "update"
+      },
+      7: {
+        title: "场景 7 · 败者止损（补充）",
+        path: "高 Spend 低 ROAS → 赢家 / AI 变体 Replace → 验证 uplift",
+        exit: "update"
+      },
+      12: {
+        title: "场景 12 · 优化后验证回写（公共尾部）",
+        path: "任何更新 / 新建后钉住变更事件 → Dashboard 展示 7/14 天 uplift",
+        exit: "verify"
+      }
+    };
+
+    const scenes = document.querySelectorAll(".scene");
+    const banner = document.getElementById("sceneBanner");
+    const blocks = document.querySelectorAll("[data-show]");
+
+    function apply(key) {
+      scenes.forEach((b) => b.classList.toggle("active", b.dataset.scene === key));
+      const conf = banners[key];
+      if (conf) {
+        const exitClass = conf.exit === "campaign" ? "campaign" : conf.exit === "verify" ? "verify" : "update";
+        const exitText = conf.exit === "campaign" ? "出口：创建 Campaign" : conf.exit === "verify" ? "出口：验证 uplift" : "出口：更新 Creative";
+        banner.innerHTML = `<strong>${conf.title}</strong><div class="path">${conf.path}</div><span class="exit ${exitClass}">${exitText}</span>`;
+        banner.classList.add("show");
+      } else {
+        banner.classList.remove("show");
+        banner.innerHTML = "";
+      }
+      blocks.forEach((el) => {
+        const keys = el.getAttribute("data-show").split(/\s+/);
+        el.style.display = (key === "all" || keys.includes(key)) ? "" : "none";
+      });
+    }
+
+    scenes.forEach((btn) => btn.addEventListener("click", () => apply(btn.dataset.scene)));
+  </script>
+</body>
+</html>
