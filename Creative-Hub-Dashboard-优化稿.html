@@ -82,7 +82,8 @@
     color:#fff; display:flex; align-items:center; justify-content:space-between;
     padding:10px 22px; font-size:.85rem;
   }
-  :root[data-theme="dark"] .topbar, @media (prefers-color-scheme: dark){ .topbar{ background:linear-gradient(90deg,#16233f,#0b1626); } }
+  :root[data-theme="dark"] .topbar{ background:linear-gradient(90deg,#16233f,#0b1626); }
+  @media (prefers-color-scheme: dark){ .topbar{ background:linear-gradient(90deg,#16233f,#0b1626); } }
   .topbar .left{display:flex;align-items:center;gap:10px;font-weight:700;}
   .topbar .logo{width:22px;height:22px;border-radius:6px;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;}
   .topbar .right{display:flex;align-items:center;gap:16px;color:#dbe6ff;font-weight:500;}
@@ -316,6 +317,256 @@
     .g3{grid-template-columns:1fr;}
     .widget-row .card{height:auto;}
   }
+
+  /* GenAI page */
+  .genai-shell{display:flex;min-height:640px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 24px 0;overflow:hidden;}
+  .genai-side{width:212px;flex-shrink:0;padding:16px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:1px;background:var(--surface-2);}
+  .genai-side .side-group-label{font-size:.64rem;color:var(--ink-faint);font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:22px 10px 6px;}
+  .genai-side .side-group-label:first-child{margin-top:2px;}
+  .genai-side .side-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;font-size:.82rem;font-weight:600;color:var(--ink-soft);cursor:pointer;border:1px solid transparent;}
+  .genai-side .side-item:hover{background:var(--surface);}
+  .genai-side .side-item.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);}
+  .genai-side .side-item .side-ico{width:18px;text-align:center;flex-shrink:0;}
+  .genai-side .side-item.sub{font-size:.78rem;}
+
+  .genai-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .genai-hint{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);font-size:.78rem;color:var(--ink-soft);}
+  .genai-quota{display:flex;align-items:center;gap:6px;color:var(--ink-soft);font-weight:700;white-space:nowrap;}
+  .genai-quota b{color:var(--ink);}
+
+  .genai-body{flex:1;display:flex;min-height:0;}
+  .genai-setting-col{width:380px;flex-shrink:0;border-right:1px solid var(--line);padding:16px 20px 20px;overflow-y:auto;}
+  .genai-result-col{flex:1;min-width:0;padding:16px 20px 20px;overflow-y:auto;display:flex;flex-direction:column;}
+  .gs-title{font-size:.85rem;font-weight:800;color:var(--ink);margin-bottom:14px;}
+
+  .genai-setting{display:none;flex-direction:column;gap:16px;}
+  .genai-setting.on{display:flex;}
+  .genai-result{display:none;flex-direction:column;gap:10px;flex:1;min-height:0;}
+  .genai-result.on{display:flex;}
+
+  .genai-subtabs{display:none;}
+  .genai-subtabs span{flex:1;text-align:center;padding:6px 4px;border-radius:6px;font-size:.72rem;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .genai-subtabs span.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+  .genai-subtabs span.disabled{opacity:.4;cursor:not-allowed;}
+  .genai-subpanel{display:none;flex-direction:column;gap:16px;}
+  .genai-subpanel.on{display:flex;}
+  .vg-source-panel{display:flex;flex-direction:column;gap:16px;}
+
+  .genai-field{display:flex;flex-direction:column;gap:6px;}
+  .genai-field .f-label{font-size:.76rem;font-weight:700;color:var(--ink);}
+  .genai-field .f-label .req{color:var(--bad);margin-left:2px;}
+  .genai-field .f-label .f-sub-inline{color:var(--ink-faint);font-weight:600;font-size:.68rem;margin-left:4px;}
+  .genai-field .f-sub{font-size:.68rem;color:var(--ink-faint);margin-top:-2px;}
+
+  .genai-upload-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .genai-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-weight:500;font-size:.76rem;padding:8px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .genai-btn:hover{background:var(--surface-2);}
+  .genai-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;width:100%;justify-content:center;padding:10px;font-size:.82rem;margin-top:2px;}
+  .genai-btn.primary:hover{opacity:.92;}
+  .genai-btn.primary .quota-cost{margin-left:6px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.2);font-size:.72rem;font-weight:700;}
+
+  .genai-thumb-picked{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--surface-2);}
+  .genai-thumb-picked .tpx{width:52px;height:52px;border-radius:8px;flex-shrink:0;}
+  .genai-thumb-picked .tmeta{flex:1;min-width:0;}
+  .genai-thumb-picked .tname{font-size:.78rem;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .genai-thumb-picked .tsize{font-size:.66rem;color:var(--ink-faint);}
+  .genai-thumb-picked .tremove{margin-left:auto;color:var(--ink-faint);cursor:pointer;font-size:.9rem;flex-shrink:0;}
+  .genai-thumb-picked .tremove:hover{color:var(--bad);}
+
+  .ai-detect-badge{background:var(--purple-soft);color:var(--purple);font-size:.6rem;font-weight:800;border-radius:999px;padding:2px 7px;white-space:nowrap;flex-shrink:0;}
+
+  .chip-group{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:.72rem;font-weight:600;padding:5px 10px;border-radius:999px;cursor:pointer;}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .chip.rec.on::after{content:" ★";font-size:.62rem;}
+
+  /* Advanced Settings: collapsed by default; Ad-Type-locked ratio, editable pixel size + format */
+  .f-label-row.adv-toggle{cursor:pointer;user-select:none;}
+  .adv-caret{color:var(--ink-faint);font-size:.7rem;flex-shrink:0;}
+  .ratio-custom{margin-top:8px;}
+  .ratio-px-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .pixel-inputs{display:flex;align-items:center;gap:3px;}
+  .pixel-inputs input{width:54px;flex:none;text-align:center;-moz-appearance:textfield;padding:8px 4px;}
+  .pixel-inputs input::-webkit-outer-spin-button,
+  .pixel-inputs input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .px-unit{font-size:.7rem;color:var(--ink-faint);margin-right:1px;}
+  .px-x{color:var(--ink-faint);font-weight:700;flex-shrink:0;}
+  .ratio-locked{font-size:.78rem;font-weight:700;color:var(--ink-soft);border:1px solid var(--line);border-radius:8px;padding:8px 8px;background:var(--surface);flex-shrink:0;}
+  select.genai-select.format-select{width:auto;min-width:70px;flex:1;padding:8px 6px;}
+
+  /* AI Generate Prompt trigger + popover */
+  .f-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .f-label-row .f-label{margin:0;}
+  .ai-prompt-btn{background:none;border:none;padding:0;color:var(--accent);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .ai-prompt-btn:hover{text-decoration:underline;}
+  .pa-modal{width:640px;max-width:92vw;max-height:70vh;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;}
+  .pa-modal-body{display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;padding:14px 18px 16px;overflow-y:auto;}
+  .pa-intro{font-size:.78rem;color:var(--ink-soft);line-height:1.5;flex-shrink:0;}
+  .pa-scenarios{flex-shrink:0;}
+  .pa-preview-col{flex:1;min-width:0;min-height:120px;display:flex;flex-direction:column;gap:8px;}
+  .pa-preview-text{flex:1;width:100%;font-size:.82rem;color:var(--ink);line-height:1.6;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface-2);font-family:inherit;resize:none;}
+  .pa-preview-text:focus{outline:none;border-color:var(--accent);background:var(--surface);}
+
+  .genai-select,.genai-textarea,.genai-input{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:inherit;}
+  .genai-textarea{resize:vertical;min-height:64px;}
+
+  .genai-result-toolbar{display:flex;gap:8px;flex-shrink:0;}
+  .genai-select-all{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--ink);cursor:pointer;flex-shrink:0;}
+  .genai-select-all input{accent-color:var(--accent);cursor:pointer;}
+  .genai-result-sub{font-size:.72rem;color:var(--ink-faint);font-weight:700;flex-shrink:0;}
+  .genai-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;align-content:start;}
+  .genai-result-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
+  .genai-result-card .rc-time{padding:6px 8px 0;font-size:.62rem;color:var(--ink-faint);font-weight:600;}
+  .creagen-gen-item{display:flex;flex-direction:column;gap:6px;}
+  .creagen-timestamp-row{font-size:.62rem;color:var(--ink-faint);font-weight:600;padding:0 2px;}
+  .creagen-title-wrap{display:flex;align-items:baseline;gap:5px;flex-shrink:0;}
+  .creagen-card-title{font-size:.8rem;font-weight:700;color:var(--ink);}
+  .creagen-edit-icon{color:var(--ink-faint);cursor:pointer;font-size:.72rem;display:inline-block;transform:scaleX(-1);}
+  .creagen-edit-icon:hover{color:var(--accent);}
+  .creagen-title-edit-input{width:110px;padding:4px 6px;font-size:.8rem;font-weight:700;}
+  .creagen-body-input{min-height:0;height:36px;resize:none;}
+  .creagen-input-row{display:flex;gap:8px;align-items:center;}
+  .creagen-input-row .genai-input{flex:1;min-width:0;}
+  .creagen-ai-btn{flex-shrink:0;display:flex;align-items:center;gap:4px;border:1px solid var(--amber);background:var(--amber-soft);color:var(--amber);font-size:.72rem;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+  .creagen-ai-btn:hover{opacity:.85;}
+  .creagen-logo-thumb{width:110px;height:78px;border-radius:8px;}
+  .creagen-image-grid{display:flex;flex-wrap:wrap;gap:12px;}
+  .creagen-image-grid .genai-result-card{width:160px;flex-shrink:0;}
+  .creagen-image-label{font-size:.76rem;font-weight:600;color:var(--ink);padding:8px 8px 0;}
+  .creagen-image-thumb{width:100%;aspect-ratio:1/1;margin-top:6px;}
+  .creagen-single-image .creagen-image-thumb{margin-top:0;}
+  .creagen-single-image{width:160px;}
+  .creagen-result-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;}
+  .creagen-gen-card{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--surface);min-width:0;}
+  .creagen-card-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .creagen-tabs{width:fit-content;flex-shrink:0;}
+  .creagen-tab-panel{display:flex;flex-direction:column;gap:16px;}
+  .creagen-preview-panel{border:1px solid var(--line);border-radius:10px;padding:14px;}
+  .creagen-preview-brand{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.85rem;color:var(--ink);}
+  .creagen-preview-logo{width:24px;height:24px;border-radius:50%;flex-shrink:0;}
+  .creagen-preview-sponsored{color:var(--ink-faint);font-weight:600;font-size:.8rem;}
+  .creagen-preview-more{margin-left:auto;color:var(--ink-faint);font-size:.9rem;}
+  .creagen-preview-card{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);margin-top:10px;min-width:0;}
+  .creagen-preview-text{flex:1;min-width:0;padding:12px;}
+  .creagen-preview-headline{font-weight:500;font-size:.82rem;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .creagen-preview-body{font-size:.72rem;color:var(--ink-faint);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .creagen-preview-thumb{width:100px;flex-shrink:0;}
+  .genai-result-card .rc-thumb{aspect-ratio:1/1;position:relative;}
+  .genai-result-card .rc-tag{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.45);color:#fff;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:5px;}
+  .genai-result-card .rc-select{position:absolute;top:6px;right:6px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.85);border-radius:4px;cursor:pointer;}
+  .genai-result-card .rc-select input{width:13px;height:13px;margin:0;accent-color:var(--accent);cursor:pointer;}
+  .genai-result-card .rc-meta{padding:7px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+  .genai-result-card .rc-info{font-size:.64rem;color:var(--ink-soft);font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rc-more-wrap{position:relative;flex-shrink:0;}
+  .rc-more{color:var(--ink-faint);cursor:pointer;font-size:.85rem;padding:0 2px;line-height:1;}
+  .rc-more:hover{color:var(--ink);}
+  .rc-more-menu{position:fixed;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:4px;z-index:1000;display:none;min-width:130px;}
+  .rc-more-menu.open{display:block;}
+  .rc-more-item{padding:6px 10px;border-radius:6px;font-size:.72rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap;}
+  .rc-more-item:hover{background:var(--surface-2);}
+
+  .genai-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink-faint);font-size:.82rem;}
+  .genai-empty .e-ico{font-size:2rem;opacity:.4;}
+
+  .genai-result-card .rc-copy{padding:0 8px 8px;font-size:.64rem;color:var(--ink-soft);line-height:1.4;}
+  .genai-result-card .rc-copy b{color:var(--ink);display:block;font-size:.68rem;margin-bottom:2px;}
+  .creopt-score-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);}
+  .creopt-diag{font-size:.74rem;color:var(--ink-soft);line-height:1.4;}
+
+  .genai-hint-left{display:flex;align-items:center;gap:14px;min-width:0;}
+  .genai-back{font-size:.76rem;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap;flex-shrink:0;cursor:pointer;}
+  .genai-back:hover{text-decoration:underline;}
+  .genai-hint-desc{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* GenAI gallery (landing) */
+  .genai-gallery{padding:20px 24px 24px;overflow-x:auto;}
+  .gg-board{display:flex;gap:16px;align-items:flex-start;}
+  .gg-col{flex:1 1 0;min-width:220px;max-width:280px;display:flex;flex-direction:column;}
+  .gg-col-head{font-size:.86rem;font-weight:800;color:var(--ink);padding-bottom:8px;border-bottom:2px solid var(--line);margin-bottom:8px;}
+  .gg-col-desc{font-size:.72rem;color:var(--ink-soft);line-height:1.45;margin-bottom:12px;}
+  .gg-col-cards{display:flex;flex-direction:column;gap:12px;}
+  .gg-card{display:flex;flex-direction:column;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 14px 12px;cursor:pointer;transition:border-color .12s,box-shadow .12s;}
+  .gg-card:hover{border-color:var(--accent);box-shadow:var(--shadow);}
+  .gg-card .gg-top{display:flex;align-items:center;gap:8px;}
+  .gg-card .gg-ico{font-size:1.15rem;flex-shrink:0;}
+  .gg-card .gg-name{font-size:.86rem;font-weight:800;color:var(--ink);}
+  .gg-card .gg-desc{font-size:.72rem;color:var(--ink-soft);line-height:1.5;flex:1;}
+  .gg-card .gg-cta{font-size:.72rem;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:4px;margin-top:2px;}
+
+  .genai-picked-list{display:flex;flex-direction:column;gap:6px;}
+  .genai-picked-list .tpx{width:36px;height:36px;border-radius:6px;}
+
+  /* Product picker modal */
+  .pp-overlay{position:fixed;inset:0;background:rgba(15,20,30,.45);z-index:2000;display:flex;align-items:center;justify-content:center;}
+  .pp-modal{width:720px;max-width:92vw;max-height:80vh;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;}
+  .pp-modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:800;font-size:.9rem;color:var(--ink);}
+  .pp-close{cursor:pointer;color:var(--ink-faint);font-size:1rem;}
+  .pp-close:hover{color:var(--ink);}
+  .pp-modal-body{display:flex;flex:1;min-height:0;}
+  .pp-platforms{width:140px;flex-shrink:0;border-right:1px solid var(--line);padding:10px 6px;display:flex;flex-direction:column;gap:2px;background:var(--surface-2);}
+  .pp-platform{padding:9px 10px;border-radius:8px;font-size:.8rem;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .pp-platform:hover{background:var(--surface);}
+  .pp-platform.on{background:var(--accent-soft);color:var(--accent);}
+  .pp-list-col{flex:1;min-width:0;display:flex;flex-direction:column;padding:12px 14px;}
+  .pp-search{margin-bottom:10px;flex-shrink:0;}
+  .pp-search input{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.8rem;background:var(--surface);color:var(--ink);}
+  .pp-list{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px;max-height:360px;}
+  .pp-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;}
+  .pp-row:hover{background:var(--surface-2);}
+  .pp-row.picked{background:var(--accent-soft);}
+  .pp-row .pp-check{width:16px;height:16px;border:2px solid var(--line);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;}
+  .pp-row.picked .pp-check{background:var(--accent);border-color:var(--accent);}
+  .pp-row .pp-thumb{width:36px;height:36px;border-radius:6px;flex-shrink:0;}
+  .pp-row .pp-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+  .pp-row .pp-name{font-size:.76rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pp-row .pp-id{font-size:.66rem;color:var(--ink-faint);}
+  .pp-modal-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid var(--line);flex-shrink:0;}
+  .pp-count{font-size:.76rem;color:var(--ink-soft);font-weight:700;}
+  .pp-count.max{color:var(--bad);}
+
+  /* Ad Type tree dropdown: 2-level, single-select, collapsed by default */
+  .tree-dd{position:relative;}
+  .tree-dd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:inherit;cursor:pointer;text-align:left;}
+  .tree-dd-btn:hover{background:var(--surface-2);}
+  .tree-dd-arrow{opacity:.6;flex-shrink:0;}
+  .tree-dd-panel{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:6px;z-index:30;display:none;max-height:260px;overflow-y:auto;}
+  .tree-dd-panel.open{display:block;}
+  .tree-node-head{display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:7px;font-size:.78rem;font-weight:700;color:var(--ink);cursor:pointer;}
+  .tree-node-head:hover{background:var(--surface-2);}
+  .tree-caret{display:inline-block;width:12px;font-size:.6rem;color:var(--ink-faint);transition:transform .12s;flex-shrink:0;}
+  .tree-node.open .tree-caret{transform:rotate(90deg);}
+  .tree-children{display:none;padding-left:20px;}
+  .tree-node.open .tree-children{display:block;}
+  .tree-leaf{padding:6px 8px;border-radius:7px;font-size:.76rem;color:var(--ink-soft);cursor:pointer;}
+  .tree-leaf:hover{background:var(--surface-2);color:var(--ink);}
+  .tree-leaf.sel{background:var(--accent-soft);color:var(--accent);font-weight:700;}
+  .tree-other{padding:6px 8px;border-radius:7px;font-size:.76rem;color:var(--ink-soft);cursor:pointer;}
+  .tree-other:hover{background:var(--surface-2);color:var(--ink);}
+  .tree-other.sel{background:var(--accent-soft);color:var(--accent);font-weight:700;}
+
+  /* Reference material toggle */
+  .ref-toggle-row{margin-bottom:8px;}
+  .ref-toggle-row:last-child{margin-bottom:0;}
+  .ref-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;}
+  .ref-switch{position:relative;display:inline-block;width:34px;height:19px;flex-shrink:0;}
+  .ref-switch input{position:absolute;opacity:0;width:0;height:0;}
+  .ref-slider{position:absolute;inset:0;background:var(--line);border-radius:999px;transition:background .15s;}
+  .ref-slider::before{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;background:#fff;border-radius:50%;transition:transform .15s;}
+  .ref-switch input:checked + .ref-slider{background:var(--accent);}
+  .ref-switch input:checked + .ref-slider::before{transform:translateX(15px);}
+  .ref-toggle-label{font-size:.8rem;font-weight:600;color:var(--ink);}
+  .ref-toggle-label .ref-count{color:var(--ink-faint);font-weight:600;margin-left:2px;}
+  .ref-info{color:var(--ink-faint);font-size:.72rem;cursor:help;}
+  .ref-upload-box{display:none;width:64px;height:64px;border:1px dashed var(--line);border-radius:10px;align-items:center;justify-content:center;color:var(--ink-faint);font-size:1.2rem;cursor:pointer;margin-top:6px;margin-left:42px;background:var(--surface-2);}
+  .ref-upload-box.on{display:flex;}
+
+  @media (max-width:980px){
+    .genai-shell{flex-direction:column;}
+    .genai-side{width:auto;flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--line);}
+    .genai-side .side-group-label{display:none;}
+    .genai-body{flex-direction:column;}
+    .genai-setting-col{width:auto;border-right:none;border-bottom:1px solid var(--line);}
+  }
 </style>
 </head>
 <body>
@@ -329,15 +580,16 @@
   <div class="pagehead">
     <h1>Creative Hub</h1>
     <div class="tabs">
-      <span class="active">Dashboard</span>
+      <span class="active" style="cursor:pointer;" onclick="pacvuePageSwitch(this,'dashboard')">Dashboard</span>
       <span>Creative</span>
-      <span>Asset</span>
       <span>Tag</span>
-      <span>AI Optimizer <span class="badge">Alpha</span></span>
-      <span>Log</span>
+      <span style="cursor:pointer;" onclick="pacvuePageSwitch(this,'genai')">GenAI <span class="badge">Alpha</span></span>
+      <span>Library</span>
+      <span id="tab-log" style="cursor:pointer;" onclick="pacvuePageSwitch(this,'log')">Log</span>
     </div>
   </div>
 
+  <div id="page-dashboard">
   <div class="toolbar">
     <div class="seg"><span class="active">Image</span><span>Video</span></div>
     <div class="filters">
@@ -1483,11 +1735,2137 @@
       </div>
     </div>
   </div>
+  </div><!-- /page-dashboard -->
 
+  <div id="page-genai" class="genai-page" style="display:none;">
+
+    <!-- ============ GenAI Landing Gallery ============ -->
+    <div id="genai-gallery" class="genai-gallery">
+      <div class="gg-board">
+
+        <div class="gg-col">
+          <div class="gg-col-head">🖼️ Image Generation</div>
+          <div class="gg-col-desc">Produce a ready-to-run image from scratch — off a product, an existing image, or any URL.</div>
+          <div class="gg-col-cards">
+            <div class="gg-card" onclick="genaiOpenTool('imggen','ig-product')">
+              <div class="gg-top"><span class="gg-ico">🛒</span><span class="gg-name">Product to Image</span></div>
+              <div class="gg-desc">Point at 1–3 products already connected to your account and get a ready-to-run ad image — no prompt writing needed.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('imggen','ig-image')">
+              <div class="gg-top"><span class="gg-ico">🖌️</span><span class="gg-name">Image to Image</span></div>
+              <div class="gg-desc">Start from an asset you already have — swap the background, restyle it, or lightly rework it while the product stays intact.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('imggen','ig-url')">
+              <div class="gg-top"><span class="gg-ico">🔗</span><span class="gg-name">URL to Image</span></div>
+              <div class="gg-desc">Paste any product page or image link — even outside your connected platforms — and let AI generate the ad image.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gg-col">
+          <div class="gg-col-head">🎬 Video Generation</div>
+          <div class="gg-col-desc">Produce a ready-to-run video from scratch — off a product, an existing image/clip, or any URL.</div>
+          <div class="gg-col-cards">
+            <div class="gg-card" onclick="genaiOpenTool('vidgen','vg-product')">
+              <div class="gg-top"><span class="gg-ico">🛒</span><span class="gg-name">Product to Video</span></div>
+              <div class="gg-desc">Feed in 1–3 connected products and get a short ad video built from their images and details — no shoot required.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('vidgen','vg-imagevideo')">
+              <div class="gg-top"><span class="gg-ico">🎬</span><span class="gg-name">Image/Video to Video</span></div>
+              <div class="gg-desc">Bring an existing image or clip to life with motion, pacing, and Ad Type-aware specs.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('vidgen','vg-url')">
+              <div class="gg-top"><span class="gg-ico">🔗</span><span class="gg-name">URL to Video</span></div>
+              <div class="gg-desc">Paste a product page link and get a short video ad generated straight from the page content.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gg-col">
+          <div class="gg-col-head">🧩 Creative Generation</div>
+          <div class="gg-col-desc">Generate a complete Creative — headline, subheadline, CTA, logo and image together — not just a single image.</div>
+          <div class="gg-col-cards">
+            <div class="gg-card" onclick="genaiOpenTool('creagen','cg-product')">
+              <div class="gg-top"><span class="gg-ico">🛒</span><span class="gg-name">Product to Creative</span></div>
+              <div class="gg-desc">Generate a full Creative — headline, subheadline, CTA, logo and image together — straight from a connected product.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('creagen','cg-url')">
+              <div class="gg-top"><span class="gg-ico">🔗</span><span class="gg-name">URL to Creative</span></div>
+              <div class="gg-desc">Paste any product URL and get a complete, ready-to-review Creative — copy and image together — without touching your product catalog.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('creopt')">
+              <div class="gg-top"><span class="gg-ico">🩺</span><span class="gg-name">Creative Optimization</span></div>
+              <div class="gg-desc">Run an AI quality/compliance check on an existing Creative, see its score and flagged issues, then apply one-click AI optimization to fix them.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gg-col">
+          <div class="gg-col-head">🧬 Variant Generation</div>
+          <div class="gg-col-desc">Already have a winner? Multiply it — resize it, or spin up a fresh batch of Creative variants — without redoing the design.</div>
+          <div class="gg-col-cards">
+            <div class="gg-card" onclick="genaiOpenTool('dim')">
+              <div class="gg-top"><span class="gg-ico">▦</span><span class="gg-name">Image Variants</span></div>
+              <div class="gg-desc">Got one hero image? Instantly resize it into every pixel your Ad Type needs — square, landscape, story — with smart cropping or canvas extension, no re-design.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('vdim')">
+              <div class="gg-top"><span class="gg-ico">▦</span><span class="gg-name">Video Variants</span></div>
+              <div class="gg-desc">Turn one video into every aspect ratio your placements require — 9:16, 1:1, 16:9 — without re-shooting or re-editing.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('crevar')">
+              <div class="gg-top"><span class="gg-ico">🧬</span><span class="gg-name">Creative Variants</span></div>
+              <div class="gg-desc">Start from an existing Creative or live Ad and generate multiple fresh variants of it — for testing angles or refreshing a fatigued winner.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gg-col">
+          <div class="gg-col-head">🔀 Translation</div>
+          <div class="gg-col-desc">Localize existing copy across Image/Video.</div>
+          <div class="gg-col-cards">
+            <div class="gg-card" onclick="genaiOpenTool('lang')">
+              <div class="gg-top"><span class="gg-ico">🌐</span><span class="gg-name">Image Translation</span></div>
+              <div class="gg-desc">Keep the visual, swap the words. Translate on-image copy and captions into new markets while layout and branding stay untouched.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+            <div class="gg-card" onclick="genaiOpenTool('vlang')">
+              <div class="gg-top"><span class="gg-ico">🌐</span><span class="gg-name">Video Translation</span></div>
+              <div class="gg-desc">Re-voice or re-caption an existing video for a new market while the footage and pacing stay exactly the same.</div>
+              <div class="gg-cta">Open →</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /gg-board -->
+    </div><!-- /genai-gallery -->
+
+    <!-- ============ GenAI Operation Workspace ============ -->
+    <div id="genai-workspace" style="display:none;">
+    <div class="genai-shell">
+      <div class="genai-side">
+        <div class="side-group-label">Image Generation</div>
+        <div class="side-item sub" data-mode="imggen" data-subtab="ig-product" onclick="genaiModeSub(this)"><span class="side-ico">🛒</span>Product to Image</div>
+        <div class="side-item sub" data-mode="imggen" data-subtab="ig-image" onclick="genaiModeSub(this)"><span class="side-ico">🖌️</span>Image to Image</div>
+        <div class="side-item sub" data-mode="imggen" data-subtab="ig-url" onclick="genaiModeSub(this)"><span class="side-ico">🔗</span>URL to Image</div>
+        <div class="side-group-label">Video Generation</div>
+        <div class="side-item sub" data-mode="vidgen" data-subtab="vg-product" onclick="genaiModeSub(this)"><span class="side-ico">🛒</span>Product to Video</div>
+        <div class="side-item sub" data-mode="vidgen" data-subtab="vg-imagevideo" onclick="genaiModeSub(this)"><span class="side-ico">🎬</span>Image/Video to Video</div>
+        <div class="side-item sub" data-mode="vidgen" data-subtab="vg-url" onclick="genaiModeSub(this)"><span class="side-ico">🔗</span>URL to Video</div>
+        <div class="side-group-label">Creative Generation</div>
+        <div class="side-item sub" data-mode="creagen" data-subtab="cg-product" onclick="genaiModeSub(this)"><span class="side-ico">🛒</span>Product to Creative</div>
+        <div class="side-item sub" data-mode="creagen" data-subtab="cg-url" onclick="genaiModeSub(this)"><span class="side-ico">🔗</span>URL to Creative</div>
+        <div class="side-item" data-mode="creopt" onclick="genaiMode(this)"><span class="side-ico">🩺</span>Creative Optimization</div>
+        <div class="side-group-label">Variant Generation</div>
+        <div class="side-item on" data-mode="dim" onclick="genaiMode(this)"><span class="side-ico">▦</span>Image Variants</div>
+        <div class="side-item" data-mode="vdim" onclick="genaiMode(this)"><span class="side-ico">▦</span>Video Variants</div>
+        <div class="side-item" data-mode="crevar" onclick="genaiMode(this)"><span class="side-ico">🧬</span>Creative Variants</div>
+        <div class="side-group-label">Translation</div>
+        <div class="side-item" data-mode="lang" onclick="genaiMode(this)"><span class="side-ico">🌐</span>Image Translation</div>
+        <div class="side-item" data-mode="vlang" onclick="genaiMode(this)"><span class="side-ico">🌐</span>Video Translation</div>
+      </div>
+
+      <div class="genai-main">
+        <div class="genai-hint">
+          <div class="genai-hint-left">
+            <a class="genai-back" onclick="genaiBackToGallery()">← All GenAI Tools</a>
+            <span class="genai-hint-desc">✦ <span id="genaiHintText">One click turns a single image into every size you need — ratios and formats included.</span></span>
+          </div>
+          <div class="genai-quota">📊 Remaining Quota: <b>49,964</b> <span title="Monthly generation credits remaining across Image + Video" style="cursor:help;">ⓘ</span></div>
+        </div>
+
+        <div class="genai-body">
+          <div class="genai-setting-col">
+            <div class="gs-title">Setting</div>
+
+            <div class="genai-setting on" data-mode-panel="dim">
+              <div class="genai-field">
+                <div class="f-label">Source Image <span class="req">*</span></div>
+                <div class="genai-thumb-picked">
+                  <div class="tpx" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"></div>
+                  <div class="tmeta"><div class="tname">nutrish-summer-hero.png</div><div class="tsize">1080 × 1080 · PNG · 2.1MB</div></div>
+                  <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                </div>
+                <div class="genai-upload-row">
+                  <button type="button" class="genai-btn">⭱ Upload</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Ad Type <span class="req">*</span></div>
+                <div class="tree-dd">
+                  <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                    <span class="tree-dd-label">Amazon - SB Product Collection</span>
+                    <span class="tree-dd-arrow">▾</span>
+                  </button>
+                  <div class="tree-dd-panel">
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf sel" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                      </div>
+                    </div>
+                    <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                  </div>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Target Pixels <span class="req">*</span></div>
+                <div class="f-sub">Recommended set for the selected Ad Type</div>
+                <div class="chip-group">
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">1080×1080</span>
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">1200×628</span>
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">1080×1920</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">970×250</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">300×250</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">160×600</span>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Crop Behavior</div>
+                <select class="genai-select">
+                  <option>Smart crop (may trim edges)</option>
+                  <option>Extend canvas (preserve full image)</option>
+                </select>
+              </div>
+              <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 3</span></button>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="lang">
+              <div class="genai-field">
+                <div class="f-label">Source Asset <span class="req">*</span></div>
+                <div class="genai-upload-row">
+                  <button type="button" class="genai-btn">⭱ Upload</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Target Language(s) <span class="req">*</span></div>
+                <div class="chip-group">
+                  <span class="chip on" onclick="genaiChipToggle(this)">Spanish (ES)</span>
+                  <span class="chip on" onclick="genaiChipToggle(this)">French (FR)</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">German (DE)</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">Japanese (JA)</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">Portuguese (PT-BR)</span>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                <textarea class="genai-textarea" placeholder="e.g. keep tone playful, avoid discount language"></textarea>
+              </div>
+              <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 2</span></button>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="imggen">
+              <div class="genai-subtabs">
+                <span class="on" data-subtab="ig-product" onclick="genaiSubtab(this)">Product</span>
+                <span data-subtab="ig-image" onclick="genaiSubtab(this)">Image</span>
+                <span data-subtab="ig-url" onclick="genaiSubtab(this)">URL</span>
+              </div>
+
+              <div class="genai-subpanel on" data-subpanel="ig-product">
+                <div class="genai-field">
+                  <div class="f-label">Product(s) <span class="f-sub-inline">(1–3)</span> <span class="req">*</span></div>
+                  <div class="genai-upload-row">
+                    <button type="button" class="genai-btn" onclick="openProductPicker('ig')">🔍 Change Product</button>
+                    <button type="button" class="genai-btn" onclick="genaiResetPicked(this)">↺ Reset</button>
+                  </div>
+                  <div class="genai-picked-list" data-picked="ig">
+                    <div class="genai-thumb-picked">
+                      <div class="tpx" style="background:linear-gradient(135deg,#e8a33d,#c97a1f);"></div>
+                      <div class="tmeta"><div class="tname">100 Pcs Colorful Soft Crepe Papers Tissue Papers Crepe...</div><div class="tsize">Amazon · ID: B0CC8CZYBP</div></div>
+                      <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Reference</div>
+                  <div class="ref-toggle-row">
+                    <label class="ref-toggle">
+                      <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                      <span class="ref-toggle-label">Image <span class="ref-count">0/3</span></span>
+                      <span class="ref-info" title="Up to 3 reference images to guide style, composition, or branding">ⓘ</span>
+                    </label>
+                    <div class="ref-upload-box"><span>+</span></div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">Amazon - SB Product Collection</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1200" data-ratio="1.9108" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="628" data-ratio="1.9108" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">1.91:1</span></div>
+                      <select class="genai-select format-select">
+                        <option>JPG</option>
+                        <option>PNG</option>
+                        <option>WebP</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label-row"><div class="f-label">Prompt <span class="req">*</span></div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                  <textarea class="genai-textarea" placeholder="e.g. lifestyle scene, holiday theme"></textarea>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 1</span></button>
+              </div>
+
+              <div class="genai-subpanel" data-subpanel="ig-image">
+                <div class="genai-field">
+                  <div class="f-label">Source Image <span class="req">*</span></div>
+                  <div class="genai-upload-row"><button type="button" class="genai-btn">⭱ Upload</button><button type="button" class="genai-btn">🗂 Asset Library</button></div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Reference</div>
+                  <div class="ref-toggle-row">
+                    <label class="ref-toggle">
+                      <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                      <span class="ref-toggle-label">Image <span class="ref-count">0/3</span></span>
+                      <span class="ref-info" title="Up to 3 reference images to guide style, composition, or branding">ⓘ</span>
+                    </label>
+                    <div class="ref-upload-box"><span>+</span></div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">Amazon - SB Product Collection</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1200" data-ratio="1.9108" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="628" data-ratio="1.9108" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">1.91:1</span></div>
+                      <select class="genai-select format-select">
+                        <option>JPG</option>
+                        <option>PNG</option>
+                        <option>WebP</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Prompt <span class="req">*</span></div>
+                  <textarea class="genai-textarea" placeholder="e.g. change background to a beach scene, keep product unchanged"></textarea>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 1</span></button>
+              </div>
+
+              <div class="genai-subpanel" data-subpanel="ig-url">
+                <div class="genai-field">
+                  <div class="f-label">Product or Image URL <span class="req">*</span></div>
+                  <div class="f-sub">Any retailer — not limited to connected platforms. We'll detect whether it's a product page or a direct image link.</div>
+                  <input type="text" class="genai-input" placeholder="https://www.example.com/product-or-image..." oninput="genaiUrlDetect(this)" />
+                  <div class="genai-thumb-picked url-product-preview" style="display:none;margin-top:8px;">
+                    <div class="tpx" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"></div>
+                    <div class="tmeta"><div class="tname">Product detected from URL</div><div class="tsize url-product-meta">Amazon · ID: —</div></div>
+                    <span class="ai-detect-badge">✨ AI Detected</span>
+                    <span class="tremove" title="Clear" onclick="genaiUrlClear(this)">✕</span>
+                  </div>
+                  <div class="genai-thumb-picked url-image-preview" style="display:none;margin-top:8px;">
+                    <div class="tpx" style="background:linear-gradient(135deg,#23976a,#166b4b);"></div>
+                    <div class="tmeta"><div class="tname">Image detected from URL</div><div class="tsize">Direct image link</div></div>
+                    <span class="ai-detect-badge">✨ AI Detected</span>
+                    <span class="tremove" title="Clear" onclick="genaiUrlClear(this)">✕</span>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Reference</div>
+                  <div class="ref-toggle-row">
+                    <label class="ref-toggle">
+                      <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                      <span class="ref-toggle-label">Image <span class="ref-count">0/3</span></span>
+                      <span class="ref-info" title="Up to 3 reference images to guide style, composition, or branding">ⓘ</span>
+                    </label>
+                    <div class="ref-upload-box"><span>+</span></div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">ADSP - Responsive eCommerce</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1200" data-ratio="1" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="1200" data-ratio="1" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">1:1</span></div>
+                      <select class="genai-select format-select">
+                        <option>JPG</option>
+                        <option>PNG</option>
+                        <option>WebP</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label-row"><div class="f-label">Prompt <span class="req">*</span></div><button type="button" class="ai-prompt-btn url-ai-prompt-btn" style="display:none;" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                  <textarea class="genai-textarea" placeholder="e.g. clean studio background"></textarea>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 1</span></button>
+              </div>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="vdim">
+              <div class="genai-field">
+                <div class="f-label">Source Video <span class="req">*</span></div>
+                <div class="genai-thumb-picked">
+                  <div class="tpx" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"></div>
+                  <div class="tmeta"><div class="tname">nutrish-summer-hero.mp4</div><div class="tsize">1080 × 1920 · MP4 · 8.4MB</div></div>
+                  <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                </div>
+                <div class="genai-upload-row">
+                  <button type="button" class="genai-btn">⭱ Upload</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Ad Type <span class="req">*</span> <span class="f-sub-inline">(video)</span></div>
+                <div class="tree-dd">
+                  <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                    <span class="tree-dd-label">ADSP - Video</span>
+                    <span class="tree-dd-arrow">▾</span>
+                  </button>
+                  <div class="tree-dd-panel">
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Sponsored Brands Video</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Video</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                      </div>
+                    </div>
+                    <div class="tree-node">
+                      <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                      <div class="tree-children">
+                        <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                      </div>
+                    </div>
+                    <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                  </div>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Target Aspect Ratios <span class="req">*</span></div>
+                <div class="f-sub">Recommended set for the selected Ad Type</div>
+                <div class="chip-group">
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">9:16</span>
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">1:1</span>
+                  <span class="chip on rec" onclick="genaiChipToggle(this)">16:9</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">4:5</span>
+                </div>
+              </div>
+              <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 10</span></button>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="vlang">
+              <div class="genai-field">
+                <div class="f-label">Source Video <span class="req">*</span></div>
+                <div class="genai-upload-row">
+                  <button type="button" class="genai-btn">⭱ Upload</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Target Language(s) <span class="req">*</span></div>
+                <div class="chip-group">
+                  <span class="chip on" onclick="genaiChipToggle(this)">Spanish (ES)</span>
+                  <span class="chip on" onclick="genaiChipToggle(this)">French (FR)</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">German (DE)</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">Japanese (JA)</span>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Dub or Caption <span class="req">*</span></div>
+                <select class="genai-select"><option>Re-voice (AI dub)</option><option>Subtitle track only</option><option>Re-voice + on-screen text</option></select>
+              </div>
+              <div class="genai-field">
+                <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                <textarea class="genai-textarea" placeholder="e.g. keep energetic tone"></textarea>
+              </div>
+              <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 8</span></button>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="vidgen">
+              <div class="genai-subtabs">
+                <span class="on" data-subtab="vg-product" onclick="genaiSubtab(this)">Product</span>
+                <span data-subtab="vg-imagevideo" onclick="genaiSubtab(this)">Image/Video</span>
+                <span data-subtab="vg-url" onclick="genaiSubtab(this)">URL</span>
+              </div>
+
+              <div class="genai-subpanel on" data-subpanel="vg-product">
+                <div class="genai-field">
+                  <div class="f-label">Model Source <span class="req">*</span></div>
+                  <div class="seg">
+                    <span class="active" style="cursor:pointer;" data-source="pacvue" onclick="genaiSourceToggle(this)">Pacvue</span>
+                    <span style="cursor:pointer;" data-source="amazon" onclick="genaiSourceToggle(this)">Amazon</span>
+                  </div>
+                </div>
+
+                <div class="vg-source-panel" data-source-panel="pacvue">
+                  <div class="genai-field">
+                    <div class="f-label">Product(s) <span class="f-sub-inline">(1–3)</span> <span class="req">*</span></div>
+                    <div class="genai-upload-row">
+                      <button type="button" class="genai-btn" onclick="openProductPicker('vg')">🔍 Select Product</button>
+                      <button type="button" class="genai-btn" onclick="genaiResetPicked(this)">↺ Reset</button>
+                    </div>
+                    <div class="genai-picked-list" data-picked="vg"></div>
+                  </div>
+                  <div class="genai-field">
+                    <div class="f-label">Reference</div>
+                    <div class="ref-toggle-row">
+                      <label class="ref-toggle">
+                        <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                        <span class="ref-toggle-label">Image <span class="ref-count">0/3</span></span>
+                        <span class="ref-info" title="Up to 3 reference images to guide style, composition, or branding">ⓘ</span>
+                      </label>
+                      <div class="ref-upload-box"><span>+</span></div>
+                    </div>
+                  </div>
+                  <div class="genai-field">
+                    <div class="f-label">Ad Type <span class="req">*</span></div>
+                    <div class="tree-dd">
+                      <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                        <span class="tree-dd-label">Amazon - Sponsored Brands Video</span>
+                        <span class="tree-dd-arrow">▾</span>
+                      </button>
+                      <div class="tree-dd-panel">
+                        <div class="tree-node">
+                          <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                          <div class="tree-children">
+                            <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Sponsored Brands Video</div>
+                          </div>
+                        </div>
+                        <div class="tree-node">
+                          <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                          <div class="tree-children">
+                            <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                          </div>
+                        </div>
+                        <div class="tree-node">
+                          <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                          <div class="tree-children">
+                            <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                          </div>
+                        </div>
+                        <div class="tree-node">
+                          <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                          <div class="tree-children">
+                            <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                          </div>
+                        </div>
+                        <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="genai-field ratio-field">
+                    <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                      <div class="f-label">Specs</div>
+                      <span class="adv-caret">▾</span>
+                    </div>
+                    <div class="ratio-custom" style="display:none;">
+                      <div class="ratio-px-row">
+                        <div class="pixel-inputs">
+                          <input type="number" class="genai-input px-w" value="1920" data-ratio="1.7778" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                          <span class="px-x">×</span>
+                          <input type="number" class="genai-input px-h" value="1080" data-ratio="1.7778" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                        </div>
+                        <div class="ratio-locked"><span class="ratio-locked-val">16:9</span></div>
+                        <select class="genai-select format-select">
+                          <option>MP4</option>
+                          <option>MOV</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="genai-field">
+                    <div class="f-label-row"><div class="f-label">Prompt <span class="req">*</span></div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                    <textarea class="genai-textarea" placeholder="e.g. compare 3 flavors side by side"></textarea>
+                  </div>
+                  <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 5</span></button>
+                </div>
+
+                <div class="vg-source-panel" data-source-panel="amazon" style="display:none;">
+                  <div class="genai-field">
+                    <div class="f-label">Profile <span class="req">*</span></div>
+                    <select class="genai-select">
+                      <option>Virtual Profile</option>
+                    </select>
+                  </div>
+                  <div class="genai-field">
+                    <div class="f-label">Product <span class="req">*</span></div>
+                    <div class="genai-thumb-picked">
+                      <div class="tpx" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"></div>
+                      <div class="tmeta"><div class="tname">B002J4UPW8 (Pack of 2)</div><div class="tsize">Amazon · ID: B09LK9MCYX</div></div>
+                      <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                    </div>
+                  </div>
+                  <div class="genai-field">
+                    <div class="f-label">Reference</div>
+                    <div class="ref-toggle-row">
+                      <label class="ref-toggle">
+                        <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                        <span class="ref-toggle-label">Logo</span>
+                        <span class="ref-info" title="Include your brand logo as a reference asset">ⓘ</span>
+                      </label>
+                      <div class="ref-upload-box"><span>+</span></div>
+                    </div>
+                    <div class="ref-toggle-row">
+                      <label class="ref-toggle">
+                        <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                        <span class="ref-toggle-label">Image <span class="ref-count">0/10</span></span>
+                        <span class="ref-info" title="Up to 10 reference images">ⓘ</span>
+                      </label>
+                      <div class="ref-upload-box"><span>+</span></div>
+                    </div>
+                    <div class="ref-toggle-row">
+                      <label class="ref-toggle">
+                        <span class="ref-switch"><input type="checkbox" checked onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                        <span class="ref-toggle-label">Video <span class="ref-count">0/10</span></span>
+                        <span class="ref-info" title="Up to 10 reference videos">ⓘ</span>
+                      </label>
+                      <div class="ref-upload-box on"><span>+</span></div>
+                    </div>
+                  </div>
+                  <button type="button" class="genai-btn primary" title="Powered by Amazon's native AI video generation" onclick="genaiGenerate(this)">✨ Generate Video</button>
+                </div>
+              </div>
+
+              <div class="genai-subpanel" data-subpanel="vg-imagevideo">
+                <div class="genai-field">
+                  <div class="f-label">Source Image / Video <span class="req">*</span></div>
+                  <div class="genai-upload-row"><button type="button" class="genai-btn">⭱ Upload</button><button type="button" class="genai-btn">🗂 Asset Library</button></div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                  <textarea class="genai-textarea" placeholder="e.g. slow pan across product, warm morning light"></textarea>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span> <span class="f-sub-inline">(video)</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">ADSP - Video</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Sponsored Brands Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1080" data-ratio="0.5625" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="1920" data-ratio="0.5625" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">9:16</span></div>
+                      <select class="genai-select format-select">
+                        <option>MP4</option>
+                        <option>MOV</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 5</span></button>
+              </div>
+
+              <div class="genai-subpanel" data-subpanel="vg-url">
+                <div class="genai-field">
+                  <div class="f-label">Product URL <span class="req">*</span></div>
+                  <div class="f-sub">Any retailer — not limited to connected platforms</div>
+                  <input type="text" class="genai-input" placeholder="https://www.example.com/product/..." />
+                </div>
+                <div class="genai-field">
+                  <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                  <textarea class="genai-textarea" placeholder="e.g. energetic unboxing style"></textarea>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">ADSP - Video</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Sponsored Brands Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Video</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1080" data-ratio="0.5625" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="1920" data-ratio="0.5625" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">9:16</span></div>
+                      <select class="genai-select format-select">
+                        <option>MP4</option>
+                        <option>MOV</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 5</span></button>
+              </div>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="creagen">
+              <div class="genai-subtabs">
+                <span class="on" data-subtab="cg-product" onclick="genaiSubtab(this)">Product</span>
+                <span data-subtab="cg-url" onclick="genaiSubtab(this)">URL</span>
+              </div>
+
+              <div class="genai-subpanel on" data-subpanel="cg-product">
+                <div class="genai-field">
+                  <div class="f-label">Product(s) <span class="f-sub-inline">(1–3)</span> <span class="req">*</span></div>
+                  <div class="genai-upload-row">
+                    <button type="button" class="genai-btn" onclick="openProductPicker('cg')">🔍 Select Product</button>
+                    <button type="button" class="genai-btn" onclick="genaiResetPicked(this)">↺ Reset</button>
+                  </div>
+                  <div class="genai-picked-list" data-picked="cg"></div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Reference</div>
+                  <div class="ref-toggle-row">
+                    <label class="ref-toggle">
+                      <span class="ref-switch"><input type="checkbox" onchange="refToggle(this)"><span class="ref-slider"></span></span>
+                      <span class="ref-toggle-label">Image <span class="ref-count">0/3</span></span>
+                      <span class="ref-info" title="Up to 3 reference images to guide style, composition, or branding">ⓘ</span>
+                    </label>
+                    <div class="ref-upload-box"><span>+</span></div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">Amazon - SB Product Collection</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field cg-image-qty-field">
+                  <div class="f-label">Image Quantity</div>
+                  <select class="genai-select">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1200" data-ratio="1.9108" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="628" data-ratio="1.9108" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">1.91:1</span></div>
+                      <select class="genai-select format-select">
+                        <option>JPG</option>
+                        <option>PNG</option>
+                        <option>WebP</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field">
+                  <div class="f-label-row"><div class="f-label">Prompt <span class="req">*</span></div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                  <textarea class="genai-textarea" placeholder="e.g. lifestyle scene, holiday theme"></textarea>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 2</span></button>
+              </div>
+
+              <div class="genai-subpanel" data-subpanel="cg-url">
+                <div class="genai-field">
+                  <div class="f-label">Product URL <span class="req">*</span></div>
+                  <div class="f-sub">Any retailer — not limited to connected platforms</div>
+                  <input type="text" class="genai-input" placeholder="https://www.example.com/product/..." />
+                </div>
+                <div class="genai-field">
+                  <div class="f-label">Ad Type <span class="req">*</span></div>
+                  <div class="tree-dd">
+                    <button type="button" class="tree-dd-btn" onclick="event.stopPropagation();treeDDToggle(this)">
+                      <span class="tree-dd-label">ADSP - Responsive eCommerce</span>
+                      <span class="tree-dd-arrow">▾</span>
+                    </button>
+                    <div class="tree-dd-panel">
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Amazon</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB Product Collection</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SD Image</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ADSP</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf sel" onclick="treeLeafSelect(this)">Responsive eCommerce</div>
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Walmart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">SB</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">Instacart</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Display Banner</div>
+                        </div>
+                      </div>
+                      <div class="tree-node">
+                        <div class="tree-node-head" onclick="treeNodeToggle(this)"><span class="tree-caret">▸</span><span class="tree-node-name">ChatGPT</span></div>
+                        <div class="tree-children">
+                          <div class="tree-leaf" onclick="treeLeafSelect(this)">Standard Ads</div>
+                        </div>
+                      </div>
+                      <div class="tree-other" onclick="treeLeafSelectOther(this)">Other</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="genai-field ratio-field">
+                  <div class="f-label-row adv-toggle" onclick="ratioToggleCustom(this)">
+                    <div class="f-label">Specs</div>
+                    <span class="adv-caret">▾</span>
+                  </div>
+                  <div class="ratio-custom" style="display:none;">
+                    <div class="ratio-px-row">
+                      <div class="pixel-inputs">
+                        <input type="number" class="genai-input px-w" value="1200" data-ratio="1" oninput="pixelSync(this,'w')"><span class="px-unit">px</span>
+                        <span class="px-x">×</span>
+                        <input type="number" class="genai-input px-h" value="1200" data-ratio="1" oninput="pixelSync(this,'h')"><span class="px-unit">px</span>
+                      </div>
+                      <div class="ratio-locked"><span class="ratio-locked-val">1:1</span></div>
+                      <select class="genai-select format-select">
+                        <option>JPG</option>
+                        <option>PNG</option>
+                        <option>WebP</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 2</span></button>
+              </div>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="crevar">
+              <div class="genai-field">
+                <div class="f-label">Source Creative / Ad <span class="req">*</span></div>
+                <div class="genai-thumb-picked">
+                  <div class="tpx" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"></div>
+                  <div class="tmeta"><div class="tname">CR-10234 · Nutrish Summer Push</div><div class="tsize">SB Product Collection · Amazon</div></div>
+                  <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                </div>
+                <div class="genai-upload-row"><button type="button" class="genai-btn">🔍 Select Creative / Ad</button></div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label"># of Variants</div>
+                <select class="genai-select"><option>3</option><option>5</option><option>10</option></select>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Vary</div>
+                <div class="chip-group">
+                  <span class="chip on" onclick="genaiChipToggle(this)">Headline</span>
+                  <span class="chip on" onclick="genaiChipToggle(this)">Image angle</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">CTA</span>
+                  <span class="chip" onclick="genaiChipToggle(this)">Background</span>
+                </div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                <textarea class="genai-textarea" placeholder="e.g. keep brand colors, try more playful headlines"></textarea>
+              </div>
+              <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 6</span></button>
+            </div>
+
+            <div class="genai-setting" data-mode-panel="creopt">
+              <div class="genai-field">
+                <div class="f-label">Source Creative / Ad <span class="req">*</span></div>
+                <div class="genai-thumb-picked">
+                  <div class="tpx" style="background:linear-gradient(135deg,#d1403f,#992622);"></div>
+                  <div class="tmeta"><div class="tname">CR-10255 · Instacart Fresh Launch</div><div class="tsize">Shoppable Display · Instacart</div></div>
+                  <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
+                </div>
+                <div class="genai-upload-row"><button type="button" class="genai-btn">🔍 Select Creative / Ad</button></div>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Step 1</div>
+                <button type="button" class="genai-btn primary">🩺 Run Quality &amp; Compliance Check</button>
+              </div>
+              <div class="genai-field">
+                <div class="f-label">Step 2 <span class="f-sub-inline">(unlocks after Step 1)</span></div>
+                <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 2</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="genai-result-col">
+            <div class="gs-title" style="display:flex;align-items:center;justify-content:space-between;">Result<a href="#log" target="_blank" class="tag-page-link">Log ↗</a></div>
+
+            <div class="genai-result on" data-result-panel="dim">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:28</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Square</span></div>
+                  <div class="rc-meta"><div class="rc-info">1080×1080 · 1:1 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:28</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);aspect-ratio:1.91/1;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Landscape</span></div>
+                  <div class="rc-meta"><div class="rc-info">1200×628 · 1.91:1 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:28</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Story / Vertical</span></div>
+                  <div class="rc-meta"><div class="rc-info">1080×1920 · 9:16 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="genai-result" data-result-panel="lang">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:25</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">ES</span></div>
+                  <div class="rc-meta"><div class="rc-info">Spanish · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:25</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">FR</span></div>
+                  <div class="rc-meta"><div class="rc-info">French · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="genai-result" data-result-panel="imggen">
+              <div class="genai-empty"><span class="e-ico">🖼️</span><div>Set the requirements first.</div></div>
+            </div>
+
+            <div class="genai-result" data-result-panel="vdim">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:20</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Story</span></div>
+                  <div class="rc-meta"><div class="rc-info">1080×1920 · 9:16 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:20</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Square</span></div>
+                  <div class="rc-meta"><div class="rc-info">1080×1080 · 1:1 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:20</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);aspect-ratio:16/9;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Landscape</span></div>
+                  <div class="rc-meta"><div class="rc-info">1920×1080 · 16:9 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="genai-result" data-result-panel="vlang">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:18</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">ES</span></div>
+                  <div class="rc-meta"><div class="rc-info">Spanish · 1080×1920 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:18</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">FR</span></div>
+                  <div class="rc-meta"><div class="rc-info">French · 1080×1920 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="genai-result" data-result-panel="vidgen">
+              <div class="genai-empty"><span class="e-ico">🎬</span><div>Set the requirements first.</div></div>
+            </div>
+
+            <div class="genai-result" data-result-panel="creagen">
+              <div class="genai-empty"><span class="e-ico">🧩</span><div>Set the requirements first.</div></div>
+            </div>
+
+            <div class="genai-result" data-result-panel="crevar">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 13:30</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#4c6fe0,#2b3f9e);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">V1</span></div>
+                  <div class="rc-meta"><div class="rc-info">Variant 1 · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 13:30</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">V2</span></div>
+                  <div class="rc-meta"><div class="rc-info">Variant 2 · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 13:30</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">V3</span></div>
+                  <div class="rc-meta"><div class="rc-info">Variant 3 · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="genai-result" data-result-panel="creopt">
+              <div class="genai-result-toolbar">
+                <button type="button" class="genai-btn">Save to Library</button>
+                <button type="button" class="genai-btn">Download</button>
+              </div>
+              <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
+              <div class="genai-result-sub">Step 1 result · Quality &amp; Compliance Score</div>
+              <div class="creopt-score-row">
+                <span class="diag-score bad">31</span>
+                <div class="creopt-diag">Primary image contains a comparative claim overlay requiring substantiation; CTA contrast below platform minimum.</div>
+              </div>
+              <div class="genai-result-sub" style="margin-top:6px;">Step 2 result · After AI Optimize</div>
+              <div class="genai-result-grid">
+                <div class="genai-result-card">
+                  <div class="rc-time">2026-07-23 14:27</div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#3a5cd8,#22337a);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">Optimized</span></div>
+                  <div class="rc-meta"><div class="rc-info">Score 78 <span style="color:var(--good);">▲ +47</span></div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /genai-workspace -->
+
+  </div><!-- /page-genai -->
+
+  <div id="page-log" style="display:none;">
+    <div class="pagehead" style="border-bottom:none;padding-bottom:0;">
+      <h1 style="font-size:1.1rem;margin-bottom:0;">Log</h1>
+    </div>
+    <div class="grid g1" style="margin-top:16px;">
+      <div class="card" style="min-height:220px;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:.85rem;">
+        Activity log coming soon.
+      </div>
+    </div>
+  </div><!-- /page-log -->
 
 </div>
 <div id="pacvuePopover" class="group-popover"></div>
+
+<div id="ppOverlay" class="pp-overlay" style="display:none;" onclick="if(event.target===this) closeProductPicker()">
+  <div class="pp-modal">
+    <div class="pp-modal-head">
+      <span>Select Product</span>
+      <span class="pp-close" onclick="closeProductPicker()">✕</span>
+    </div>
+    <div class="pp-modal-body">
+      <div class="pp-platforms">
+        <div class="pp-platform on" data-platform="amazon" onclick="ppSwitchPlatform(this)">Amazon</div>
+        <div class="pp-platform" data-platform="adsp" onclick="ppSwitchPlatform(this)">ADSP</div>
+        <div class="pp-platform" data-platform="walmart" onclick="ppSwitchPlatform(this)">Walmart</div>
+        <div class="pp-platform" data-platform="instacart" onclick="ppSwitchPlatform(this)">Instacart</div>
+      </div>
+      <div class="pp-list-col">
+        <div class="pp-search"><input type="text" placeholder="Search product name or ID" oninput="ppSearch(this)" /></div>
+        <div class="pp-list" id="ppList"></div>
+      </div>
+    </div>
+    <div class="pp-modal-foot">
+      <span class="pp-count" id="ppCount">0/3 selected</span>
+      <button type="button" class="genai-btn primary" style="width:auto;padding:8px 18px;" onclick="confirmProductPicker()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="promptAiOverlay" class="pp-overlay" style="display:none;" onclick="if(event.target===this) closePromptAi()">
+  <div class="pa-modal">
+    <div class="pp-modal-head">
+      <span>AI Generate Prompt</span>
+      <span class="pp-close" onclick="closePromptAi()">✕</span>
+    </div>
+    <div class="pa-modal-body">
+      <div class="pa-intro">Our AI analyzes your product's name, images, and details to automatically generate a tailored prompt for the scenario you select below.</div>
+      <div class="pa-scenarios chip-group">
+        <div class="pa-scenario chip on" data-scenario="social-proof" onclick="paSelectScenario(this)">Trust &amp; Reviews</div>
+        <div class="pa-scenario chip" data-scenario="feature-highlight" onclick="paSelectScenario(this)">Feature Highlights</div>
+        <div class="pa-scenario chip" data-scenario="use-cases" onclick="paSelectScenario(this)">Use Cases</div>
+        <div class="pa-scenario chip" data-scenario="target-audience" onclick="paSelectScenario(this)">Audience Targeting</div>
+        <div class="pa-scenario chip" data-scenario="competitor-comparison" onclick="paSelectScenario(this)">Competitor Comparison</div>
+        <div class="pa-scenario chip" data-scenario="pain-points" onclick="paSelectScenario(this)">Pain Points &amp; Solutions</div>
+        <div class="pa-scenario chip" data-scenario="trending-now" onclick="paSelectScenario(this)">Trending &amp; New Products</div>
+      </div>
+      <div class="pa-preview-col">
+        <div class="f-sub">Preview</div>
+        <textarea class="pa-preview-text" id="paPreviewText"></textarea>
+      </div>
+    </div>
+    <div class="pp-modal-foot">
+      <span></span>
+      <button type="button" class="genai-btn primary" style="width:auto;padding:8px 18px;" onclick="confirmPromptAi()">✨ Apply Prompt</button>
+    </div>
+  </div>
+</div>
 <script>
+  function pacvuePageSwitch(el, page){
+    document.querySelectorAll('.tabs span').forEach(function(s){ s.classList.remove('active'); });
+    el.classList.add('active');
+    document.getElementById('page-dashboard').style.display = (page === 'dashboard') ? '' : 'none';
+    document.getElementById('page-genai').style.display = (page === 'genai') ? '' : 'none';
+    document.getElementById('page-log').style.display = (page === 'log') ? '' : 'none';
+    if(page === 'genai') genaiBackToGallery();
+  }
+
+  if(location.hash === '#log'){
+    pacvuePageSwitch(document.getElementById('tab-log'), 'log');
+  }
+
+  var genaiHints = {
+    dim: 'One click turns a single image into every size you need — ratios and formats included.',
+    lang: 'Keep the visual, swap the words — translate on-image copy into new languages instantly.',
+    imggen: 'Generate net-new ad images from a connected product, an existing image, or any product URL.',
+    vdim: 'Turn one video into every aspect ratio your placements need — no re-shoot required.',
+    vlang: 'Re-voice or re-caption a video for a new market — footage and pacing stay the same.',
+    vidgen: 'Turn a product, image/video, or URL into a short ad video.',
+    creagen: 'Generate a full Creative — headline, CTA, logo, and image — from a product or URL.',
+    crevar: 'Start from an existing Creative or live Ad and generate fresh variants.',
+    creopt: 'Run an AI quality check on a Creative, then one-click optimize what it finds.'
+  };
+
+  var genaiSubHints = {
+    'ig-product': 'Generate net-new ad images from a connected product.',
+    'ig-image': 'Generate net-new ad images from an existing image.',
+    'ig-url': 'Generate net-new ad images from any product or image URL.',
+    'vg-product': 'Turn a connected product into a short ad video.',
+    'vg-imagevideo': 'Turn an existing image or video into a short ad video.',
+    'vg-url': 'Turn any product URL into a short ad video.',
+    'cg-product': 'Generate a full Creative from a connected product.',
+    'cg-url': 'Generate a full Creative from any product URL.'
+  };
+
+  function genaiOpenTool(mode, subtab){
+    document.getElementById('genai-gallery').style.display = 'none';
+    document.getElementById('genai-workspace').style.display = '';
+    var sideItem = subtab
+      ? document.querySelector('.genai-side .side-item[data-mode="' + mode + '"][data-subtab="' + subtab + '"]')
+      : document.querySelector('.genai-side .side-item[data-mode="' + mode + '"]');
+    if(sideItem){
+      if(sideItem.dataset.subtab) genaiModeSub(sideItem); else genaiMode(sideItem);
+    }
+    var page = document.getElementById('page-genai');
+    if(page) page.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
+  function genaiBackToGallery(){
+    document.getElementById('genai-workspace').style.display = 'none';
+    document.getElementById('genai-gallery').style.display = '';
+  }
+
+  function genaiMode(el){
+    var mode = el.dataset.mode;
+    var side = el.closest('.genai-side');
+    side.querySelectorAll('.side-item').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    var shell = el.closest('.genai-shell');
+    shell.querySelectorAll('.genai-setting').forEach(function(p){ p.classList.toggle('on', p.dataset.modePanel === mode); });
+    shell.querySelectorAll('.genai-result').forEach(function(p){ p.classList.toggle('on', p.dataset.resultPanel === mode); });
+    var hintEl = shell.querySelector('#genaiHintText');
+    if(hintEl) hintEl.textContent = genaiHints[mode] || '';
+  }
+
+  function genaiModeSub(el){
+    genaiMode(el);
+    var subtab = el.dataset.subtab;
+    if(!subtab) return;
+    var shell = el.closest('.genai-shell');
+    var subEl = shell.querySelector('.genai-setting[data-mode-panel="' + el.dataset.mode + '"] .genai-subtabs span[data-subtab="' + subtab + '"]');
+    if(subEl) genaiSubtab(subEl);
+  }
+
+  function genaiSubtab(el){
+    if(el.classList.contains('disabled')) return;
+    var panelId = el.dataset.subtab;
+    var wrap = el.closest('.genai-setting');
+    wrap.querySelectorAll('.genai-subtabs span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    wrap.querySelectorAll('.genai-subpanel').forEach(function(p){ p.classList.toggle('on', p.dataset.subpanel === panelId); });
+    var shell = el.closest('.genai-shell');
+    var hintEl = shell && shell.querySelector('#genaiHintText');
+    if(hintEl && genaiSubHints[panelId]) hintEl.textContent = genaiSubHints[panelId];
+  }
+
+  function genaiChipToggle(el){
+    el.classList.toggle('on');
+  }
+
+  function genaiRemoveThumb(el){
+    var box = el.closest('.genai-thumb-picked');
+    if(box) box.remove();
+  }
+
+  function genaiResetPicked(el){
+    var container = el.closest('.genai-field').querySelector('.genai-picked-list');
+    if(container) container.innerHTML = '';
+  }
+
+  function treeDDToggle(btn){
+    var dd = btn.closest('.tree-dd');
+    var panel = dd.querySelector('.tree-dd-panel');
+    document.querySelectorAll('.tree-dd-panel.open').forEach(function(p){
+      if(p !== panel) p.classList.remove('open');
+    });
+    panel.classList.toggle('open');
+  }
+
+  function treeNodeToggle(head){
+    var node = head.closest('.tree-node');
+    var panel = head.closest('.tree-dd-panel');
+    panel.querySelectorAll('.tree-node').forEach(function(n){
+      if(n !== node) n.classList.remove('open');
+    });
+    node.classList.toggle('open');
+  }
+
+  var AD_TYPE_SPECS = {
+    'SB Product Collection': {label:'1.91:1', w:1200, h:628},
+    'SD Image': {label:'1:1', w:1200, h:1200},
+    'Responsive eCommerce': {label:'1:1', w:1200, h:1200},
+    'Standard': {label:'1.2:1', w:300, h:250},
+    'SB': {label:'1.91:1', w:1200, h:628},
+    'Display Banner': {label:'3.88:1', w:970, h:250},
+    'Sponsored Brands Video': {label:'16:9', w:1920, h:1080},
+    'Video': {label:'9:16', w:1080, h:1920}
+  };
+
+  function specsSetRequired(ratioField, required){
+    if(!ratioField) return;
+    var label = ratioField.querySelector('.f-label-row .f-label');
+    var req = label && label.querySelector('.req');
+    if(required && !req){
+      label.insertAdjacentHTML('beforeend', ' <span class="req">*</span>');
+    } else if(!required && req){
+      req.remove();
+    }
+  }
+
+  function specsSetExpanded(ratioField, expanded){
+    if(!ratioField) return;
+    var panel = ratioField.querySelector('.ratio-custom');
+    panel.style.display = expanded ? 'block' : 'none';
+    var caret = ratioField.querySelector('.adv-caret');
+    if(caret) caret.textContent = expanded ? '▴' : '▾';
+  }
+
+  function treeLeafSelect(leaf){
+    var dd = leaf.closest('.tree-dd');
+    var platform = leaf.closest('.tree-node').querySelector('.tree-node-name').textContent.trim();
+    var leafName = leaf.textContent.trim();
+    dd.querySelectorAll('.tree-leaf, .tree-other').forEach(function(l){ l.classList.remove('sel'); });
+    leaf.classList.add('sel');
+    dd.querySelector('.tree-dd-label').textContent = platform + ' - ' + leafName;
+    dd.querySelector('.tree-dd-panel').classList.remove('open');
+
+    var spec = AD_TYPE_SPECS[leafName];
+    var container = dd.closest('.genai-setting, .genai-subpanel');
+    var ratioField = container && container.querySelector('.ratio-field');
+    if(spec && ratioField){
+      var ratioNum = spec.w / spec.h;
+      ratioField.querySelector('.ratio-locked-val').textContent = spec.label;
+      var wInput = ratioField.querySelector('.px-w');
+      var hInput = ratioField.querySelector('.px-h');
+      wInput.value = spec.w;
+      hInput.value = spec.h;
+      wInput.dataset.ratio = ratioNum;
+      hInput.dataset.ratio = ratioNum;
+    }
+    specsSetRequired(ratioField, false);
+    specsSetExpanded(ratioField, false);
+    cgImageQtyToggle(container, leafName === 'SB Product Collection');
+  }
+
+  function treeLeafSelectOther(el){
+    var dd = el.closest('.tree-dd');
+    dd.querySelectorAll('.tree-leaf, .tree-other').forEach(function(l){ l.classList.remove('sel'); });
+    el.classList.add('sel');
+    dd.querySelector('.tree-dd-label').textContent = 'Other';
+    dd.querySelector('.tree-dd-panel').classList.remove('open');
+
+    var container = dd.closest('.genai-setting, .genai-subpanel');
+    var ratioField = container && container.querySelector('.ratio-field');
+    specsSetRequired(ratioField, true);
+    specsSetExpanded(ratioField, true);
+    cgImageQtyToggle(container, false);
+  }
+
+  function cgImageQtyToggle(container, show){
+    var field = container && container.querySelector('.cg-image-qty-field');
+    if(field) field.style.display = show ? 'flex' : 'none';
+  }
+
+  function pixelSync(input, which){
+    var row = input.closest('.ratio-px-row');
+    var wInput = row.querySelector('.px-w');
+    var hInput = row.querySelector('.px-h');
+    var ratio = parseFloat(input.dataset.ratio) || 1;
+    if(which === 'w'){
+      var w = parseFloat(wInput.value) || 0;
+      hInput.value = Math.round(w / ratio);
+    } else {
+      var h = parseFloat(hInput.value) || 0;
+      wInput.value = Math.round(h * ratio);
+    }
+  }
+
+  function ratioToggleCustom(el){
+    var field = el.closest('.ratio-field');
+    var panel = field.querySelector('.ratio-custom');
+    var isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    var caret = field.querySelector('.adv-caret');
+    if(caret) caret.textContent = isOpen ? '▾' : '▴';
+  }
+
+  var GENAI_RESULT_COLORS = ['#4c6fe0,#2b3f9e','#23976a,#166b4b','#6d5bd0,#4433a0','#d98a1f,#a5620f','#d1403f,#992622','#3a5cd8,#22337a'];
+
+  var GENAI_VIDEO_MODES = ['vdim', 'vlang', 'vidgen'];
+
+  function genaiFormatTimestamp(d){
+    var pad = function(n){ return n < 10 ? '0' + n : '' + n; };
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function genaiGenerate(btn){
+    var quotaBadge = btn.querySelector('.quota-cost');
+    btn.innerHTML = '✨ Generate Again ' + (quotaBadge ? quotaBadge.outerHTML : '');
+
+    var settingPanel = btn.closest('.genai-setting');
+    var mode = settingPanel && settingPanel.dataset.modePanel;
+    if(!mode) return;
+    var shell = btn.closest('.genai-shell');
+    var resultPanel = shell && shell.querySelector('.genai-result[data-result-panel="' + mode + '"]');
+    if(!resultPanel) return;
+
+    if(mode === 'creagen'){
+      genaiRenderCreativeResult(resultPanel, btn.closest('.genai-subpanel') || settingPanel);
+      return;
+    }
+
+    var grid = resultPanel.querySelector('.genai-result-grid');
+    var emptyState = resultPanel.querySelector('.genai-empty');
+    if(emptyState){
+      emptyState.remove();
+      var toolbar = document.createElement('div');
+      toolbar.className = 'genai-result-toolbar';
+      toolbar.innerHTML = '<button type="button" class="genai-btn">Save to Library</button><button type="button" class="genai-btn">Download</button>';
+      resultPanel.appendChild(toolbar);
+      var selectAll = document.createElement('label');
+      selectAll.className = 'genai-select-all';
+      selectAll.innerHTML = '<input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All';
+      resultPanel.appendChild(selectAll);
+      grid = document.createElement('div');
+      grid.className = 'genai-result-grid';
+      resultPanel.appendChild(grid);
+    }
+    if(!grid) return;
+
+    var isVideo = GENAI_VIDEO_MODES.indexOf(mode) > -1;
+    var format = isVideo ? 'MP4' : 'JPG';
+    var dims = isVideo ? '1920×1080 · 16:9' : '1600×1600 · 1:1';
+    var color = GENAI_RESULT_COLORS[Math.floor(Math.random() * GENAI_RESULT_COLORS.length)];
+    var card = document.createElement('div');
+    card.className = 'genai-result-card';
+    card.innerHTML =
+      '<div class="rc-time">' + genaiFormatTimestamp(new Date()) + '</div>' +
+      '<div class="rc-thumb" style="background:linear-gradient(135deg,' + color + ');"><label class="rc-select"><input type="checkbox" checked></label></div>' +
+      '<div class="rc-meta"><div class="rc-info">' + dims + ' · ' + format + '</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>';
+    grid.insertBefore(card, grid.firstChild);
+  }
+
+  function creagenTabSwitch(el){
+    var card = el.closest('.creagen-gen-card');
+    if(!card) return;
+    card.querySelectorAll('.creagen-tabs span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    var tab = el.dataset.tab;
+    card.querySelectorAll('.creagen-tab-panel').forEach(function(p){
+      p.style.display = (p.dataset.tabPanel === tab) ? '' : 'none';
+    });
+  }
+
+  function creagenEditTitle(el){
+    var wrap = el.closest('.creagen-title-wrap');
+    if(!wrap) return;
+    var titleSpan = wrap.querySelector('.creagen-card-title');
+    if(!titleSpan) return;
+    var current = titleSpan.textContent;
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'genai-input creagen-title-edit-input';
+    input.value = current;
+    wrap.replaceChild(input, titleSpan);
+    input.focus();
+    input.select();
+    var commit = function(){
+      var span = document.createElement('span');
+      span.className = 'creagen-card-title';
+      span.textContent = input.value.trim() || current;
+      if(input.parentNode === wrap) wrap.replaceChild(span, input);
+    };
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function(e){ if(e.key === 'Enter') input.blur(); });
+  }
+
+  function creagenSyncPreview(el){
+    var resultPanel = el.closest('.genai-result');
+    if(!resultPanel) return;
+    if(el.classList.contains('creagen-headline-input')){
+      var previewHeadline = resultPanel.querySelector('.creagen-preview-headline');
+      if(previewHeadline) previewHeadline.textContent = el.value;
+    } else if(el.classList.contains('creagen-body-input')){
+      var previewBody = resultPanel.querySelector('.creagen-preview-body');
+      if(previewBody) previewBody.textContent = el.value;
+    }
+  }
+
+  function genaiRenderCreativeResult(resultPanel, subpanel){
+    var list = resultPanel.querySelector('.creagen-result-list');
+    var emptyState = resultPanel.querySelector('.genai-empty');
+    if(emptyState){
+      emptyState.remove();
+      var toolbar = document.createElement('div');
+      toolbar.className = 'genai-result-toolbar';
+      toolbar.innerHTML = '<button type="button" class="genai-btn">Save to Library</button>';
+      resultPanel.appendChild(toolbar);
+      var selectAll = document.createElement('label');
+      selectAll.className = 'genai-select-all';
+      selectAll.innerHTML = '<input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All';
+      resultPanel.appendChild(selectAll);
+      var globalTabs = document.createElement('div');
+      globalTabs.className = 'card-tabs creagen-global-tabs';
+      globalTabs.innerHTML =
+        '<span data-tab="content" onclick="creagenGlobalTabSwitch(this)">Content</span>' +
+        '<span class="on" data-tab="preview" onclick="creagenGlobalTabSwitch(this)">Preview</span>';
+      resultPanel.appendChild(globalTabs);
+      list = document.createElement('div');
+      list.className = 'creagen-result-list';
+      resultPanel.appendChild(list);
+    }
+    if(!list) return;
+
+    var count = (parseInt(resultPanel.dataset.creativeCount, 10) || 0) + 1;
+    resultPanel.dataset.creativeCount = count;
+
+    var activeGlobalTab = resultPanel.querySelector('.creagen-global-tabs span.on');
+    var activeTab = activeGlobalTab ? activeGlobalTab.dataset.tab : 'preview';
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'creagen-gen-item';
+    var timeRow = document.createElement('div');
+    timeRow.className = 'creagen-timestamp-row';
+    timeRow.textContent = genaiFormatTimestamp(new Date());
+    wrapper.appendChild(timeRow);
+    var card = document.createElement('div');
+    card.className = 'creagen-gen-card';
+    card.innerHTML = genaiBuildCreativeCardHtml(subpanel, count, activeTab);
+    wrapper.appendChild(card);
+    list.insertBefore(wrapper, list.firstChild);
+  }
+
+  function creagenGlobalTabSwitch(el){
+    var resultPanel = el.closest('.genai-result');
+    if(!resultPanel) return;
+    resultPanel.querySelectorAll('.creagen-global-tabs span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    var tab = el.dataset.tab;
+    resultPanel.querySelectorAll('.creagen-tab-panel').forEach(function(p){
+      p.style.display = (p.dataset.tabPanel === tab) ? '' : 'none';
+    });
+  }
+
+  function genaiBuildCreativeCardHtml(subpanel, count, activeTab){
+    var color = GENAI_RESULT_COLORS[Math.floor(Math.random() * GENAI_RESULT_COLORS.length)];
+    var selectedLeaf = subpanel && subpanel.querySelector('.tree-leaf.sel, .tree-other.sel');
+    var leafName = selectedLeaf ? selectedLeaf.textContent.trim() : '';
+    var titleText = 'Creative ' + count;
+
+    var cardHead =
+      '<div class="creagen-card-head">' +
+        '<label class="rc-select" style="position:static;background:none;width:auto;height:auto;"><input type="checkbox" checked></label>' +
+        '<div class="creagen-title-wrap">' +
+          '<span class="creagen-card-title">' + titleText + '</span>' +
+          '<span class="creagen-edit-icon" title="Rename" onclick="creagenEditTitle(this)">✎</span>' +
+        '</div>' +
+        '<div class="rc-more-wrap" style="margin-left:auto;">' +
+          '<span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span>' +
+          '<div class="rc-more-menu"><div class="rc-more-item">Save to Library</div></div>' +
+        '</div>' +
+      '</div>';
+
+    var pickedList = subpanel && subpanel.querySelector('.genai-picked-list .genai-thumb-picked');
+    var productName = pickedList ? pickedList.querySelector('.tname').textContent : 'Aluratek 17.3" Hi-Res WiFi Digital Photo Frame With...';
+    var productSub = pickedList ? pickedList.querySelector('.tsize').textContent : 'Amazon · ID: RJ-RRBD-KNZ3';
+    var productColor = pickedList ? pickedList.querySelector('.tpx').style.background : 'linear-gradient(135deg,#e8a33d,#c97a1f)';
+    var productIdMatch = productSub.match(/ID:\s*(\S+)/);
+    var productUrl = 'https://www.amazon.com/dp/' + (productIdMatch ? productIdMatch[1] : '');
+
+    var targetUrlHtml =
+      '<div class="genai-field">' +
+        '<div class="f-label">Target Url <span class="req">*</span></div>' +
+        '<input type="text" class="genai-input" placeholder="https://" value="' + productUrl + '">' +
+      '</div>';
+
+    if(leafName === 'Standard Ads'){
+      var headlineVal = 'Small Batch, Handmade Mugs';
+      var bodyVal = 'Every mug is uniquely handcrafted in small batches, bringing warmth and character to your everyday coffee ritual.';
+      var tabsHtml =
+        '<div class="card-tabs creagen-tabs">' +
+          '<span data-tab="content" onclick="creagenTabSwitch(this)">Content</span>' +
+          '<span class="on" data-tab="preview" onclick="creagenTabSwitch(this)">Preview</span>' +
+        '</div>';
+      return buildCardHead(tabsHtml) +
+        '<div class="creagen-tab-panel" data-tab-panel="content" style="display:none;">' +
+          '<div class="genai-field">' +
+            '<div class="f-label">Headline <span class="req">*</span></div>' +
+            '<div class="creagen-input-row">' +
+              '<input type="text" class="genai-input creagen-headline-input" placeholder="Up to 25 characters" value="' + headlineVal + '" oninput="creagenSyncPreview(this)">' +
+              '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="genai-field">' +
+            '<div class="f-label">Body <span class="req">*</span></div>' +
+            '<div class="creagen-input-row">' +
+              '<input type="text" class="genai-input creagen-body-input" value="' + bodyVal + '" oninput="creagenSyncPreview(this)">' +
+              '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="genai-field">' +
+            '<div class="f-label">Image <span class="req">*</span></div>' +
+            '<div class="genai-result-card creagen-single-image">' +
+              '<div class="creagen-image-thumb" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+              '<div class="rc-meta"><div class="rc-info">1200×1200 · 1.2MB · PNG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>' +
+            '</div>' +
+          '</div>' +
+          targetUrlHtml +
+        '</div>' +
+        '<div class="creagen-tab-panel" data-tab-panel="preview">' +
+          '<div class="creagen-preview-panel">' +
+            '<div class="creagen-preview-brand">' +
+              '<div class="creagen-preview-logo" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+              '<span>Your Brand</span>' +
+              '<span class="creagen-preview-sponsored">· Sponsored</span>' +
+              '<span class="creagen-preview-more">⋮</span>' +
+            '</div>' +
+            '<div class="creagen-preview-card">' +
+              '<div class="creagen-preview-text">' +
+                '<div class="creagen-preview-headline">' + headlineVal + '</div>' +
+                '<div class="creagen-preview-body">' + bodyVal + '</div>' +
+              '</div>' +
+              '<div class="creagen-preview-thumb" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    return cardHead +
+      '<div class="genai-field">' +
+        '<div class="f-label">Headline <span class="req">*</span></div>' +
+        '<div class="creagen-input-row">' +
+          '<input type="text" class="genai-input" placeholder="Up to 25 characters" value="Small Batch, Handmade Mugs">' +
+          '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="genai-field">' +
+        '<div class="f-label">Logo <span class="req">*</span></div>' +
+        '<div class="creagen-logo-thumb" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+      '</div>' +
+      '<div class="genai-field">' +
+        '<div class="creagen-image-grid">' +
+          '<div class="genai-result-card">' +
+            '<div class="creagen-image-label">Image Name1</div>' +
+            '<div class="creagen-image-thumb" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+            '<div class="rc-meta"><div class="rc-info">1200×1200 · 1.2MB · PNG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>' +
+          '</div>' +
+          '<div class="genai-result-card">' +
+            '<div class="creagen-image-label">Image Name2</div>' +
+            '<div class="creagen-image-thumb" style="background:linear-gradient(135deg,' + color + ');"></div>' +
+            '<div class="rc-meta"><div class="rc-info">1200×1200 · 1.2MB · PNG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="genai-field">' +
+        '<div class="f-label">Product</div>' +
+        '<div class="genai-thumb-picked">' +
+          '<div class="tpx" style="background:' + productColor + ';"></div>' +
+          '<div class="tmeta"><div class="tname">' + productName + '</div><div class="tsize">' + productSub + '</div></div>' +
+          '<span class="tremove" title="Change" style="cursor:pointer;">▾</span>' +
+        '</div>' +
+      '</div>' +
+      targetUrlHtml;
+  }
+
+  function genaiSelectAll(checkbox){
+    var resultPanel = checkbox.closest('.genai-result');
+    if(!resultPanel) return;
+    resultPanel.querySelectorAll('.rc-select input').forEach(function(input){
+      input.checked = checkbox.checked;
+    });
+  }
+
+  function genaiMoreToggle(el){
+    var menu = el.nextElementSibling;
+    var wasOpen = menu.classList.contains('open');
+    document.querySelectorAll('.rc-more-menu.open').forEach(function(m){ m.classList.remove('open'); });
+    if(!wasOpen){
+      var rect = el.getBoundingClientRect();
+      menu.style.top = (rect.bottom + 4) + 'px';
+      menu.style.right = (window.innerWidth - rect.right) + 'px';
+      menu.classList.add('open');
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    document.querySelectorAll('.tree-dd').forEach(function(dd){
+      if(!dd.contains(e.target)) dd.querySelector('.tree-dd-panel').classList.remove('open');
+    });
+    document.querySelectorAll('.rc-more-menu.open').forEach(function(m){ m.classList.remove('open'); });
+  });
+
+  function genaiUrlDetect(input){
+    var subpanel = input.closest('.genai-subpanel, .genai-setting');
+    if(!subpanel) return;
+    var productPreview = subpanel.querySelector('.url-product-preview');
+    var imagePreview = subpanel.querySelector('.url-image-preview');
+    var aiPromptBtn = subpanel.querySelector('.url-ai-prompt-btn');
+    var url = input.value.trim();
+
+    if(!url){
+      if(productPreview) productPreview.style.display = 'none';
+      if(imagePreview) imagePreview.style.display = 'none';
+      if(aiPromptBtn) aiPromptBtn.style.display = 'none';
+      return;
+    }
+
+    var isProductLink = /\/(dp|product|item|ip|gp)\//i.test(url) || /(amazon|walmart|instacart|target)\./i.test(url);
+    if(isProductLink){
+      if(productPreview){
+        var idMatch = url.match(/[A-Z0-9]{8,10}/);
+        var metaEl = productPreview.querySelector('.url-product-meta');
+        if(metaEl) metaEl.textContent = 'Detected from URL' + (idMatch ? ' · ID: ' + idMatch[0] : '');
+        productPreview.style.display = 'flex';
+      }
+      if(imagePreview) imagePreview.style.display = 'none';
+      if(aiPromptBtn) aiPromptBtn.style.display = '';
+    } else {
+      if(imagePreview) imagePreview.style.display = 'flex';
+      if(productPreview) productPreview.style.display = 'none';
+      if(aiPromptBtn) aiPromptBtn.style.display = 'none';
+    }
+  }
+
+  function genaiUrlClear(el){
+    var field = el.closest('.genai-field');
+    var input = field && field.querySelector('.genai-input');
+    if(input){
+      input.value = '';
+      genaiUrlDetect(input);
+    }
+  }
+
+  function genaiSourceToggle(el){
+    var group = el.parentElement;
+    group.querySelectorAll('span').forEach(function(s){ s.classList.remove('active'); });
+    el.classList.add('active');
+    var subpanel = el.closest('.genai-subpanel');
+    if(!subpanel) return;
+    var source = el.dataset.source;
+    subpanel.querySelectorAll('.vg-source-panel').forEach(function(p){
+      p.style.display = (p.dataset.sourcePanel === source) ? '' : 'none';
+    });
+  }
+
+  function refToggle(cb){
+    var row = cb.closest('.ref-toggle-row');
+    var box = row.querySelector('.ref-upload-box');
+    if(box) box.classList.toggle('on', cb.checked);
+
+    var container = cb.closest('.genai-setting, .genai-subpanel');
+    if(!container) return;
+    var promptLabel = null;
+    container.querySelectorAll('.genai-field > .f-label, .genai-field > .f-label-row > .f-label').forEach(function(label){
+      if(!promptLabel && label.textContent.trim().indexOf('Prompt') === 0) promptLabel = label;
+    });
+    if(!promptLabel) return;
+    var req = promptLabel.querySelector('.req');
+    if(cb.checked){
+      if(req) req.remove();
+    } else if(!req){
+      promptLabel.insertAdjacentHTML('beforeend', ' <span class="req">*</span>');
+    }
+  }
+
+  var PP_PLATFORM_LABELS = {amazon:'Amazon', adsp:'ADSP', walmart:'Walmart', instacart:'Instacart'};
+
+  var PP_PLATFORM_ITEMS = {
+    amazon: [
+      {name:'100 Pcs Colorful Soft Crepe Papers Tissue Papers Crepe...', id:'B0CC8CZYBP', color:'linear-gradient(135deg,#e8a33d,#c97a1f)'},
+      {name:'12 Inch Wood Circles for Crafts, 10Pcs Unfinished Woo...', id:'B09K3SHST8', color:'linear-gradient(135deg,#c9a06a,#8a6a3f)'},
+      {name:'16 Pack Fidget Toy Brain Imagination Tools, Relaxation...', id:'B0BCFCR7PY', color:'linear-gradient(135deg,#6d5bd0,#4433a0)'},
+      {name:'2 Pack 17" x12" Blank Magnets with 50 mils, Prevent C...', id:'B08FRHLKST', color:'linear-gradient(135deg,#d1403f,#992622)'},
+      {name:'20 Mule Team All Natural Borax Laundry Detergent...', id:'B01NBJZ2F8', color:'linear-gradient(135deg,#3a5cd8,#22337a)'},
+      {name:'20 Mule Team Borax Laundry Booster, 65 Ounce, Pack...', id:'B003Y5AQGQ', color:'linear-gradient(135deg,#23976a,#166b4b)'},
+      {name:'20 Mule Team Borax Laundry Booster, 76 Ounce (Pack...', id:'B00A74NAK6', color:'linear-gradient(135deg,#d98a1f,#a5620f)'}
+    ],
+    adsp: [
+      {name:'Nutrish Real Meat Dog Food, Chicken & Rice, 40 lb Bag', id:'ADSP-88213', color:'linear-gradient(135deg,#4c6fe0,#2b3f9e)'},
+      {name:'Nutrish Wet Cat Food Variety Pack, 12-Count', id:'ADSP-88544', color:'linear-gradient(135deg,#23976a,#166b4b)'},
+      {name:'Nutrish Peak Grain-Free Dry Dog Food, Salmon, 26 lb', id:'ADSP-89011', color:'linear-gradient(135deg,#6d5bd0,#4433a0)'}
+    ],
+    walmart: [
+      {name:'Great Value Purified Drinking Water, 16.9 oz, 40 Pack', id:'WMT-503321', color:'linear-gradient(135deg,#3a5cd8,#22337a)'},
+      {name:'Equate Beauty Gel Facial Cleanser, 8 fl oz', id:'WMT-508876', color:'linear-gradient(135deg,#d1403f,#992622)'},
+      {name:'Mainstays 7-Piece Comforter Set, Queen', id:'WMT-511209', color:'linear-gradient(135deg,#d98a1f,#a5620f)'}
+    ],
+    instacart: [
+      {name:'Organic Bananas, Bunch', id:'IC-70021', color:'linear-gradient(135deg,#23976a,#166b4b)'},
+      {name:'Whole Milk, Half Gallon', id:'IC-70233', color:'linear-gradient(135deg,#4c6fe0,#2b3f9e)'},
+      {name:'Sourdough Bread Loaf', id:'IC-70599', color:'linear-gradient(135deg,#d98a1f,#a5620f)'}
+    ]
+  };
+
+  var ppState = {field:null, picked:[]};
+
+  function openProductPicker(field){
+    ppState.field = field;
+    var existing = document.querySelectorAll('.genai-picked-list[data-picked="' + field + '"] .genai-thumb-picked');
+    ppState.picked = Array.prototype.map.call(existing, function(el){
+      return {name: el.querySelector('.tname').textContent, sub: el.querySelector('.tsize').textContent, color: el.querySelector('.tpx').style.background};
+    });
+    document.getElementById('ppOverlay').style.display = 'flex';
+    document.querySelectorAll('.pp-platform').forEach(function(p){ p.classList.toggle('on', p.dataset.platform === 'amazon'); });
+    document.querySelector('.pp-search input').value = '';
+    ppRenderList('amazon');
+  }
+
+  function closeProductPicker(){
+    document.getElementById('ppOverlay').style.display = 'none';
+  }
+
+  function ppSwitchPlatform(el){
+    document.querySelectorAll('.pp-platform').forEach(function(p){ p.classList.remove('on'); });
+    el.classList.add('on');
+    document.querySelector('.pp-search input').value = '';
+    ppRenderList(el.dataset.platform);
+  }
+
+  function ppRenderList(platform){
+    var list = document.getElementById('ppList');
+    list.innerHTML = '';
+    (PP_PLATFORM_ITEMS[platform] || []).forEach(function(item){
+      var picked = ppState.picked.some(function(p){ return p.sub.indexOf(item.id) !== -1; });
+      var row = document.createElement('div');
+      row.className = 'pp-row' + (picked ? ' picked' : '');
+      row.innerHTML =
+        '<span class="pp-check">' + (picked ? '✓' : '') + '</span>' +
+        '<span class="pp-thumb" style="background:' + item.color + ';"></span>' +
+        '<span class="pp-meta"><span class="pp-name">' + item.name + '</span><span class="pp-id">ID: ' + item.id + '</span></span>';
+      row.onclick = function(){ ppToggle(item, platform); };
+      list.appendChild(row);
+    });
+    ppUpdateCount();
+  }
+
+  function ppToggle(item, platform){
+    var idx = ppState.picked.findIndex(function(p){ return p.sub.indexOf(item.id) !== -1; });
+    if(idx >= 0){
+      ppState.picked.splice(idx, 1);
+    } else {
+      if(ppState.picked.length >= 3) return;
+      ppState.picked.push({name: item.name, sub: PP_PLATFORM_LABELS[platform] + ' · ID: ' + item.id, color: item.color});
+    }
+    ppRenderList(platform);
+  }
+
+  function ppUpdateCount(){
+    var el = document.getElementById('ppCount');
+    el.textContent = ppState.picked.length + '/3 selected';
+    el.classList.toggle('max', ppState.picked.length >= 3);
+  }
+
+  function ppSearch(input){
+    var q = input.value.toLowerCase();
+    document.querySelectorAll('#ppList .pp-row').forEach(function(row){
+      var name = row.querySelector('.pp-name').textContent.toLowerCase();
+      var id = row.querySelector('.pp-id').textContent.toLowerCase();
+      row.style.display = (name.indexOf(q) > -1 || id.indexOf(q) > -1) ? '' : 'none';
+    });
+  }
+
+  function confirmProductPicker(){
+    var container = document.querySelector('.genai-picked-list[data-picked="' + ppState.field + '"]');
+    container.innerHTML = '';
+    ppState.picked.forEach(function(p){
+      var row = document.createElement('div');
+      row.className = 'genai-thumb-picked';
+      row.innerHTML =
+        '<div class="tpx" style="background:' + p.color + ';"></div>' +
+        '<div class="tmeta"><div class="tname">' + p.name + '</div><div class="tsize">' + p.sub + '</div></div>' +
+        '<span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>';
+      container.appendChild(row);
+    });
+    closeProductPicker();
+  }
+
+  var PA_SCENARIOS = {
+    'social-proof': "Highlight customer trust and credibility — feature star ratings, review counts, or a 'best seller' badge alongside the product.",
+    'feature-highlight': "Call out the product's standout feature or selling point with a clear visual focus and supporting callout text.",
+    'use-cases': "Show the product being used in a real, practical scenario that demonstrates how and where it fits into daily life.",
+    'target-audience': "Tailor the scene to resonate with a specific audience — their lifestyle, aesthetic, and needs — so the product feels made for them.",
+    'competitor-comparison': "Frame the product next to a generic alternative to highlight its advantages — better value, quality, or features.",
+    'pain-points': "Address a common customer frustration and show how the product directly solves that problem.",
+    'trending-now': "Position the product as fresh and of-the-moment, tying into a current trend, season, or newly launched variant."
+  };
+  var paTargetTextarea = null;
+
+  function openPromptAi(btn){
+    paTargetTextarea = btn.closest('.genai-field').querySelector('.genai-textarea');
+    var scenarios = document.querySelectorAll('.pa-scenario');
+    scenarios.forEach(function(s, i){ s.classList.toggle('on', i === 0); });
+    document.getElementById('paPreviewText').value = PA_SCENARIOS[scenarios[0].dataset.scenario];
+    document.getElementById('promptAiOverlay').style.display = 'flex';
+  }
+
+  function closePromptAi(){
+    document.getElementById('promptAiOverlay').style.display = 'none';
+  }
+
+  function paSelectScenario(el){
+    document.querySelectorAll('.pa-scenario').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    document.getElementById('paPreviewText').value = PA_SCENARIOS[el.dataset.scenario] || '';
+  }
+
+  function confirmPromptAi(){
+    if(paTargetTextarea){
+      paTargetTextarea.value = document.getElementById('paPreviewText').value;
+    }
+    closePromptAi();
+  }
+
   function pacvueTab(el, panelId){
     var card = el.closest('.card');
     if(!card) return;
