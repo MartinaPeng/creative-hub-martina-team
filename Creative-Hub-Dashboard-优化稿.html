@@ -417,6 +417,9 @@
   .genai-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;align-content:start;}
   .genai-result-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);}
   .genai-result-card .rc-time{padding:6px 8px 0;font-size:.62rem;color:var(--ink-faint);font-weight:600;}
+  .genai-result-card .rc-time-row{display:flex;align-items:center;gap:6px;padding:6px 8px 0;}
+  .genai-result-card .rc-time-row .rc-lang{font-size:.64rem;color:var(--ink);font-weight:700;}
+  .genai-result-card .rc-time-row .rc-time{padding:0;}
   .creagen-gen-item{display:flex;flex-direction:column;gap:6px;}
   .creagen-timestamp-row{font-size:.62rem;color:var(--ink-faint);font-weight:600;padding:0 2px;}
   .creagen-title-wrap{display:flex;align-items:baseline;gap:5px;flex-shrink:0;}
@@ -429,6 +432,10 @@
   .creagen-input-row .genai-input{flex:1;min-width:0;}
   .creagen-ai-btn{flex-shrink:0;display:flex;align-items:center;gap:4px;border:1px solid var(--amber);background:var(--amber-soft);color:var(--amber);font-size:.72rem;font-weight:700;padding:7px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
   .creagen-ai-btn:hover{opacity:.85;}
+  .creagen-ai-menu{position:fixed;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:6px;z-index:1000;display:none;min-width:220px;max-width:320px;}
+  .creagen-ai-menu.open{display:block;}
+  .creagen-ai-menu-item{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:.78rem;color:var(--ink);line-height:1.4;}
+  .creagen-ai-menu-item:hover{background:var(--surface-2);}
   .creagen-logo-thumb{width:110px;height:78px;border-radius:8px;}
   .creagen-image-grid{display:flex;flex-wrap:wrap;gap:12px;}
   .creagen-image-grid .genai-result-card{width:160px;flex-shrink:0;}
@@ -439,7 +446,6 @@
   .creagen-result-list{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;}
   .creagen-gen-card{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--surface);min-width:0;}
   .creagen-card-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-  .creagen-tabs{width:fit-content;flex-shrink:0;}
   .creagen-tab-panel{display:flex;flex-direction:column;gap:16px;}
   .creagen-preview-panel{border:1px solid var(--line);border-radius:10px;padding:14px;}
   .creagen-preview-brand{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.85rem;color:var(--ink);}
@@ -1898,8 +1904,8 @@
                   <span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>
                 </div>
                 <div class="genai-upload-row">
-                  <button type="button" class="genai-btn">⭱ Upload</button>
-                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                  <button type="button" class="genai-btn" onclick="genaiTriggerUpload(this)">⭱ Upload</button>
+                  <button type="button" class="genai-btn" onclick="openAssetLibrary(this)">🗂 Choose from Library</button>
                 </div>
               </div>
               <div class="genai-field">
@@ -1963,6 +1969,7 @@
                 <select class="genai-select">
                   <option>Smart crop (may trim edges)</option>
                   <option>Extend canvas (preserve full image)</option>
+                  <option>Shape Fill (cover new space with a decorative shape)</option>
                 </select>
               </div>
               <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 3</span></button>
@@ -1973,7 +1980,7 @@
                 <div class="f-label">Source Asset <span class="req">*</span></div>
                 <div class="genai-upload-row">
                   <button type="button" class="genai-btn">⭱ Upload</button>
-                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Library</button>
                 </div>
               </div>
               <div class="genai-field">
@@ -1987,7 +1994,7 @@
                 </div>
               </div>
               <div class="genai-field">
-                <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                <div class="f-label">Prompt</div>
                 <textarea class="genai-textarea" placeholder="e.g. keep tone playful, avoid discount language"></textarea>
               </div>
               <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 2</span></button>
@@ -2101,7 +2108,7 @@
               <div class="genai-subpanel" data-subpanel="ig-image">
                 <div class="genai-field">
                   <div class="f-label">Source Image <span class="req">*</span></div>
-                  <div class="genai-upload-row"><button type="button" class="genai-btn">⭱ Upload</button><button type="button" class="genai-btn">🗂 Asset Library</button></div>
+                  <div class="genai-upload-row"><button type="button" class="genai-btn" onclick="genaiTriggerUpload(this)">⭱ Upload</button><button type="button" class="genai-btn" onclick="openAssetLibrary(this)">🗂 Choose from Library</button></div>
                 </div>
                 <div class="genai-field">
                   <div class="f-label">Reference</div>
@@ -2298,7 +2305,7 @@
                 </div>
                 <div class="genai-upload-row">
                   <button type="button" class="genai-btn">⭱ Upload</button>
-                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Library</button>
                 </div>
               </div>
               <div class="genai-field">
@@ -2355,7 +2362,7 @@
                 <div class="f-label">Source Video <span class="req">*</span></div>
                 <div class="genai-upload-row">
                   <button type="button" class="genai-btn">⭱ Upload</button>
-                  <button type="button" class="genai-btn">🗂 Choose from Asset Library</button>
+                  <button type="button" class="genai-btn">🗂 Choose from Library</button>
                 </div>
               </div>
               <div class="genai-field">
@@ -2372,7 +2379,7 @@
                 <select class="genai-select"><option>Re-voice (AI dub)</option><option>Subtitle track only</option><option>Re-voice + on-screen text</option></select>
               </div>
               <div class="genai-field">
-                <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
+                <div class="f-label">Prompt</div>
                 <textarea class="genai-textarea" placeholder="e.g. keep energetic tone"></textarea>
               </div>
               <button type="button" class="genai-btn primary" onclick="genaiGenerate(this)">✨ Generate <span class="quota-cost">🎫 8</span></button>
@@ -2526,7 +2533,7 @@
               <div class="genai-subpanel" data-subpanel="vg-imagevideo">
                 <div class="genai-field">
                   <div class="f-label">Source Image / Video <span class="req">*</span></div>
-                  <div class="genai-upload-row"><button type="button" class="genai-btn">⭱ Upload</button><button type="button" class="genai-btn">🗂 Asset Library</button></div>
+                  <div class="genai-upload-row"><button type="button" class="genai-btn">⭱ Upload</button><button type="button" class="genai-btn">🗂 Choose from Library</button></div>
                 </div>
                 <div class="genai-field">
                   <div class="f-label-row"><div class="f-label">Prompt</div><button type="button" class="ai-prompt-btn" onclick="openPromptAi(this)">✨ AI Generate Prompt</button></div>
@@ -2931,13 +2938,13 @@
               <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
               <div class="genai-result-grid">
                 <div class="genai-result-card">
-                  <div class="rc-time">2026-07-23 14:25</div>
-                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">ES</span></div>
+                  <div class="rc-time-row"><span class="rc-lang">Spanish (ES)</span><span class="rc-time">2026-07-23 14:25</span></div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);"><label class="rc-select"><input type="checkbox" checked></label></div>
                   <div class="rc-meta"><div class="rc-info">Spanish · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
                 </div>
                 <div class="genai-result-card">
-                  <div class="rc-time">2026-07-23 14:25</div>
-                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">FR</span></div>
+                  <div class="rc-time-row"><span class="rc-lang">French (FR)</span><span class="rc-time">2026-07-23 14:25</span></div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#6d5bd0,#4433a0);"><label class="rc-select"><input type="checkbox" checked></label></div>
                   <div class="rc-meta"><div class="rc-info">French · 1200×628 · JPG</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
                 </div>
               </div>
@@ -2980,13 +2987,13 @@
               <label class="genai-select-all"><input type="checkbox" checked onchange="genaiSelectAll(this)"> Select All</label>
               <div class="genai-result-grid">
                 <div class="genai-result-card">
-                  <div class="rc-time">2026-07-23 14:18</div>
-                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">ES</span></div>
+                  <div class="rc-time-row"><span class="rc-lang">Spanish (ES)</span><span class="rc-time">2026-07-23 14:18</span></div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#23976a,#166b4b);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label></div>
                   <div class="rc-meta"><div class="rc-info">Spanish · 1080×1920 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
                 </div>
                 <div class="genai-result-card">
-                  <div class="rc-time">2026-07-23 14:18</div>
-                  <div class="rc-thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label><span class="rc-tag">FR</span></div>
+                  <div class="rc-time-row"><span class="rc-lang">French (FR)</span><span class="rc-time">2026-07-23 14:18</span></div>
+                  <div class="rc-thumb" style="background:linear-gradient(135deg,#d98a1f,#a5620f);aspect-ratio:9/16;"><label class="rc-select"><input type="checkbox" checked></label></div>
                   <div class="rc-meta"><div class="rc-info">French · 1080×1920 · MP4</div><div class="rc-more-wrap"><span class="rc-more" onclick="event.stopPropagation();genaiMoreToggle(this)">⋮</span><div class="rc-more-menu"><div class="rc-more-item">Save to Library</div><div class="rc-more-item">Download</div></div></div></div>
                 </div>
               </div>
@@ -3120,6 +3127,19 @@
     </div>
   </div>
 </div>
+
+<div id="assetLibOverlay" class="pp-overlay" style="display:none;" onclick="if(event.target===this) closeAssetLibrary()">
+  <div class="pp-modal" style="width:420px;">
+    <div class="pp-modal-head">
+      <span>Choose from Library</span>
+      <span class="pp-close" onclick="closeAssetLibrary()">✕</span>
+    </div>
+    <div class="pp-modal-body" style="padding:12px 14px;">
+      <div class="pp-list" id="alList"></div>
+    </div>
+  </div>
+</div>
+<input type="file" id="genaiUploadInput" accept="image/*" style="display:none;" onchange="genaiUploadFile(this)">
 <script>
   function pacvuePageSwitch(el, page){
     document.querySelectorAll('.tabs span').forEach(function(s){ s.classList.remove('active'); });
@@ -3221,6 +3241,93 @@
   function genaiResetPicked(el){
     var container = el.closest('.genai-field').querySelector('.genai-picked-list');
     if(container) container.innerHTML = '';
+  }
+
+  var genaiUploadTargetField = null;
+
+  function genaiTriggerUpload(btn){
+    genaiUploadTargetField = btn.closest('.genai-field');
+    var input = document.getElementById('genaiUploadInput');
+    input.value = '';
+    input.click();
+  }
+
+  function genaiFormatFileSize(bytes){
+    if(bytes < 1024 * 1024) return Math.round(bytes / 1024) + 'KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + 'MB';
+  }
+
+  function genaiUploadFile(input){
+    var file = input.files && input.files[0];
+    var field = genaiUploadTargetField;
+    if(!file || !field) return;
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function(){
+      var format = (file.type.split('/')[1] || 'IMG').toUpperCase();
+      var sizeText = img.naturalWidth + ' × ' + img.naturalHeight + ' · ' + format + ' · ' + genaiFormatFileSize(file.size);
+      genaiSetThumb(field, file.name, sizeText, {image: url});
+    };
+    img.src = url;
+  }
+
+  function genaiSetThumb(field, name, sizeText, style){
+    var box = field.querySelector('.genai-thumb-picked');
+    if(!box){
+      box = document.createElement('div');
+      box.className = 'genai-thumb-picked';
+      box.innerHTML =
+        '<div class="tpx"></div>' +
+        '<div class="tmeta"><div class="tname"></div><div class="tsize"></div></div>' +
+        '<span class="tremove" title="Remove" onclick="genaiRemoveThumb(this)">✕</span>';
+      var uploadRow = field.querySelector('.genai-upload-row');
+      field.insertBefore(box, uploadRow);
+    }
+    var tpx = box.querySelector('.tpx');
+    tpx.style.background = '';
+    tpx.style.backgroundImage = '';
+    if(style.image){
+      tpx.style.backgroundImage = 'url("' + style.image + '")';
+      tpx.style.backgroundSize = 'cover';
+      tpx.style.backgroundPosition = 'center';
+    } else if(style.color){
+      tpx.style.background = style.color;
+    }
+    box.querySelector('.tname').textContent = name;
+    box.querySelector('.tsize').textContent = sizeText;
+  }
+
+  var AL_ASSETS = [
+    {name: 'nutrish-summer-hero.png', sub: '1080 × 1080 · PNG · 2.1MB', color: 'linear-gradient(135deg,#4c6fe0,#2b3f9e)'},
+    {name: 'holiday-gift-set.jpg', sub: '1200 × 1200 · JPG · 1.4MB', color: 'linear-gradient(135deg,#e8a33d,#c97a1f)'},
+    {name: 'product-lifestyle-01.png', sub: '1600 × 1600 · PNG · 3.2MB', color: 'linear-gradient(135deg,#23976a,#166b4b)'},
+    {name: 'brand-banner-wide.jpg', sub: '1920 × 1080 · JPG · 2.8MB', color: 'linear-gradient(135deg,#6d5bd0,#4433a0)'},
+    {name: 'seasonal-promo.png', sub: '1080 × 1350 · PNG · 2.5MB', color: 'linear-gradient(135deg,#d1403f,#992622)'}
+  ];
+  var alTargetField = null;
+
+  function openAssetLibrary(btn){
+    alTargetField = btn.closest('.genai-field');
+    var list = document.getElementById('alList');
+    list.innerHTML = AL_ASSETS.map(function(a, i){
+      return '<div class="pp-row" onclick="alSelectAsset(' + i + ')">' +
+        '<span class="pp-thumb" style="background:' + a.color + ';"></span>' +
+        '<div class="pp-meta"><div class="pp-name">' + a.name + '</div><div class="pp-id">' + a.sub + '</div></div>' +
+      '</div>';
+    }).join('');
+    document.getElementById('assetLibOverlay').style.display = 'flex';
+  }
+
+  function closeAssetLibrary(){
+    document.getElementById('assetLibOverlay').style.display = 'none';
+  }
+
+  function alSelectAsset(idx){
+    var asset = AL_ASSETS[idx];
+    if(alTargetField && asset){
+      genaiSetThumb(alTargetField, asset.name, asset.sub, {color: asset.color});
+    }
+    closeAssetLibrary();
   }
 
   function treeDDToggle(btn){
@@ -3396,17 +3503,6 @@
     grid.insertBefore(card, grid.firstChild);
   }
 
-  function creagenTabSwitch(el){
-    var card = el.closest('.creagen-gen-card');
-    if(!card) return;
-    card.querySelectorAll('.creagen-tabs span').forEach(function(s){ s.classList.remove('on'); });
-    el.classList.add('on');
-    var tab = el.dataset.tab;
-    card.querySelectorAll('.creagen-tab-panel').forEach(function(p){
-      p.style.display = (p.dataset.tabPanel === tab) ? '' : 'none';
-    });
-  }
-
   function creagenEditTitle(el){
     var wrap = el.closest('.creagen-title-wrap');
     if(!wrap) return;
@@ -3532,25 +3628,22 @@
     if(leafName === 'Standard Ads'){
       var headlineVal = 'Small Batch, Handmade Mugs';
       var bodyVal = 'Every mug is uniquely handcrafted in small batches, bringing warmth and character to your everyday coffee ritual.';
-      var tabsHtml =
-        '<div class="card-tabs creagen-tabs">' +
-          '<span data-tab="content" onclick="creagenTabSwitch(this)">Content</span>' +
-          '<span class="on" data-tab="preview" onclick="creagenTabSwitch(this)">Preview</span>' +
-        '</div>';
-      return buildCardHead(tabsHtml) +
-        '<div class="creagen-tab-panel" data-tab-panel="content" style="display:none;">' +
+      return cardHead +
+        '<div class="creagen-tab-panel" data-tab-panel="content" style="' + (activeTab === 'content' ? '' : 'display:none;') + '">' +
           '<div class="genai-field">' +
             '<div class="f-label">Headline <span class="req">*</span></div>' +
             '<div class="creagen-input-row">' +
               '<input type="text" class="genai-input creagen-headline-input" placeholder="Up to 25 characters" value="' + headlineVal + '" oninput="creagenSyncPreview(this)">' +
-              '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+              '<button type="button" class="creagen-ai-btn" onclick="event.stopPropagation();creagenAiSuggestToggle(this)">✨ AI</button>' +
+              '<div class="creagen-ai-menu" data-field="headline"></div>' +
             '</div>' +
           '</div>' +
           '<div class="genai-field">' +
             '<div class="f-label">Body <span class="req">*</span></div>' +
             '<div class="creagen-input-row">' +
               '<input type="text" class="genai-input creagen-body-input" value="' + bodyVal + '" oninput="creagenSyncPreview(this)">' +
-              '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+              '<button type="button" class="creagen-ai-btn" onclick="event.stopPropagation();creagenAiSuggestToggle(this)">✨ AI</button>' +
+              '<div class="creagen-ai-menu" data-field="body"></div>' +
             '</div>' +
           '</div>' +
           '<div class="genai-field">' +
@@ -3562,7 +3655,7 @@
           '</div>' +
           targetUrlHtml +
         '</div>' +
-        '<div class="creagen-tab-panel" data-tab-panel="preview">' +
+        '<div class="creagen-tab-panel" data-tab-panel="preview" style="' + (activeTab === 'preview' ? '' : 'display:none;') + '">' +
           '<div class="creagen-preview-panel">' +
             '<div class="creagen-preview-brand">' +
               '<div class="creagen-preview-logo" style="background:linear-gradient(135deg,' + color + ');"></div>' +
@@ -3586,7 +3679,8 @@
         '<div class="f-label">Headline <span class="req">*</span></div>' +
         '<div class="creagen-input-row">' +
           '<input type="text" class="genai-input" placeholder="Up to 25 characters" value="Small Batch, Handmade Mugs">' +
-          '<button type="button" class="creagen-ai-btn">✨ AI</button>' +
+          '<button type="button" class="creagen-ai-btn" onclick="event.stopPropagation();creagenAiSuggestToggle(this)">✨ AI</button>' +
+          '<div class="creagen-ai-menu" data-field="headline"></div>' +
         '</div>' +
       '</div>' +
       '<div class="genai-field">' +
@@ -3638,11 +3732,56 @@
     }
   }
 
+  var CREAGEN_AI_SUGGESTIONS = {
+    headline: [
+      'Small Batch, Handmade Mugs',
+      'Handcrafted Mugs, Made With Love',
+      'Your Coffee Ritual, Elevated',
+      'Uniquely Yours — Every Sip'
+    ],
+    body: [
+      'Every mug is uniquely handcrafted in small batches, bringing warmth and character to your everyday coffee ritual.',
+      'Discover a mug that fits your life — durable, beautiful, and made for daily use.',
+      'Crafted with care, designed to make your morning coffee feel special.',
+      'Add a touch of handmade charm to your kitchen with this one-of-a-kind mug.'
+    ]
+  };
+
+  function creagenAiSuggestToggle(el){
+    var menu = el.nextElementSibling;
+    if(!menu || !menu.classList.contains('creagen-ai-menu')) return;
+    var wasOpen = menu.classList.contains('open');
+    document.querySelectorAll('.creagen-ai-menu.open').forEach(function(m){ m.classList.remove('open'); });
+    if(wasOpen) return;
+    var options = CREAGEN_AI_SUGGESTIONS[menu.dataset.field] || [];
+    menu.innerHTML = options.map(function(text){
+      return '<div class="creagen-ai-menu-item" onclick="creagenApplySuggestion(this)">' + text + '</div>';
+    }).join('');
+    var rect = el.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 4) + 'px';
+    menu.style.right = (window.innerWidth - rect.right) + 'px';
+    menu.classList.add('open');
+  }
+
+  function creagenApplySuggestion(item){
+    var menu = item.closest('.creagen-ai-menu');
+    var row = menu && menu.closest('.creagen-input-row');
+    var input = row && row.querySelector('input');
+    if(input){
+      input.value = item.textContent;
+      input.dispatchEvent(new Event('input', {bubbles:true}));
+    }
+    if(menu) menu.classList.remove('open');
+  }
+
   document.addEventListener('click', function(e){
     document.querySelectorAll('.tree-dd').forEach(function(dd){
       if(!dd.contains(e.target)) dd.querySelector('.tree-dd-panel').classList.remove('open');
     });
     document.querySelectorAll('.rc-more-menu.open').forEach(function(m){ m.classList.remove('open'); });
+    document.querySelectorAll('.creagen-ai-menu.open').forEach(function(m){
+      if(!m.contains(e.target)) m.classList.remove('open');
+    });
   });
 
   function genaiUrlDetect(input){
@@ -3845,7 +3984,7 @@
     paTargetTextarea = btn.closest('.genai-field').querySelector('.genai-textarea');
     var scenarios = document.querySelectorAll('.pa-scenario');
     scenarios.forEach(function(s, i){ s.classList.toggle('on', i === 0); });
-    document.getElementById('paPreviewText').value = PA_SCENARIOS[scenarios[0].dataset.scenario];
+    paUpdatePreview();
     document.getElementById('promptAiOverlay').style.display = 'flex';
   }
 
@@ -3853,10 +3992,15 @@
     document.getElementById('promptAiOverlay').style.display = 'none';
   }
 
+  function paUpdatePreview(){
+    var selected = Array.prototype.slice.call(document.querySelectorAll('.pa-scenario.on'));
+    var text = selected.map(function(s){ return PA_SCENARIOS[s.dataset.scenario]; }).filter(Boolean).join(' ');
+    document.getElementById('paPreviewText').value = text;
+  }
+
   function paSelectScenario(el){
-    document.querySelectorAll('.pa-scenario').forEach(function(s){ s.classList.remove('on'); });
-    el.classList.add('on');
-    document.getElementById('paPreviewText').value = PA_SCENARIOS[el.dataset.scenario] || '';
+    el.classList.toggle('on');
+    paUpdatePreview();
   }
 
   function confirmPromptAi(){
