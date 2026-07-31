@@ -573,6 +573,134 @@
     .genai-body{flex-direction:column;}
     .genai-setting-col{width:auto;border-right:none;border-bottom:1px solid var(--line);}
   }
+
+  /* ============ Creative page ============ */
+  .kpi-row{display:grid;grid-template-columns:repeat(10,minmax(96px,1fr));gap:8px;padding:18px 24px 0;}
+  .kpi-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 10px;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+  .kpi-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:transparent;}
+  .kpi-card.k-impressions::before{background:var(--amber);}
+  .kpi-card.k-spend::before{background:var(--mint);}
+  .kpi-card.k-roas::before{background:var(--purple);}
+  .kpi-label{font-size:.64rem;color:var(--ink-soft);font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .kpi-value{font-size:1rem;font-weight:800;letter-spacing:-.01em;white-space:nowrap;}
+  .kpi-add{display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:1.3rem;border:1px dashed var(--line);border-radius:10px;cursor:pointer;background:transparent;min-height:56px;}
+  .kpi-add:hover{color:var(--accent);border-color:var(--accent);}
+
+  .perf-card{margin:16px 24px 0;}
+  .perf-chart-wrap{position:relative;margin-top:10px;height:220px;}
+  .perf-svg{cursor:crosshair;}
+  .perf-tooltip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:.68rem;border-radius:8px;padding:8px 10px;box-shadow:var(--shadow);display:none;white-space:nowrap;z-index:5;min-width:150px;}
+  .perf-tooltip .pt-date{font-weight:800;margin-bottom:5px;}
+  .perf-tooltip .pt-row{display:flex;align-items:center;gap:14px;justify-content:space-between;}
+  .perf-tooltip .pt-row+.pt-row{margin-top:3px;}
+  .perf-tooltip .pt-row span{display:flex;align-items:center;gap:5px;color:#cfd6e6;}
+  .perf-tooltip i.dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  :root[data-theme="light"] .perf-tooltip, .perf-tooltip{color:#fff;}
+
+  .seg2{display:flex;gap:22px;padding:0 24px;margin-top:20px;font-size:.86rem;font-weight:700;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+  .seg2 span{padding-bottom:9px;cursor:pointer;}
+  .seg2 span.active{color:var(--ink);border-bottom:2px solid var(--accent);}
+
+  .platform-filter-row{display:flex;gap:8px;padding:14px 24px 0;}
+  .plat-chip{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:.78rem;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer;}
+  .plat-chip.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+  .plat-ico{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;flex-shrink:0;}
+  .plat-ico.amazon{background:#e07b1a;}
+  .plat-ico.adsp{background:#e07b1a;}
+  .plat-ico.walmart{background:#0071ce;}
+
+  .creative-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 24px;flex-wrap:wrap;}
+  .creative-toolbar .left-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .tool-btn{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:.78rem;font-weight:600;padding:7px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+  .tool-btn:hover{background:var(--surface-2);}
+  .tool-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+  .tool-btn.primary:hover{opacity:.92;}
+  .tool-btn.icon-only{padding:7px 9px;}
+  .search-input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;font-size:.78rem;color:var(--ink);min-width:170px;}
+  .search-input::placeholder{color:var(--ink-faint);}
+
+  .dd{position:relative;}
+  .dd-trigger{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;font-size:.78rem;color:var(--ink-soft);cursor:pointer;white-space:nowrap;}
+  .dd-trigger b{color:var(--ink);font-weight:600;}
+  .dd-trigger .car{margin-left:auto;opacity:.6;font-size:.7rem;transition:transform .12s;}
+  .dd.open .dd-trigger .car{transform:rotate(180deg);}
+  .dd-panel{position:absolute;top:calc(100% + 6px);left:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);z-index:30;display:none;min-width:220px;}
+  .dd.open .dd-panel{display:block;}
+  .dd-search{padding:8px;border-bottom:1px solid var(--line);}
+  .dd-search input{width:100%;border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:.76rem;background:var(--surface-2);color:var(--ink);box-sizing:border-box;}
+  .dd-list{max-height:260px;overflow-y:auto;padding:6px;}
+  .dd-list label{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--ink);padding:6px 6px;border-radius:6px;cursor:pointer;}
+  .dd-list label:hover{background:var(--surface-2);}
+  .dd-list label input{accent-color:var(--accent);}
+
+  /* Tag filter: 2-level tree, collapsed by default */
+  .tag-tree-node{margin-bottom:1px;}
+  .tag-tree-head{display:flex;align-items:center;gap:6px;padding:6px 6px;border-radius:6px;cursor:pointer;}
+  .tag-tree-head:hover{background:var(--surface-2);}
+  .tag-tree-head .tree-caret{flex-shrink:0;}
+  .tag-tree-node.open > .tag-tree-head .tree-caret{transform:rotate(90deg);}
+  .tag-tree-head label{display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;color:var(--ink);cursor:pointer;flex:1;padding:0;}
+  .tag-tree-children{display:none;padding-left:20px;}
+  .tag-tree-node.open .tag-tree-children{display:block;}
+  .tag-tree-children label{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--ink-soft);padding:5px 6px;border-radius:6px;cursor:pointer;}
+  .tag-tree-children label:hover{background:var(--surface-2);color:var(--ink);}
+
+  /* Ad type tree (expand/collapse downward) */
+  .at-cols{width:260px;max-height:320px;overflow-y:auto;padding:6px;}
+  .at-row{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--ink);padding:6px 6px;border-radius:6px;cursor:default;}
+  .at-row.has-kids{cursor:pointer;}
+  .at-row:hover{background:var(--surface-2);}
+  .at-row .at-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .at-row .at-caret{display:inline-block;width:14px;font-size:.7rem;color:var(--ink-faint);flex-shrink:0;transition:transform .12s;}
+  .at-row.collapsed .at-caret{transform:rotate(-90deg);}
+  .at-children{overflow:hidden;}
+  .at-children.collapsed{display:none;}
+  .at-row input{accent-color:var(--accent);flex-shrink:0;}
+
+  .asset-table-card{margin:16px 24px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .asset-table-wrap{overflow-x:auto;}
+  table.asset-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:1180px;}
+  table.asset-table th{text-align:left;font-size:.66rem;color:var(--ink-faint);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);white-space:nowrap;}
+  table.asset-table th.sortable{cursor:pointer;user-select:none;}
+  table.asset-table th .sort-ico{margin-left:3px;opacity:.5;}
+  table.asset-table td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle;color:var(--ink-soft);}
+  table.asset-table tr.arow:hover td{background:var(--surface-2);}
+  .at-expand{width:14px;display:inline-block;color:var(--ink-faint);cursor:pointer;transition:transform .12s;}
+  .at-expand.open{transform:rotate(90deg);}
+  .asset-thumb{width:44px;height:44px;border-radius:8px;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.56rem;font-style:italic;text-align:center;line-height:1.1;}
+  .plat-badge{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.66rem;font-weight:800;}
+  .plat-badge.dsp{background:#e07b1a;}
+  .plat-badge.amz{background:#e07b1a;border-radius:6px;}
+  .plat-badge.wmt{background:#0071ce;border-radius:50%;}
+  .tag-pill-row{display:flex;flex-wrap:wrap;gap:5px;max-width:280px;}
+  .tag-pill{font-size:.64rem;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap;}
+  .tag-pill.c0{background:var(--purple-soft);color:var(--purple);}
+  .tag-pill.c1{background:var(--mint-soft);color:var(--mint);}
+  .tag-pill.c2{background:var(--accent-soft);color:var(--accent);}
+  .tag-pill.more{background:var(--surface-2);color:var(--ink-soft);}
+  .muted-cell{color:var(--ink-faint);}
+  .row-action{color:var(--ink-faint);cursor:pointer;font-size:.9rem;}
+  .row-action:hover{color:var(--accent);}
+  tr.detail-row td{background:var(--surface-2);padding:10px 16px;}
+  .detail-grid{display:flex;gap:24px;font-size:.74rem;color:var(--ink-soft);flex-wrap:wrap;}
+  .detail-grid b{color:var(--ink);}
+
+  .asset-grid-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:16px;}
+  .asset-empty-state{display:none;align-items:center;justify-content:center;padding:60px 20px;color:var(--ink-faint);font-size:.85rem;}
+
+  .table-pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px;font-size:.76rem;color:var(--ink-soft);}
+  .pg-left{display:flex;align-items:center;gap:10px;}
+  .pg-size{border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:5px 8px;font-size:.76rem;color:var(--ink-soft);}
+  .pg-pages{display:flex;align-items:center;gap:4px;}
+  .pg-pages button{min-width:26px;height:26px;border:1px solid var(--line);background:var(--surface);border-radius:6px;color:var(--ink-soft);font-size:.74rem;font-weight:600;cursor:pointer;}
+  .pg-pages button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .pg-pages button:disabled{opacity:.4;cursor:default;}
+  .pg-pages .ellip{border:none;background:transparent;cursor:default;}
+  .pg-goto{display:flex;align-items:center;gap:6px;}
+  .pg-goto input{width:40px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;text-align:center;font-size:.76rem;background:var(--surface);color:var(--ink);}
+
+  .pv-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:.8rem;font-weight:600;padding:9px 16px;border-radius:9px;box-shadow:var(--shadow);z-index:2000;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;}
+  .pv-toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
 </style>
 </head>
 <body>
@@ -587,7 +715,7 @@
     <h1>Creative Hub</h1>
     <div class="tabs">
       <span class="active" style="cursor:pointer;" onclick="pacvuePageSwitch(this,'dashboard')">Dashboard</span>
-      <span>Creative</span>
+      <span style="cursor:pointer;" onclick="pacvuePageSwitch(this,'creative')">Creative</span>
       <span>Tag</span>
       <span style="cursor:pointer;" onclick="pacvuePageSwitch(this,'genai')">GenAI <span class="badge">Alpha</span></span>
       <span>Library</span>
@@ -1410,7 +1538,12 @@
               <label><input type="checkbox" value="ADSP · Standard Display" data-color="var(--accent)" data-metrics='{"spend":22000,"roas":5.8,"cvr":6.9,"ctr":0.13,"cpm":2.75,"sales":127600}' checked onchange="pacvueAdTypeCheckboxChange(this)"> ADSP · Standard Display</label>
               <label><input type="checkbox" value="Instacart · Display Banner" data-color="#3a5cd8" data-metrics='{"spend":14000,"roas":2.9,"cvr":3.4,"ctr":0.18,"cpm":3.40,"sales":40600}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Instacart · Display Banner</label>
               <label><input type="checkbox" value="Instacart · Shoppable Display" data-color="var(--mint)" data-metrics='{"spend":24000,"roas":5.6,"cvr":6.5,"ctr":0.32,"cpm":2.60,"sales":134400}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Instacart · Shoppable Display</label>
+              <label><input type="checkbox" value="Instacart · Shoppable Video" data-color="#6b4fd8" data-metrics='{"spend":9000,"roas":3.3,"cvr":4.0,"ctr":0.15,"cpm":3.20,"sales":29700}' onchange="pacvueAdTypeCheckboxChange(this)"> Instacart · Shoppable Video</label>
               <label><input type="checkbox" value="Walmart · SB" data-color="var(--bad)" data-metrics='{"spend":17000,"roas":3.4,"cvr":4.1,"ctr":0.16,"cpm":3.10,"sales":57800}' checked onchange="pacvueAdTypeCheckboxChange(this)"> Walmart · SB</label>
+              <label><input type="checkbox" value="TikTok · GMV Max" data-color="#ff0050" data-metrics='{"spend":28000,"roas":6.2,"cvr":6.8,"ctr":0.24,"cpm":2.30,"sales":173600}' onchange="pacvueAdTypeCheckboxChange(this)"> TikTok · GMV Max</label>
+              <label><input type="checkbox" value="TikTok · Social Ads · Single Video" data-color="#25ced1" data-metrics='{"spend":19000,"roas":4.6,"cvr":5.3,"ctr":0.18,"cpm":2.75,"sales":87400}' onchange="pacvueAdTypeCheckboxChange(this)"> TikTok · Social Ads · Single Video</label>
+              <label><input type="checkbox" value="TikTok · Social Ads · Carousel Ads" data-color="#0a7ea4" data-metrics='{"spend":11000,"roas":3.7,"cvr":4.2,"ctr":0.14,"cpm":3.15,"sales":40700}' onchange="pacvueAdTypeCheckboxChange(this)"> TikTok · Social Ads · Carousel Ads</label>
+              <label><input type="checkbox" value="OpenAI · Standard Ads" data-color="#10a37f" data-metrics='{"spend":8000,"roas":2.1,"cvr":2.6,"ctr":0.08,"cpm":4.20,"sales":16800}' onchange="pacvueAdTypeCheckboxChange(this)"> OpenAI · Standard Ads</label>
               <label><input type="checkbox" value="Amazon · SD" data-color="#1f9e8a" data-metrics='{"spend":9000,"roas":2.4,"cvr":2.9,"ctr":0.10,"cpm":3.60,"sales":21600}' onchange="pacvueAdTypeCheckboxChange(this)"> Amazon · SD</label>
               <label><input type="checkbox" value="Amazon · SP" data-color="#9e6b1f" data-metrics='{"spend":6000,"roas":2.0,"cvr":2.5,"ctr":0.09,"cpm":3.90,"sales":12000}' onchange="pacvueAdTypeCheckboxChange(this)"> Amazon · SP</label>
             </div>
@@ -1459,12 +1592,22 @@
                 <tr class="child-row" data-parent="atpADSP"><td>Display</td><td>$56.0K</td><td>11.20</td><td>12.80%</td><td>0.22%</td><td>$0.89</td><td>$1.95</td></tr>
                 <tr class="child-row" data-parent="atpADSP"><td>Standard Display</td><td>$22.0K</td><td>5.80</td><td>6.90%</td><td>0.13%</td><td>$2.12</td><td>$2.75</td></tr>
 
-                <tr class="parent-row" data-tag="atpInstacart" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Instacart</td><td>$38.0K</td><td>4.60</td><td>5.40%</td><td>0.27%</td><td>$1.07</td><td>$2.90</td></tr>
+                <tr class="parent-row" data-tag="atpInstacart" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Instacart</td><td>$47.0K</td><td>4.36</td><td>5.10%</td><td>0.25%</td><td>$1.18</td><td>$2.95</td></tr>
                 <tr class="child-row" data-parent="atpInstacart"><td>Shoppable Display</td><td>$24.0K</td><td>5.60</td><td>6.50%</td><td>0.32%</td><td>$0.81</td><td>$2.60</td></tr>
                 <tr class="child-row" data-parent="atpInstacart"><td>Display Banner</td><td>$14.0K</td><td>2.90</td><td>3.40%</td><td>0.18%</td><td>$1.89</td><td>$3.40</td></tr>
+                <tr class="child-row" data-parent="atpInstacart"><td>Shoppable Video</td><td>$9.0K</td><td>3.30</td><td>4.00%</td><td>0.15%</td><td>$2.13</td><td>$3.20</td></tr>
 
                 <tr class="parent-row" data-tag="atpWalmart" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Walmart</td><td>$17.0K</td><td>3.40</td><td>4.10%</td><td>0.16%</td><td>$1.94</td><td>$3.10</td></tr>
                 <tr class="child-row" data-parent="atpWalmart"><td>SB</td><td>$17.0K</td><td>3.40</td><td>4.10%</td><td>0.16%</td><td>$1.94</td><td>$3.10</td></tr>
+
+                <tr class="parent-row" data-tag="atpTikTok" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>TikTok</td><td>$58.0K</td><td>5.20</td><td>5.82%</td><td>0.20%</td><td>$1.31</td><td>$2.61</td></tr>
+                <tr class="child-row" data-parent="atpTikTok"><td>GMV Max</td><td>$28.0K</td><td>6.20</td><td>6.80%</td><td>0.24%</td><td>$0.96</td><td>$2.30</td></tr>
+                <tr class="mid-row" data-tag="atpTikTok-SocialAds" data-parent="atpTikTok" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>Social Ads</td><td>$30.0K</td><td>4.27</td><td>4.90%</td><td>0.17%</td><td>$1.71</td><td>$2.90</td></tr>
+                <tr class="child-row" data-parent="atpTikTok-SocialAds"><td>Single Video</td><td>$19.0K</td><td>4.60</td><td>5.30%</td><td>0.18%</td><td>$1.53</td><td>$2.75</td></tr>
+                <tr class="child-row" data-parent="atpTikTok-SocialAds"><td>Carousel Ads</td><td>$11.0K</td><td>3.70</td><td>4.20%</td><td>0.14%</td><td>$2.25</td><td>$3.15</td></tr>
+
+                <tr class="parent-row" data-tag="atpOpenAI" onclick="pacvueTagRowToggle(this)"><td><span class="tcaret">▾</span>OpenAI</td><td>$8.0K</td><td>2.10</td><td>2.60%</td><td>0.08%</td><td>$5.25</td><td>$4.20</td></tr>
+                <tr class="child-row" data-parent="atpOpenAI"><td>Standard Ads</td><td>$8.0K</td><td>2.10</td><td>2.60%</td><td>0.08%</td><td>$5.25</td><td>$4.20</td></tr>
               </tbody>
             </table>
           </div>
@@ -1631,6 +1774,22 @@
           </div>
           <div class="glabel">Walmart</div>
         </div>
+        <div class="bar-group" data-metrics='{"spend":58000,"roas":5.2,"cvr":5.82,"ctr":0.20,"cpm":2.61,"sales":301700}'>
+          <div class="bar-set">
+            <i style="height:74.4%;background:var(--amber);"></i>
+            <i style="height:53.1%;background:var(--accent);"></i>
+            <i style="height:52.0%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">TikTok</div>
+        </div>
+        <div class="bar-group" data-metrics='{"spend":8000,"roas":2.1,"cvr":2.6,"ctr":0.08,"cpm":4.20,"sales":16800}'>
+          <div class="bar-set">
+            <i style="height:10.3%;background:var(--amber);"></i>
+            <i style="height:21.4%;background:var(--accent);"></i>
+            <i style="height:23.2%;background:var(--purple);"></i>
+          </div>
+          <div class="glabel">OpenAI</div>
+        </div>
       </div>
       <div class="baxis baxis-right">
         <span>12%</span><span>9%</span><span>6%</span><span>3%</span><span>0%</span>
@@ -1742,6 +1901,338 @@
     </div>
   </div>
   </div><!-- /page-dashboard -->
+
+  <div id="page-creative" style="display:none;">
+
+    <!-- KPI row -->
+    <div class="kpi-row">
+      <div class="kpi-card k-impressions"><div class="kpi-label">Impressions</div><div class="kpi-value">55.0M</div></div>
+      <div class="kpi-card"><div class="kpi-label">Clicks</div><div class="kpi-value">129.6K</div></div>
+      <div class="kpi-card"><div class="kpi-label">CTR</div><div class="kpi-value">0.24%</div></div>
+      <div class="kpi-card k-spend"><div class="kpi-label">Spend</div><div class="kpi-value">$322.6K</div></div>
+      <div class="kpi-card"><div class="kpi-label">CPC</div><div class="kpi-value">$2.49</div></div>
+      <div class="kpi-card"><div class="kpi-label">CPM</div><div class="kpi-value">$5.86</div></div>
+      <div class="kpi-card"><div class="kpi-label">CVR(Click)</div><div class="kpi-value">26.64%</div></div>
+      <div class="kpi-card"><div class="kpi-label">CVR(Impr.)</div><div class="kpi-value">0.06%</div></div>
+      <div class="kpi-card"><div class="kpi-label">CPA</div><div class="kpi-value">$9.35</div></div>
+      <div class="kpi-card k-roas"><div class="kpi-label">ROAS</div><div class="kpi-value">$7.03</div></div>
+      <div class="kpi-card"><div class="kpi-label">Sales</div><div class="kpi-value">$2.3M</div></div>
+      <div class="kpi-card"><div class="kpi-label">Same SKU Sales</div><div class="kpi-value">$655.3K</div></div>
+      <div class="kpi-card"><div class="kpi-label">NTB Sales</div><div class="kpi-value">$1.86M</div></div>
+      <button type="button" class="kpi-add" title="Add metric card" onclick="pvToast('Add a custom metric card')">+</button>
+    </div>
+
+    <!-- Performance chart -->
+    <div class="card perf-card">
+      <div class="head">
+        <h3 style="margin:0;">Performance</h3>
+        <div class="toggles" id="creativePerfGran">
+          <span class="on" onclick="creativePerfSetGran(this,'D')">D</span><span onclick="creativePerfSetGran(this,'W')">W</span><span onclick="creativePerfSetGran(this,'M')">M</span>
+        </div>
+      </div>
+      <div class="perf-chart-wrap">
+        <svg class="chart perf-svg" viewBox="0 0 980 220" preserveAspectRatio="none" onmousemove="creativePerfHover(event)" onmouseleave="creativePerfHoverEnd()"></svg>
+        <div class="perf-tooltip" id="creativePerfTooltip"></div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--amber);"></i>Impressions</span>
+        <span><i class="dot" style="background:var(--mint);"></i>Spend</span>
+        <span><i class="dot" style="background:var(--purple);"></i>ROAS</span>
+      </div>
+    </div>
+
+    <!-- Image / Video sub tabs -->
+    <div class="seg2" id="creativeAssetTabs">
+      <span class="active" onclick="creativeAssetTabSwitch(this,'image')">Image</span>
+      <span onclick="creativeAssetTabSwitch(this,'video')">Video</span>
+    </div>
+
+    <!-- Platform filter -->
+    <div class="platform-filter-row" id="creativePlatformRow">
+      <div class="plat-chip active" data-platform="all" onclick="creativePlatformFilter(this)">All</div>
+      <div class="plat-chip" data-platform="amazon" onclick="creativePlatformFilter(this)"><span class="plat-ico amazon">a</span>Amazon</div>
+      <div class="plat-chip" data-platform="adsp" onclick="creativePlatformFilter(this)"><span class="plat-ico adsp">D</span>ADSP</div>
+      <div class="plat-chip" data-platform="walmart" onclick="creativePlatformFilter(this)"><span class="plat-ico walmart">✳</span>Walmart</div>
+      <div class="plat-chip" data-platform="tiktok" onclick="creativePlatformFilter(this)"><span class="plat-ico" style="background:#000;">♪</span>TikTok</div>
+      <div class="plat-chip" data-platform="openai" onclick="creativePlatformFilter(this)"><span class="plat-ico" style="background:#10a37f;">o</span>OpenAI</div>
+    </div>
+
+    <!-- Toolbar row 1: search & filters -->
+    <div class="creative-toolbar">
+      <div class="left-group">
+        <button type="button" class="tool-btn" onclick="pvToast('Reverse image search')">🖼 Image search</button>
+        <button type="button" class="tool-btn" onclick="pvToast('Filters panel')">🚫👁 Filters</button>
+        <input type="text" class="search-input" placeholder="Search Asset Name">
+        <div class="dd" id="ddAssetTag">
+          <div class="dd-trigger" onclick="event.stopPropagation();pvDdToggle('ddAssetTag')"><span>Asset Tag</span><b>Select All</b><span class="car">▾</span></div>
+          <div class="dd-panel">
+            <div class="dd-search"><input type="text" placeholder="Search tag"></div>
+            <div class="dd-list">
+              <div class="tag-tree-node">
+                <div class="tag-tree-head" onclick="tagTreeToggle(this)">
+                  <span class="tree-caret">▸</span>
+                  <label onclick="event.stopPropagation()"><input type="checkbox" onchange="tagTreeParentToggle(this)">Scene</label>
+                </div>
+                <div class="tag-tree-children">
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Kitchen</label>
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Looking At Product</label>
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Product-with-Props</label>
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Logo-Only</label>
+                </div>
+              </div>
+              <div class="tag-tree-node">
+                <div class="tag-tree-head" onclick="tagTreeToggle(this)">
+                  <span class="tree-caret">▸</span>
+                  <label onclick="event.stopPropagation()"><input type="checkbox" onchange="tagTreeParentToggle(this)">Props</label>
+                </div>
+                <div class="tag-tree-children">
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Plant</label>
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Bowl</label>
+                </div>
+              </div>
+              <div class="tag-tree-node">
+                <div class="tag-tree-head" onclick="tagTreeToggle(this)">
+                  <span class="tree-caret">▸</span>
+                  <label onclick="event.stopPropagation()"><input type="checkbox" onchange="tagTreeParentToggle(this)">Style</label>
+                </div>
+                <div class="tag-tree-children">
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Minimalist</label>
+                </div>
+              </div>
+              <div class="tag-tree-node">
+                <div class="tag-tree-head" onclick="tagTreeToggle(this)">
+                  <span class="tree-caret">▸</span>
+                  <label onclick="event.stopPropagation()"><input type="checkbox" onchange="tagTreeParentToggle(this)">Audience</label>
+                </div>
+                <div class="tag-tree-children">
+                  <label><input type="checkbox" onchange="tagTreeChildToggle(this)">Suburban Families</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dd" id="ddAdType">
+          <div class="dd-trigger" onclick="event.stopPropagation();pvDdToggle('ddAdType')"><span>Ad Type</span><b id="ddAdTypeLabel">Select All</b><span class="car">▾</span></div>
+          <div class="dd-panel">
+            <div class="dd-search"><input type="text" placeholder="Search ad type"></div>
+            <div class="at-cols" id="atCols"></div>
+          </div>
+        </div>
+      </div>
+      <div class="left-group">
+        <button type="button" class="tool-btn primary" onclick="pvToast('Search applied')">🔍 Search</button>
+        <button type="button" class="tool-btn icon-only" title="Export filters" onclick="pvToast('Exporting…')">⬇</button>
+      </div>
+    </div>
+
+    <!-- Toolbar row 2: bulk actions -->
+    <div class="creative-toolbar" style="padding-top:0;">
+      <div class="left-group">
+        <button type="button" class="tool-btn primary" onclick="pvToast('Select assets in the table first')">Replace Asset</button>
+      </div>
+      <div class="left-group">
+        <div class="dd" id="ddAssetGroup">
+          <div class="dd-trigger" onclick="event.stopPropagation();pvDdToggle('ddAssetGroup')"><span>Asset Group</span><span class="car">▾</span></div>
+          <div class="dd-panel">
+            <div class="dd-list">
+              <label><input type="radio" name="assetGroup" checked>Asset</label>
+              <label><input type="radio" name="assetGroup">Ad / Creative</label>
+              <label><input type="radio" name="assetGroup">Campaign</label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="tool-btn icon-only" title="Column visibility" onclick="pvToast('Column settings')">👁</button>
+        <button type="button" class="tool-btn icon-only" id="creativeViewToggle" title="Switch to grid view" onclick="creativeViewToggle()">☰</button>
+        <button type="button" class="tool-btn icon-only" title="Export table" onclick="pvToast('Exporting table…')">⬇</button>
+      </div>
+    </div>
+
+    <!-- Asset table -->
+    <div class="asset-table-card">
+      <div class="asset-table-wrap" id="creativeTableWrap">
+        <table class="asset-table" id="creativeAssetTable">
+          <thead>
+            <tr>
+              <th></th><th>Asset</th><th>Creative / Ad</th><th>Platform</th><th>Adgroup / Lineitem</th><th>Campaign / Order</th><th>Ad Type</th><th>Profile / Advertiser</th><th>Brand Name</th><th>Asset Tag</th>
+              <th class="sortable" onclick="creativeSortBy('impressions')">Impressions <span class="sort-ico">⇅</span></th>
+              <th class="sortable" onclick="creativeSortBy('clicks')">Clicks <span class="sort-ico">⇅</span></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="creativeTableBody">
+            <tr class="arow" data-group="r1" data-platform="adsp" data-impressions="6000000" data-clicks="8532" data-brand="Ninja">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#caa06a,#8a6b45);"></div></td>
+              <td><span class="asset-name">1</span></td>
+              <td><span class="plat-badge dsp">D</span></td>
+              <td>2</td><td>2</td>
+              <td>Responsive eCommerce</td>
+              <td>Astonomie DSP Ninja</td>
+              <td>Ninja</td>
+              <td><div class="tag-pill-row">
+                <span class="tag-pill c0">Plant</span><span class="tag-pill c1">Bowl</span><span class="tag-pill c2">Kitchen</span>
+                <span class="tag-pill c1">Looking At Product</span><span class="tag-pill c0">Product-with-Props</span>
+                <span class="tag-pill c1">Board</span><span class="tag-pill c2">Hand</span><span class="tag-pill c1">Container</span>
+                <span class="tag-pill c0">Neutral</span><span class="tag-pill more">+2</span>
+              </div></td>
+              <td>6.0M</td><td>8,532</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r1" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.14%</b></span><span>Spend <b>$14.9K</b></span><span>ROAS <b>6.20</b></span><span>CVR(Impr.) <b>0.03%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r2" data-platform="adsp" data-impressions="6000000" data-clicks="8532" data-brand="NINJA">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#7fae6a,#4d7a3d);"></div></td>
+              <td><span class="asset-name">1</span></td>
+              <td><span class="plat-badge dsp">D</span></td>
+              <td>2</td><td>2</td>
+              <td>Responsive eCommerce</td>
+              <td>Astonomie DSP Ninja</td>
+              <td>NINJA</td>
+              <td><div class="tag-pill-row">
+                <span class="tag-pill c2">Air Fryer</span><span class="tag-pill c1">Broccoli</span><span class="tag-pill c0">Product-with-Props</span>
+                <span class="tag-pill c2">CRISPI</span><span class="tag-pill c1">Food Container</span><span class="tag-pill c2">Kitchen Appliance</span>
+                <span class="tag-pill c1">Chicken</span><span class="tag-pill c0">Suburban Families</span>
+              </div></td>
+              <td>6.0M</td><td>8,532</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r2" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.14%</b></span><span>Spend <b>$14.9K</b></span><span>ROAS <b>6.20</b></span><span>CVR(Impr.) <b>0.03%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r3" data-platform="adsp" data-impressions="6600000" data-clicks="15632" data-brand="Shark">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:#111;">Shark</div></td>
+              <td><span class="asset-name">24</span></td>
+              <td><span class="plat-badge dsp">D</span></td>
+              <td>47</td><td>23</td>
+              <td>Online Video,ONLINE_VIDEO,Responsive eCommerce</td>
+              <td>Astronomie DSP Shark,SharkNinja CA [CA]</td>
+              <td>Shark</td>
+              <td><div class="tag-pill-row"><span class="tag-pill c0">Logo-Only</span></div></td>
+              <td>6.6M</td><td>15,632</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r3" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.24%</b></span><span>Spend <b>$18.2K</b></span><span>ROAS <b>7.10</b></span><span>CVR(Impr.) <b>0.05%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r4" data-platform="walmart" data-impressions="9600000" data-clicks="15932" data-brand="Ninja">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:#111;">NINJA</div></td>
+              <td><span class="asset-name">17</span></td>
+              <td><span class="plat-badge wmt">✳</span></td>
+              <td>25</td><td>17</td>
+              <td>SB</td>
+              <td>SHARKNINJA SALES COMPANY 1P,SharkNinja CA [CA],Astonomie DSP Ninja</td>
+              <td>NINJA,Ninja</td>
+              <td><div class="tag-pill-row"><span class="tag-pill c0">Logo-Only</span></div></td>
+              <td>9.6M</td><td>15,932</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r4" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.17%</b></span><span>Spend <b>$21.4K</b></span><span>ROAS <b>8.30</b></span><span>CVR(Impr.) <b>0.04%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r5" data-platform="adsp" data-impressions="4200000" data-clicks="7712" data-brand="--">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#c9c2b4,#8f8672);"></div></td>
+              <td><span class="asset-name">1</span></td>
+              <td><span class="plat-badge dsp">D</span></td>
+              <td>4</td><td>1</td>
+              <td>Responsive eCommerce</td>
+              <td>Astonomie DSP Ninja</td>
+              <td class="muted-cell">--</td>
+              <td class="muted-cell">--</td>
+              <td>4.2M</td><td>7,712</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r5" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.18%</b></span><span>Spend <b>$9.1K</b></span><span>ROAS <b>5.40</b></span><span>CVR(Impr.) <b>0.02%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r6" data-platform="amazon" data-impressions="858200" data-clicks="5987" data-brand="Shark">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#e5ded0,#b9ae95);"></div></td>
+              <td><span class="asset-name">4</span></td>
+              <td><span class="plat-badge amz">a</span></td>
+              <td>3</td><td>3</td>
+              <td>SB - Product Collection</td>
+              <td>Astronomie,Shark Ninja Operating LLC</td>
+              <td>Shark</td>
+              <td><div class="tag-pill-row"><span class="tag-pill c0">Minimalist</span><span class="tag-pill more">+14</span></div></td>
+              <td>858.2K</td><td>5,987</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r6" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.70%</b></span><span>Spend <b>$4.8K</b></span><span>ROAS <b>9.60</b></span><span>CVR(Impr.) <b>0.10%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r7" data-platform="amazon" data-impressions="831000" data-clicks="5791" data-brand="Shark">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#d7d2c8,#a39c8c);"></div></td>
+              <td><span class="asset-name">2</span></td>
+              <td><span class="plat-badge amz">a</span></td>
+              <td>2</td><td>2</td>
+              <td>SB - Product Collection</td>
+              <td>Astronomie</td>
+              <td>Shark</td>
+              <td><div class="tag-pill-row"><span class="tag-pill c0">Looking At Task Object</span><span class="tag-pill more">+8</span></div></td>
+              <td>831.0K</td><td>5,791</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r7" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.70%</b></span><span>Spend <b>$4.6K</b></span><span>ROAS <b>9.20</b></span><span>CVR(Impr.) <b>0.09%</b></span></div>
+            </td></tr>
+
+            <tr class="arow" data-group="r8" data-platform="amazon" data-impressions="1100000" data-clicks="4392" data-brand="Ninja">
+              <td><span class="at-expand" onclick="creativeToggleExpand(this)">▸</span></td>
+              <td><div class="asset-thumb" style="background:linear-gradient(135deg,#c96a3e,#7a3a1e);"></div></td>
+              <td><span class="asset-name">3</span></td>
+              <td><span class="plat-badge amz">a</span></td>
+              <td>4</td><td>3</td>
+              <td>SB - Product Collection</td>
+              <td>SN_Ninja_SPA,Astonomie DSP Ninja</td>
+              <td>Ninja</td>
+              <td><div class="tag-pill-row"><span class="tag-pill c1">Bell Peppers</span><span class="tag-pill more">+8</span></div></td>
+              <td>1.1M</td><td>4,392</td>
+              <td><span class="row-action" title="More actions" onclick="pvToast('Row actions')">⋯</span></td>
+            </tr>
+            <tr class="detail-row" data-group="r8" style="display:none;"><td colspan="13">
+              <div class="detail-grid"><span>CTR <b>0.40%</b></span><span>Spend <b>$3.7K</b></span><span>ROAS <b>6.80</b></span><span>CVR(Impr.) <b>0.07%</b></span></div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="asset-grid-view" id="creativeGridView" style="display:none;"></div>
+      <div class="asset-empty-state" id="creativeEmptyState">No assets match the current filters.</div>
+      <div class="table-pagination">
+        <div class="pg-left">
+          <span>Total <b>133</b> entries</span>
+          <select class="pg-size" onchange="pvToast('Page size: '+this.value)">
+            <option>10/page</option><option>20/page</option><option>50/page</option>
+          </select>
+        </div>
+        <div class="pg-pages" id="creativePager">
+          <button type="button" onclick="creativePageClick(this)">‹</button>
+          <button type="button" class="pgnum active" onclick="creativePageClick(this)">1</button>
+          <button type="button" class="pgnum" onclick="creativePageClick(this)">2</button>
+          <button type="button" class="pgnum" onclick="creativePageClick(this)">3</button>
+          <button type="button" class="pgnum" onclick="creativePageClick(this)">4</button>
+          <button type="button" class="ellip" disabled>…</button>
+          <button type="button" class="pgnum" onclick="creativePageClick(this)">14</button>
+          <button type="button" onclick="creativePageClick(this)">›</button>
+        </div>
+        <div class="pg-goto">
+          Go to page <input type="text" value="1" onkeydown="if(event.key==='Enter')pvToast('Go to page '+this.value)">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-creative -->
 
   <div id="page-genai" class="genai-page" style="display:none;">
 
@@ -3145,13 +3636,417 @@
     document.querySelectorAll('.tabs span').forEach(function(s){ s.classList.remove('active'); });
     el.classList.add('active');
     document.getElementById('page-dashboard').style.display = (page === 'dashboard') ? '' : 'none';
+    document.getElementById('page-creative').style.display = (page === 'creative') ? '' : 'none';
     document.getElementById('page-genai').style.display = (page === 'genai') ? '' : 'none';
     document.getElementById('page-log').style.display = (page === 'log') ? '' : 'none';
     if(page === 'genai') genaiBackToGallery();
+    if(page === 'creative' && !creativeInited){ creativeInited = true; creativeRenderPerf('D'); }
   }
+  var creativeInited = false;
 
   if(location.hash === '#log'){
     pacvuePageSwitch(document.getElementById('tab-log'), 'log');
+  }
+
+  /* ============ Creative page ============ */
+
+  function pvToast(msg){
+    var t = document.getElementById('pvToast');
+    if(!t){
+      t = document.createElement('div');
+      t.id = 'pvToast';
+      t.className = 'pv-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window._pvToastTimer);
+    window._pvToastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  /* -- generic dropdown open/close -- */
+  function pvDdToggle(id){
+    var el = document.getElementById(id);
+    var wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.dd.open').forEach(function(d){ d.classList.remove('open'); });
+    if(!wasOpen){
+      el.classList.add('open');
+      if(id === 'ddAdType' && !document.getElementById('atCols').hasChildNodes()) atBuildRoot();
+    }
+  }
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.dd')) document.querySelectorAll('.dd.open').forEach(function(d){ d.classList.remove('open'); });
+  });
+
+  /* -- Asset Tag: 2-level tree filter -- */
+  function tagTreeToggle(head){
+    head.closest('.tag-tree-node').classList.toggle('open');
+  }
+  function tagTreeParentToggle(cb){
+    cb.closest('.tag-tree-node').querySelectorAll('.tag-tree-children input[type=checkbox]').forEach(function(c){ c.checked = cb.checked; });
+  }
+  function tagTreeChildToggle(cb){
+    var node = cb.closest('.tag-tree-node');
+    var children = node.querySelectorAll('.tag-tree-children input[type=checkbox]');
+    var checkedCount = 0;
+    children.forEach(function(c){ if(c.checked) checkedCount++; });
+    var parentCb = node.querySelector('.tag-tree-head input[type=checkbox]');
+    parentCb.checked = checkedCount === children.length;
+    parentCb.indeterminate = checkedCount > 0 && checkedCount < children.length;
+  }
+
+  /* -- Ad Type cascading filter -- */
+  var AD_TYPE_TREE = [
+    {id:'amazon', label:'Amazon', children:[
+      {id:'amazon.sp', label:'SP'},
+      {id:'amazon.sb', label:'SB', children:[
+        {id:'amazon.sb.pc', label:'Product Collection'},
+        {id:'amazon.sb.ss', label:'Store Spotlight'},
+        {id:'amazon.sb.v', label:'Video'}
+      ]}
+    ]},
+    {id:'walmart', label:'Walmart', children:[
+      {id:'walmart.sb', label:'SB'},
+      {id:'walmart.sv', label:'SV'}
+    ]},
+    {id:'adsp', label:'ADSP', children:[
+      {id:'adsp.std', label:'Standard Display'},
+      {id:'adsp.ov', label:'Online Video'},
+      {id:'adsp.stv', label:'Streaming TV'},
+      {id:'adsp.comp', label:'Component-based', children:[
+        {id:'adsp.comp.rec', label:'Responsive eCommerce'},
+        {id:'adsp.comp.bs', label:'Brand Store'},
+        {id:'adsp.comp.abc', label:'Asset-based Creative'}
+      ]}
+    ]},
+    {id:'instacart', label:'Instacart', children:[
+      {id:'instacart.db', label:'Display Banner'},
+      {id:'instacart.sd', label:'Shoppable Display'},
+      {id:'instacart.sv', label:'Shoppable Video'}
+    ]},
+    {id:'tiktok', label:'TikTok', children:[
+      {id:'tiktok.gmv', label:'GMV Max'},
+      {id:'tiktok.social', label:'Social Ads', children:[
+        {id:'tiktok.social.sv', label:'Single Video'},
+        {id:'tiktok.social.ca', label:'Carousel Ads'}
+      ]}
+    ]},
+    {id:'openai', label:'OpenAI', children:[
+      {id:'openai.std', label:'Standard Ads'}
+    ]}
+  ];
+  var atSelected = {};
+
+  function atFindNode(id){
+    function search(list){
+      for(var i=0;i<list.length;i++){
+        if(list[i].id === id) return list[i];
+        if(list[i].children){ var r = search(list[i].children); if(r) return r; }
+      }
+      return null;
+    }
+    return search(AD_TYPE_TREE);
+  }
+
+  var atExpanded = {};
+
+  function atRowHtml(n, level){
+    var checked = atSelected[n.id] ? 'checked' : '';
+    var hasKids = n.children && n.children.length;
+    var expanded = !!atExpanded[n.id];
+    var pad = 8 + level * 18;
+    var row = '<div class="at-row' + (hasKids ? ' has-kids' + (expanded ? '' : ' collapsed') : '') + '" data-id="' + n.id + '" style="padding-left:' + pad + 'px;"' +
+      (hasKids ? ' onclick="atToggleExpand(\'' + n.id + '\')"' : '') + '>' +
+      '<input type="checkbox" ' + checked + ' onclick="event.stopPropagation();atToggle(\'' + n.id + '\',this.checked)">' +
+      '<span class="at-name">' + n.label + '</span>' +
+      (hasKids ? '<span class="at-caret">▾</span>' : '') +
+    '</div>';
+    if(hasKids){
+      row += '<div class="at-children' + (expanded ? '' : ' collapsed') + '" data-parent="' + n.id + '">' +
+        n.children.map(function(c){ return atRowHtml(c, level + 1); }).join('') +
+      '</div>';
+    }
+    return row;
+  }
+
+  function atBuildRoot(){
+    var html = '<div class="at-row"><input type="checkbox" id="atSelectAll" onclick="atToggleAll(this.checked)"><span class="at-name">Select All</span></div>' +
+      AD_TYPE_TREE.map(function(n){ return atRowHtml(n, 0); }).join('');
+    document.getElementById('atCols').innerHTML = html;
+    atRefreshVisibleCheckboxes();
+  }
+
+  function atToggleExpand(id){
+    atExpanded[id] = !atExpanded[id];
+    var cols = document.getElementById('atCols');
+    var row = cols.querySelector('.at-row[data-id="' + id + '"]');
+    var children = cols.querySelector('.at-children[data-parent="' + id + '"]');
+    if(row) row.classList.toggle('collapsed', !atExpanded[id]);
+    if(children) children.classList.toggle('collapsed', !atExpanded[id]);
+  }
+
+  function atSetAllNodes(nodes, checked){
+    nodes.forEach(function(n){ atSelected[n.id] = checked; if(n.children) atSetAllNodes(n.children, checked); });
+  }
+
+  function atRecomputeParents(nodes){
+    nodes.forEach(function(n){
+      if(n.children){
+        atRecomputeParents(n.children);
+        var allOn = n.children.every(function(c){ return atSelected[c.id]; });
+        var noneOn = n.children.every(function(c){ return !atSelected[c.id]; });
+        if(allOn) atSelected[n.id] = true;
+        else if(noneOn) atSelected[n.id] = false;
+      }
+    });
+  }
+
+  function atAllTreeSelected(){
+    function every(nodes){
+      return nodes.every(function(n){ return atSelected[n.id] && (!n.children || every(n.children)); });
+    }
+    return every(AD_TYPE_TREE);
+  }
+
+  function atCountLeavesSelected(){
+    var count = 0;
+    function walk(nodes){
+      nodes.forEach(function(n){
+        if(n.children) walk(n.children);
+        else if(atSelected[n.id]) count++;
+      });
+    }
+    walk(AD_TYPE_TREE);
+    return count;
+  }
+
+  function atRefreshVisibleCheckboxes(){
+    document.querySelectorAll('#atCols .at-row').forEach(function(row){
+      var id = row.getAttribute('data-id');
+      if(!id) return;
+      row.querySelector('input').checked = !!atSelected[id];
+    });
+    var selAll = document.getElementById('atSelectAll');
+    if(selAll) selAll.checked = atAllTreeSelected();
+  }
+
+  function atUpdateLabel(){
+    var n = atCountLeavesSelected();
+    document.getElementById('ddAdTypeLabel').textContent = n === 0 ? 'Select All' : (n + ' selected');
+  }
+
+  function atToggle(id, checked){
+    var node = atFindNode(id);
+    atSelected[id] = checked;
+    if(node && node.children) atSetAllNodes(node.children, checked);
+    atRecomputeParents(AD_TYPE_TREE);
+    atRefreshVisibleCheckboxes();
+    atUpdateLabel();
+  }
+
+  function atToggleAll(checked){
+    atSetAllNodes(AD_TYPE_TREE, checked);
+    atRefreshVisibleCheckboxes();
+    atUpdateLabel();
+  }
+
+  /* -- Performance chart -- */
+  var creativePerfRaw = (function(){
+    var days = 30, arr = [];
+    var start = new Date(2026, 6, 1);
+    for(var i = 0; i < days; i++){
+      var spike = (i % 5 === 0 || i % 5 === 1) ? 1.7 : 0.55;
+      var imp = (300000 + 550000 * Math.abs(Math.sin(i * 0.7))) * spike;
+      var spend = (2200 + 2800 * Math.abs(Math.sin(i * 0.7 + 0.4))) * spike;
+      var roas = 4 + 12 * Math.abs(Math.cos(i * 0.5));
+      var d = new Date(start.getTime() + i * 86400000);
+      var mm = String(d.getMonth() + 1).padStart(2, '0');
+      var dd = String(d.getDate()).padStart(2, '0');
+      arr.push({ date: mm + '/' + dd + '/2026', impressions: Math.round(imp), spend: Math.round(spend * 100) / 100, roas: Math.round(roas * 100) / 100 });
+    }
+    return arr;
+  })();
+
+  function creativeAggregate(gran){
+    if(gran === 'D') return creativePerfRaw;
+    var size = gran === 'W' ? 7 : 15;
+    var out = [];
+    for(var i = 0; i < creativePerfRaw.length; i += size){
+      var chunk = creativePerfRaw.slice(i, i + size);
+      var imp = chunk.reduce(function(a, c){ return a + c.impressions; }, 0);
+      var spend = chunk.reduce(function(a, c){ return a + c.spend; }, 0);
+      var roas = chunk.reduce(function(a, c){ return a + c.roas; }, 0) / chunk.length;
+      out.push({ date: chunk[0].date + (chunk.length > 1 ? ' – ' + chunk[chunk.length - 1].date : ''), impressions: imp, spend: Math.round(spend * 100) / 100, roas: Math.round(roas * 100) / 100 });
+    }
+    return out;
+  }
+
+  var creativePerfPoints = [];
+
+  function creativeRenderPerf(gran){
+    var data = creativeAggregate(gran || 'D');
+    var w = 980, h = 220, padL = 8, padR = 8, padT = 10, padB = 10;
+    var n = data.length;
+    var stepX = n > 1 ? (w - padL - padR) / (n - 1) : 0;
+    var maxImp = Math.max.apply(null, data.map(function(d){ return d.impressions; })) || 1;
+    var maxSpend = Math.max.apply(null, data.map(function(d){ return d.spend; })) || 1;
+    var maxRoas = Math.max.apply(null, data.map(function(d){ return d.roas; })) || 1;
+    function ptsFor(key, max){
+      return data.map(function(d, i){
+        var x = padL + i * stepX;
+        var y = padT + (1 - d[key] / max) * (h - padT - padB);
+        return { x: x, y: y };
+      });
+    }
+    var impPts = ptsFor('impressions', maxImp);
+    var spendPts = ptsFor('spend', maxSpend);
+    var roasPts = ptsFor('roas', maxRoas);
+    creativePerfPoints = data.map(function(d, i){ return { x: impPts[i].x, data: d }; });
+    function poly(pts, color){
+      return '<polyline points="' + pts.map(function(p){ return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' ') + '" fill="none" stroke="' + color + '" stroke-width="1.6"/>';
+    }
+    var svg = document.querySelector('.perf-svg');
+    if(svg) svg.innerHTML = poly(impPts, 'var(--amber)') + poly(spendPts, 'var(--mint)') + poly(roasPts, 'var(--purple)');
+  }
+
+  function creativePerfSetGran(el, g){
+    document.querySelectorAll('#creativePerfGran span').forEach(function(s){ s.classList.remove('on'); });
+    el.classList.add('on');
+    creativeRenderPerf(g);
+  }
+
+  function creativePerfHover(evt){
+    if(!creativePerfPoints.length) return;
+    var svg = evt.currentTarget;
+    var rect = svg.getBoundingClientRect();
+    var scaleX = 980 / rect.width;
+    var x = (evt.clientX - rect.left) * scaleX;
+    var closest = creativePerfPoints[0], minDist = Infinity;
+    creativePerfPoints.forEach(function(p){
+      var dist = Math.abs(p.x - x);
+      if(dist < minDist){ minDist = dist; closest = p; }
+    });
+    var tip = document.getElementById('creativePerfTooltip');
+    tip.innerHTML = '<div class="pt-date">' + closest.data.date + '</div>' +
+      '<div class="pt-row"><span><i class="dot" style="background:var(--amber);"></i>Impressions</span><b>' + (closest.data.impressions / 1000).toFixed(1) + 'K</b></div>' +
+      '<div class="pt-row"><span><i class="dot" style="background:var(--mint);"></i>Spend</span><b>$' + closest.data.spend.toFixed(2) + '</b></div>' +
+      '<div class="pt-row"><span><i class="dot" style="background:var(--purple);"></i>ROAS</span><b>$' + closest.data.roas.toFixed(2) + '</b></div>';
+    tip.style.display = 'block';
+    var wrapRect = svg.parentElement.getBoundingClientRect();
+    var leftPx = (closest.x / 980) * wrapRect.width;
+    tip.style.left = Math.max(0, Math.min(leftPx + 12, wrapRect.width - 165)) + 'px';
+    tip.style.top = '8px';
+  }
+
+  function creativePerfHoverEnd(){
+    var tip = document.getElementById('creativePerfTooltip');
+    if(tip) tip.style.display = 'none';
+  }
+
+  /* -- Image / Video / Logo tabs -- */
+  function creativeAssetTabSwitch(el, tab){
+    document.querySelectorAll('#creativeAssetTabs span').forEach(function(s){ s.classList.remove('active'); });
+    el.classList.add('active');
+    var wrap = document.getElementById('creativeTableWrap');
+    var grid = document.getElementById('creativeGridView');
+    var empty = document.getElementById('creativeEmptyState');
+    if(tab === 'image'){
+      wrap.style.display = creativeViewMode === 'table' ? '' : 'none';
+      grid.style.display = creativeViewMode === 'grid' ? 'grid' : 'none';
+      empty.style.display = 'none';
+    } else {
+      wrap.style.display = 'none';
+      grid.style.display = 'none';
+      empty.style.display = 'flex';
+      empty.textContent = 'No ' + tab + ' assets match the current filters.';
+    }
+  }
+
+  /* -- platform filter -- */
+  function creativePlatformFilter(chip){
+    document.querySelectorAll('#creativePlatformRow .plat-chip').forEach(function(c){ c.classList.remove('active'); });
+    chip.classList.add('active');
+    var f = chip.getAttribute('data-platform');
+    document.querySelectorAll('#creativeTableBody tr.arow').forEach(function(tr){
+      var show = (f === 'all') || (tr.getAttribute('data-platform') === f);
+      tr.style.display = show ? '' : 'none';
+      var detail = tr.nextElementSibling;
+      if(detail && detail.classList.contains('detail-row')) detail.style.display = 'none';
+    });
+    if(creativeViewMode === 'grid') creativeBuildGrid();
+  }
+
+  /* -- row expand -- */
+  function creativeToggleExpand(btn){
+    btn.classList.toggle('open');
+    var tr = btn.closest('tr');
+    var detail = tr.nextElementSibling;
+    if(detail && detail.classList.contains('detail-row')){
+      detail.style.display = (detail.style.display === 'table-row') ? 'none' : 'table-row';
+    }
+  }
+
+  /* -- sort -- */
+  var creativeSortState = {};
+  function creativeSortBy(field){
+    var tbody = document.getElementById('creativeTableBody');
+    var groups = Array.from(tbody.querySelectorAll('tr.arow')).map(function(tr){
+      var detail = tr.nextElementSibling && tr.nextElementSibling.classList.contains('detail-row') ? tr.nextElementSibling : null;
+      return { main: tr, detail: detail, val: parseFloat(tr.getAttribute('data-' + field)) || 0 };
+    });
+    creativeSortState[field] = !creativeSortState[field];
+    var asc = creativeSortState[field];
+    groups.sort(function(a, b){ return asc ? a.val - b.val : b.val - a.val; });
+    groups.forEach(function(g){
+      tbody.appendChild(g.main);
+      if(g.detail) tbody.appendChild(g.detail);
+    });
+  }
+
+  /* -- table / grid view toggle -- */
+  var creativeViewMode = 'table';
+  function creativeViewToggle(){
+    creativeViewMode = creativeViewMode === 'table' ? 'grid' : 'table';
+    var wrap = document.getElementById('creativeTableWrap');
+    var grid = document.getElementById('creativeGridView');
+    var btn = document.getElementById('creativeViewToggle');
+    if(creativeViewMode === 'grid'){
+      wrap.style.display = 'none';
+      creativeBuildGrid();
+      grid.style.display = 'grid';
+      btn.title = 'Switch to table view';
+    } else {
+      grid.style.display = 'none';
+      wrap.style.display = '';
+      btn.title = 'Switch to grid view';
+    }
+  }
+
+  function creativeBuildGrid(){
+    var grid = document.getElementById('creativeGridView');
+    var rows = document.querySelectorAll('#creativeTableBody tr.arow');
+    var html = '';
+    rows.forEach(function(tr){
+      if(tr.style.display === 'none') return;
+      var thumbEl = tr.querySelector('.asset-thumb');
+      var thumbStyle = thumbEl ? thumbEl.getAttribute('style') : '';
+      var name = tr.getAttribute('data-brand') || '';
+      var impressions = tr.querySelectorAll('td')[10] ? tr.querySelectorAll('td')[10].textContent : '';
+      html += '<div class="group-card"><div class="thumb" style="' + thumbStyle + '"></div>' +
+        '<div class="gmeta"><div class="gname">' + name + '</div>' +
+        '<div class="gmetrics"><div class="metric-row"><span>Impr.</span><b>' + impressions + '</b></div></div></div></div>';
+    });
+    grid.innerHTML = html;
+  }
+
+  /* -- pagination -- */
+  function creativePageClick(el){
+    if(el.disabled) return;
+    if(el.classList.contains('pgnum')){
+      document.querySelectorAll('#creativePager button.pgnum').forEach(function(b){ b.classList.remove('active'); });
+      el.classList.add('active');
+    }
+    pvToast('Loaded page ' + (el.textContent.trim() || '—'));
   }
 
   var genaiHints = {
